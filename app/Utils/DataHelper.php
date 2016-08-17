@@ -1,6 +1,7 @@
 <?php namespace App\Utils;
 
 use App\RadiusAccount;
+use DateTime;
 
 class DataHelper {
     /**
@@ -10,13 +11,17 @@ class DataHelper {
      *
      * Changes:
      * Code formatting
+     * Set factor override to normalize responses where data could be of varying sizes.
+     * Enable of disable the ability to include the size indicator
      *
      * @param int $bytes
      * @param int $decimals
      * @param string $system
+     * @param int $factor
+     * @param bool $includeUnits
      * @return string
      */
-    static function convertToHumanReadableSize($bytes = 0, $decimals = 2, $system = 'binary') {
+    static function convertToHumanReadableSize($bytes = 0, $decimals = 2, $system = 'binary', $factor = 0, $includeUnits = true) {
         $mod = ($system === 'binary') ? 1024 : 1000;
 
         $units = [
@@ -24,9 +29,12 @@ class DataHelper {
             'metric' => ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
         ];
 
-        $factor = floor((strlen($bytes) - 1) / 3);
+        if ($factor === 0) {
+            $factor = (int) floor((strlen($bytes) - 1) / 3);
+        }
 
-        return sprintf("%.{$decimals}f %s", $bytes / pow($mod, $factor), $units[$system][$factor]);
+        $printFormat = ($includeUnits) ? "%.{$decimals}f %s" : "%.{$decimals}f";
+        return sprintf($printFormat, $bytes / pow($mod, $factor), $units[$system][$factor]);
     }
 
     /**
@@ -76,5 +84,27 @@ class DataHelper {
         }
 
         return $bandwidth;
+    }
+
+    /**
+     * Converts seconds to a human readable days, hours, minutes, seconds output
+     *
+     * Copyright: Glavic 2013
+     * License: cc by-sa 3.0
+     * URL: http://stackoverflow.com/questions/8273804/convert-seconds-into-days-hours-minutes-and-seconds
+     *
+     * Changes:
+     * Code formatting
+     * Casting inputSeconds as forced int
+     *
+     * @param $inputSeconds
+     * @return string
+     */
+    public static function secondsToHumanReadableTime($inputSeconds) {
+        $inputSeconds = (int) $inputSeconds;
+
+        $dtF = new DateTime('@0');
+        $dtT = new DateTime("@$inputSeconds");
+        return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
     }
 }

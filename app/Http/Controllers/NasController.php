@@ -4,8 +4,7 @@ use App\Nas;
 
 class NasController extends Controller {
     public function index() {
-        $nasList = Nas::paginate()
-            ->all();
+        $nasList = Nas::paginate();
 
         return view()->make('pages.nas.index', ['nasList' => $nasList]);
     }

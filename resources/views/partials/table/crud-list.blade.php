@@ -3,9 +3,11 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">{{ $title }}</h3>
-                <div class="pull-right">
-                    <label><input type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}"></label>
-                </div>
+                @if ($filterPlaceHolder !== '')
+                    <div class="pull-right">
+                        <label><input type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}"></label>
+                    </div>
+                @endif
             </div>
             <div class="box-body">
                 <div class="dataTables_wrapper form-inline dt-bootstrap">

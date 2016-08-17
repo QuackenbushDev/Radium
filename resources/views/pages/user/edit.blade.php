@@ -12,7 +12,7 @@
 @section('content')
     {!! BootForm::open()->action(route('user::update', ['id' => $user->id])) !!}
     <input type="hidden" name="_method" value="PUT">
-    @include('pages.user.partials.account_info_edit')
+    @include('pages.user.partials.account-info-edit')
 
     <div class="row">
         <div class="col-md-12">

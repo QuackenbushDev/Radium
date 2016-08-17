@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'DashboardController@index');
+Route::get('/accounting', ['as' => 'accounting::index', 'uses' => 'AccountingController@index']);
 
 Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
@@ -22,7 +23,7 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
     Route::get('/', ['as' => 'index', 'uses' => 'NasController@index']);
-    //Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@save']);
-    //Route::get('/{id}', ['as' => 'show', 'uses' => 'NasController@show']);
-    //Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'NasController@edit']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@save']);
+    Route::get('/{id}', ['as' => 'show', 'uses' => 'NasController@show']);
+    Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'NasController@edit']);
 });

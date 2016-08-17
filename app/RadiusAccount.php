@@ -1,6 +1,8 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Utils\DataHelper;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class RadiusAccount extends Model {
     protected $table = 'radacct';
@@ -102,14 +104,9 @@ class RadiusAccount extends Model {
         ];
 
         foreach ($query as $result) {
-            $usage['download'][$result->month - 1] += $result->download;
-            $usage['upload'][$result->month - 1]   += $result->upload;
-        }
-
-        foreach($usage as $type => $values) {
-            foreach ($values as $index => $value) {
-                $usage[$type][$index] = round($value / 1000000000, 2);
-            }
+            $month = $result->month - 1;
+            $usage['download'][$month] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
+            $usage['upload'][$month] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
         }
 
         return $usage;

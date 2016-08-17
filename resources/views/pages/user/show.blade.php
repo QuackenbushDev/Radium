@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-    @include('pages.user.partials.account_info')
+    @include('pages.user.partials.account-info')
 
     <div class="row">
         <div class="col-md-12">
@@ -70,7 +70,7 @@
     <div class="row">
         <div class="col-md-4">
             @include(
-                'pages.user.partials.bandwidthSummary',
+                'pages.user.partials.bandwidth-summary',
                 [
                     'title' => 'Daily Summary (' . date('M-d') . ')',
                     'data' => $bandwidthStats['day']
@@ -80,7 +80,7 @@
 
         <div class="col-md-4">
             @include(
-                'pages.user.partials.bandwidthSummary',
+                'pages.user.partials.bandwidth-summary',
                 [
                     'title' => 'Monthly (' . date('M Y') . ')',
                     'data' => $bandwidthStats['month']
@@ -90,7 +90,7 @@
 
         <div class="col-md-4">
             @include(
-                'pages.user.partials.bandwidthSummary',
+                'pages.user.partials.bandwidth-summary',
                 [
                     'title' => 'Yearly (' . date('Y') . ')',
                     'data' => $bandwidthStats['year']

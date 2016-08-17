@@ -52,22 +52,22 @@
                 <li class="header">Management</li>
                 <li class="treeview">
                     <a href="{{ route('user::index') }}">
-                        <i class="fa fa-group"></i> <span>Users</span>
+                        <i class="fa fa-user"></i> <span>Users</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="{{ route('nas::index') }}">
-                        <i class="fa fa-dashboard"></i> <span>NAS</span>
+                        <i class="fa fa-server"></i> <span>NAS</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Groups</span>
+                        <i class="fa fa-group"></i> <span>Groups</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Proxies</span>
+                        <i class="fa fa-lock"></i> <span>Proxies</span>
                     </a>
                 </li>
                 <li class="header">Reports</li>
@@ -86,10 +86,9 @@
                         <i class="fa fa-dashboard"></i> <span>Bandwidth</span>
                     </a>
                 </li>
-                <li class="header">Accounting</li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>General</span>
+                    <a href="{{ route('accounting::index') }}">
+                        <i class="fa fa-table"></i> <span>Accounting</span>
                     </a>
                 </li>
                 <li class="header">Graphs</li>

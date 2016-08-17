@@ -2,6 +2,7 @@
 
 use App\RadiusAccount;
 use App\RadiusPostAuth;
+use App\Utils\DataHelper;
 
 class DashboardController extends Controller {
     public function index() {
@@ -43,8 +44,8 @@ class DashboardController extends Controller {
 
         return [
             'username' => $topUser->username,
-            'download' => round($topUser->acctinputoctets / 1000000000, 2),
-            'upload'   => round($topUser->acctoutputoctets / 1000000000, 2),
+            'download' => DataHelper::convertToHumanReadableSize($topUser->acctinputoctets, 2, 'binary', 3, false),
+            'upload'   => DataHelper::convertToHumanReadableSize($topUser->acctoutputoctets, 2, 'binary', 3, false),
         ];
     }
 }

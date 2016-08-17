@@ -32,6 +32,8 @@
             <tr></tr>
             </tbody>
         </table>
+        <a href="#" class="btn btn-lg btn-success">Test Connectivity</a>
+        <a href="#" class="btn btn-lg btn-danger">Disconnect User</a>
     </div>
 
     <div class="col-md-6">

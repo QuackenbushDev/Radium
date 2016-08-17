@@ -210,6 +210,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'BootForm' => AdamWathan\BootForms\Facades\BootForm::class,
+        'DataHelper' => App\Utils\DataHelper::class,
     ],
 
 ];
