@@ -23,9 +23,7 @@ class UserController extends Controller {
     }
 
     public function show($id) {
-        $user = RadiusCheck::find($id)
-            ->join('radius_account_info', 'radcheck.username', '=', 'radius_account_info.username')
-            ->first();
+        $user = RadiusCheck::find($id);
         $bandwidthStats = DataHelper::calculateUserBandwidth($user->username);
         $bandwidthMonthlyUsage = RadiusAccount::getMonthlyBandwidthUsage($user->username);
         $onlineStatus = RadiusAccount::onlineStatus($user->username);
@@ -42,6 +40,13 @@ class UserController extends Controller {
         $userCheck = RadiusCheck::getUserAttributes($user->username)->get()->toArray();
         $userReply = RadiusReply::getUserAttributes($user->username)->get()->toArray();
 
+        $userInfo = RadiusAccountInfo::where('username', $user->username)->firstOrCreate([
+            'username' => $user->username,
+            'enable_portal' => true,
+            'enable_password_resets' => true,
+
+        ]);
+
         return view()->make(
             'pages.user.show',
             [
@@ -55,7 +60,34 @@ class UserController extends Controller {
                 'groupReply'            => $groupReply,
                 'userCheck'             => $userCheck,
                 'userReply'             => $userReply,
+                'userInfo'              => $userInfo,
             ]
         );
+    }
+
+    public function edit($id) {
+        $user = RadiusCheck::find($id);
+        $groups = RadiusUserGroup::getUserGroups($user->username);
+        $userCheck = RadiusCheck::getUserAttributes($user->username)->get()->toArray();
+        $userReply = RadiusReply::getUserAttributes($user->username)->get()->toArray();
+
+        $userInfo = RadiusAccountInfo::where('username', $user->username)->firstOrCreate([
+            'username' => $user->username,
+            'enable_portal' => true,
+            'enable_password_resets' => true,
+
+        ]);
+
+        return view()->make(
+            'pages.user.edit',
+            [
+                'user'                  => $user,
+                'groups'                => $groups,
+                'userCheck'             => $userCheck,
+                'userReply'             => $userReply,
+                'userInfo'              => $userInfo,
+            ]
+        );
+
     }
 }

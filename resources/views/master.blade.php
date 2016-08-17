@@ -51,18 +51,18 @@
                 </li>
                 <li class="header">Management</li>
                 <li class="treeview">
-                    <a href="{{ url('/user') }}">
+                    <a href="{{ route('user::index') }}">
                         <i class="fa fa-group"></i> <span>Users</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
+                    <a href="{{ route('nas::index') }}">
                         <i class="fa fa-dashboard"></i> <span>NAS</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Profiles</span>
+                        <i class="fa fa-dashboard"></i> <span>Groups</span>
                     </a>
                 </li>
                 <li class="treeview">

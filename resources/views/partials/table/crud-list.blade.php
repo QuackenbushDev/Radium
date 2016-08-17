@@ -15,7 +15,7 @@
                                 <thead>
                                     <tr role="row">
                                         @foreach($headers as $header)
-                                            <td>{{ $header }}</td>
+                                            <th>{{ $header }}</th>
                                         @endforeach
                                     </tr>
                                 </thead>
@@ -24,17 +24,16 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Password</th>
-                                        <th>Primary Group</th>
+                                        @foreach($headers as $header)
+                                            <th>{{ $header }}</th>
+                                        @endforeach
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
 
-                    @include('partials.pagination-nav', ['data' => $users])
+                    @include('partials.pagination-nav', ['data' => $dataSet])
                 </div>
             </div>
         </div>
