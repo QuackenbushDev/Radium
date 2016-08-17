@@ -1,13 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use App\RadiusAccount;
+use DateTime;
 use Illuminate\Http\Request;
+use App\RadiusAccount;
 
 class AccountingController extends Controller {
     public function index(Request $request) {
         $columns = [
             'radacctid',
-            'username',
+            'radacct.username',
             'acctsessiontime',
             'acctstarttime',
             'acctstoptime',
@@ -18,16 +19,25 @@ class AccountingController extends Controller {
             'framedipaddress'
         ];
         $filter = [
-            'username'  => $request->input('username', ''),
-            'clientIP'  => $request->input('clientIP', ''),
-            'nasIP'     => $request->input('nasIP', ''),
-            'timeStart' => $request->input('dateStart', ''),
-            'timeStop'  => $request->input('dateStop')
+            'username'        => $request->input('username', ''),
+            'framedipaddress' => $request->input('framedipaddress', ''),
+            'nasipaddress'    => $request->input('nasipaddress', ''),
+            'acctstarttime'   => $request->input('acctstarttime', ''),
+            'acctstoptime'    => $request->input('acctstoptime', '')
         ];
         $radiusAccounting = RadiusAccount::select($columns);
 
-        if (!empty($filter['username'])) {
-            $radiusAccounting->where('username', 'LIKE', '%' . $filter['username'] . '%');
+        foreach($filter as $key => $value) {
+            if (!empty($value)) {
+                if ($key === 'acctstarttime' || $key === 'acctstoptime') {
+                    $dateTimeObject = new DateTime($value);
+                    $queryOperator = ($key === 'acctstarttime') ? '>=' : '<=';
+
+                    $radiusAccounting->where($key, $queryOperator, $dateTimeObject);
+                } else {
+                    $radiusAccounting->where($key, 'LIKE', '%' . $value . '%');
+                }
+            }
         }
 
         $dataSet = $radiusAccounting->paginate()->appends($filter);

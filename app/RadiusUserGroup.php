@@ -7,6 +7,7 @@ class RadiusUserGroup extends Model {
     protected $primaryKey = null;
     public $timestamps = false;
     public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *

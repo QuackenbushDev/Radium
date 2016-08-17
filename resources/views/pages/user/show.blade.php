@@ -123,7 +123,8 @@
         )
     </div>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
-    <script type="text/javascript" src="/js/pages/dashboard.js"></script>
+    @push('scripts')
+        <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
+        <script type="text/javascript" src="/js/pages/dashboard.js"></script>
+    @endpush
 @endsection

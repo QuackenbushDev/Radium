@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +15,8 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    @stack('css')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -118,6 +119,8 @@
         </section>
 
         <div class="content">
+            @include('partials.flash-message')
+
             @yield("content")
         </div>
     </div>
@@ -132,10 +135,11 @@
     <div class="control-sidebar-bg"></div>
 </div>
 
-<script type="text/javascript" src="{{ asset("plugins/jQuery/jquery-2.2.3.min.js") }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript" src="{{ asset("js/bootstrap.min.js") }}"></script>
 <script type="text/javascript" src="{{ asset("plugins/slimScroll/jquery.slimscroll.min.js") }}"></script>
 <script type="text/javascript" src="{{ asset("plugins/fastclick/fastclick.js") }}"></script>
 <script type="text/javascript" src="{{ asset("js/app.min.js") }}"></script>
+@stack('scripts')
 </body>
 </html>

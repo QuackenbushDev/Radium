@@ -19,6 +19,8 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::put('/{id}', ['as' => 'update', 'uses' => 'UserController@save']);
     Route::get('/{id}', ['as' => 'show', 'uses' => 'UserController@show']);
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
+    Route::get('/disable/{id}', ['as' => 'disable', 'uses' => 'UserController@disableUser']);
+    Route::get('/enable/{id}', ['as' => 'enable', 'uses' => 'UserController@enableUser']);
 });
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {

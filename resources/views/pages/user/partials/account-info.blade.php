@@ -34,6 +34,11 @@
         </table>
         <a href="#" class="btn btn-lg btn-success">Test Connectivity</a>
         <a href="#" class="btn btn-lg btn-danger">Disconnect User</a>
+        @if(in_array($disabledGroupName, $groups))
+            <a href="{{ route('user::enable', $user->id) }}" class="btn btn-lg btn-success">Enable User</a>
+        @else
+            <a href="{{ route("user::disable", $user->id) }}" class="btn btn-lg btn-danger">Disable User</a>
+        @endif
     </div>
 
     <div class="col-md-6">

@@ -12,10 +12,10 @@
         <div class="col-md-12">
             {!! BootForm::open()->action(route('accounting::index'))->get()->addClass('form-inline') !!}
                 {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
-                {!! BootForm::text('Client IP', 'clientip')->value($filter['clientIP']) !!}
-                {!! BootForm::text('NAS IP', 'nasip')->value($filter['nasIP']) !!}
-                {!! BootForm::text('Date Start', 'datestart')->value($filter['timeStart']) !!}
-                {!! BootForm::text('Date Stop', 'datestop')->value($filter['timeStop']) !!}
+                {!! BootForm::text('Client IP', 'framedipaddress')->value($filter['framedipaddress']) !!}
+                {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
+                {!! BootForm::text('Date Start', 'acctstarttime')->value($filter['acctstarttime']) !!}
+                {!! BootForm::text('Date Stop', 'acctstoptime')->value($filter['acctstoptime']) !!}
                 {!! BootForm::submit('Search') !!}
             {!! BootForm::close() !!}<br />
         </div>

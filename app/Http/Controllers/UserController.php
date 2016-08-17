@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\RadiusAccount;
 use App\RadiusCheck;
 use App\RadiusReply;
@@ -9,17 +10,12 @@ use App\RadiusPostAuth;
 use App\RadiusUserGroup;
 use App\Utils\DataHelper;
 use App\RadiusAccountInfo;
+use App\Nas;
 
 class UserController extends Controller {
     public function index() {
         $users = RadiusCheck::getUserList();
-
-        return view()->make(
-            'pages.user.index',
-            [
-                'users' => $users
-            ]
-        );
+        return view()->make('pages.user.index', ['users' => $users]);
     }
 
     public function show($id) {
@@ -52,6 +48,7 @@ class UserController extends Controller {
             [
                 'user'                  => $user,
                 'groups'                => $groups,
+                'disabledGroupName'     => config('radium.disabled_group'),
                 'bandwidthStats'        => $bandwidthStats,
                 'bandwidthMonthlyUsage' => $bandwidthMonthlyUsage,
                 'onlineStatus'          => $onlineStatus,
@@ -88,6 +85,52 @@ class UserController extends Controller {
                 'userInfo'              => $userInfo,
             ]
         );
+    }
 
+    public function disconnectiFrame($id) {
+        $user = RadiusCheck::find($id);
+        $nasList = Nas::all();
+
+        return view()->make('pages.user.disconnect-iframe', [
+            'user' => $user,
+            'nasList' => $nasList,
+        ]);
+    }
+
+    public function disconnectUser(Request $request) {
+
+    }
+
+    public function disableUser(Request $request, $id) {
+        $user = RadiusCheck::find($id);
+        $groups = RadiusUserGroup::getUserGroups($user->username);
+        $disabledGroupName = config('radium.disabled_group');
+
+        if (in_array($disabledGroupName, $groups)) {
+            $request->session()->flash('message', 'User ' . $user->username . ' is already disabled');
+            $request->session()->flash('alert-class', 'alert-danger');
+        } else {
+            $request->session()->flash('message', 'Successfully disabled ' . $user->username);
+            $request->session()->flash('alert-class', 'alert-success');
+
+            RadiusUserGroup::create([
+                'username'  => $user->username,
+                'groupname' => $disabledGroupName,
+                'priority'  => 0,
+            ]);
+        }
+
+        return redirect(route('user::show', $user->id));
+    }
+
+    public function enableUser(Request $request, $id) {
+        $user = RadiusCheck::find($id);
+        $disabledGroupName = config('radium.disabled_group');
+        RadiusUserGroup::where('groupname', $disabledGroupName)->delete();
+
+        $request->session()->flash('message', 'Successfully enabled ' . $user->username);
+        $request->session()->flash('alert-class', 'alert-success');
+
+        return redirect(route('user::show', $user->id));
     }
 }
