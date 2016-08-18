@@ -1,7 +1,7 @@
 @extends("master")
 
 @section('pageTitle', $nas->shortname)
-@section('pageDescription', '')
+@section('pageDescription', $nas->nasname)
 @push('breadcrumbs')
     <li><a href="{{ route('nas::index') }}"><i class="fa fa-server"></i> Nas</a></li>
     <li>Edit</li>

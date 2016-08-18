@@ -1,9 +1,7 @@
 @extends("master")
 
 @section('pageTitle', $nas->shortname)
-@section('pageDescription')
-    <a href="{{ route('nas::edit', $nas->id) }}">(Edit)</a>
-@endsection
+@section('pageDescription', $nas->nasname)
 
 @push('breadcrumbs')
     <li><a href="{{ route('nas::index') }}"><i class="fa fa-server"></i> Nas</a></li>
@@ -12,6 +10,9 @@
 
 @section('content')
     <div class="box">
+        <div class="box-header">
+            <h3>NAS Information <a href="{{ route("nas::edit", ['id' => $nas->id]) }}">(edit)</a></h3>
+        </div>
         <div class="box-body">
             <table class="table table-responsive table-bordered">
                 <tbody>
