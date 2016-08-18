@@ -3,6 +3,10 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">{{ $title }}</h3>
+                @if (isset($createLink))
+                    <a href="{{ $createLink }}">{{ $createLinkName }}</a>
+                @endif
+
                 @if ($filterPlaceHolder !== '')
                     <div class="pull-right">
                         <label><input type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}"></label>

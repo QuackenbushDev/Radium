@@ -79,7 +79,62 @@ class UserController extends Controller {
         );
     }
 
-    public function store(Request $request, $id) {
+    public function create() {
+        $user = new RadiusCheck();
+        $groups = array_flatten(RadiusUserGroup::select('groupname')->groupBy('groupname')->get()->toArray());
+        $userInfo = new RadiusAccountInfo();
+
+        return view()->make(
+            'pages.user.edit',
+            [
+                'user'                  => $user,
+                'userGroups'            => [],
+                'groups'                => $groups,
+                'userCheck'             => [],
+                'userReply'             => [],
+                'userInfo'              => $userInfo,
+                'new'                   => true,
+            ]
+        );
+    }
+
+    public function save(Request $request) {
+        $user = new RadiusCheck();
+        $user->username = $request->input('user_username', '');
+        $user->attribute = 'Cleartext-Password';
+        $user->op = ':=';
+        $user->value = $request->input('user_password');
+        $user->save();
+
+        $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
+        $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
+
+        $userInfoRecord = RadiusAccountInfo::create([
+                'username'               => $user->username,
+                'notes'                  => $request->input('userinfo_notes', ''),
+                'name'                   => $request->input('userinfo_name', ''),
+                'email'                  => $request->input('userinfo_email', ''),
+                'company'                => $request->input('userinfo_company', ''),
+                'home_phone'             => $request->input('userinfo_home_phone', ''),
+                'office_phone'           => $request->input('userinfo_office_phone', ''),
+                'mobile_phone'           => $request->input('userinfo_mobile_phone', ''),
+                'address'                => $request->input('userinfo_address'),
+                'enable_portal'          => $enablePortal,
+                'enable_password_resets' => $enablePasswordResets,
+            ]);
+
+        foreach($request->input('user_groups', []) as $group) {
+            RadiusUserGroup::create([
+                'username' => $user->username,
+                'groupname' => $group,
+                'priority' => 0
+            ]);
+        }
+
+        return redirect(route('user::show', $user->id));
+    }
+
+    public function store(Request $request, $id = null) {
         $userRecord = RadiusCheck::find($id);
         $userRecord->value = $request->input('user_password', '');
         $userRecord->save();

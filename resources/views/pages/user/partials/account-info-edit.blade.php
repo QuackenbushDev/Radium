@@ -3,7 +3,12 @@
         <div class="row">
             <div class="col-md-6">
                 <h3>User Information</h3>
-                {!! BootForm::text('Username', 'user_username')->value($user->username)->disabled(true) !!}
+                @if (isset($new) && $new)
+                    {!! BootForm::text('Username', 'user_username')->value($user->username) !!}
+                @else
+                    {!! BootForm::text('Username', 'user_username')->value($user->username)->disabled(true) !!}
+                @endif
+
                 {!! BootForm::text('Password', 'user_password')->value($user->value) !!}
                 <div class="form-group">
                     <label class="control-label" for="user_groups">Groups</label>

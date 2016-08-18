@@ -11,6 +11,8 @@
         'partials.table.crud-list',
         [
             'title'             => '',
+            'createLink'        => route('user::create'),
+            'createLinkName'    => 'New User',
             'filterPlaceHolder' => 'Username',
             'headers'           => ['ID', 'Username', 'Password', 'Status', 'Primary Group'],
             'dataSet'           => $users,
