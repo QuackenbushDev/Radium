@@ -107,12 +107,6 @@
     @include('pages.dashboard.graph')
 
     <div class="row">
-        <div class="col-md-12">
-            <h3>Latest Logins</h3>
-        </div>
-    </div>
-
-    <div class="row">
         @include(
             'widgets.table',
             [
