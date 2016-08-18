@@ -6,7 +6,7 @@
   height: 600px;
   border: none; }
 
-.btn {
+.btn, .btn-success, .btn-danger {
   color: #FFFFFF !important; }
 
 /*# sourceMappingURL=app.css.map */
