@@ -5,7 +5,6 @@
         <td>{{ $data->shortname }}</td>
         <td>{{ $data->type }}</td>
         <td>{{ $data->port }}</td>
-        <td>{{ $data->secret }}</td>
         <td>{{ $data->server }}</td>
         <td>{{ $data->community }}</td>
         <td>{{ $data->description }}</td>
