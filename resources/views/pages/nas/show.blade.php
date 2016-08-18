@@ -13,7 +13,7 @@
 @section('content')
     <div class="box">
         <div class="box-body">
-            <table>
+            <table class="table table-responsive table-bordered">
                 <tbody>
                     <tr>
                         <td>ID</td>
@@ -53,8 +53,6 @@
                     </tr>
                 </tbody>
             </table>
-
-            <a class="btn btn-lg btn-success" href="{{ route("nas::edit", $nas->id) }}">Edit NAS</a>
         </div>
     </div>
 
