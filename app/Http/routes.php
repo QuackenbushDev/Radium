@@ -31,7 +31,7 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
     Route::get('/', ['as' => 'index', 'uses' => 'NasController@index']);
-    Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@save']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@store']);
     Route::get('/{id}', ['as' => 'show', 'uses' => 'NasController@show']);
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'NasController@edit']);
 });

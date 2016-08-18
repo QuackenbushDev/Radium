@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Nas extends Model
 {
     protected $table = 'nas';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

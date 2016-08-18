@@ -85,15 +85,20 @@ class RadiusAccount extends Model {
      * download/upload converted to gb.
      *
      * @param string $username
+     * @param string $nasIP
      * @return array
      */
-    public static function getMonthlyBandwidthUsage($username = null) {
+    public static function getMonthlyBandwidthUsage($username = null, $nasIP = null) {
         $sql = "MONTH(acctstarttime) AS month, sum(acctinputoctets) as download, sum(acctoutputoctets) as upload";
         $query = self::selectRaw($sql)
             ->groupBy('month');
 
         if ($username !== null) {
             $query->where('username', $username);
+        }
+
+        if ($nasIP !== null) {
+            $query->where('nasipaddress', $nasIP);
         }
 
         $query = $query->get();
@@ -112,6 +117,12 @@ class RadiusAccount extends Model {
         return $usage;
     }
 
+    /**
+     * Returns a boolean with the users online status
+     *
+     * @param $username
+     * @return bool
+     */
     public static function onlineStatus($username) {
         $query = self::select('username')
             ->where('AcctStopTime', 'IS', 'NULL')
@@ -120,6 +131,29 @@ class RadiusAccount extends Model {
             ->where('username', $username);
 
         return ($query->count() > 0) ? true : false;
+    }
+
+    /**
+     * Returns the latest activity for a specified nas
+     *
+     * @param int $limit
+     * @param string $nasIP
+     */
+    public static function getLatestNasActivity($nasIP, $limit = 15) {
+        return self::select([
+            'username',
+            'nasipaddress',
+            'nasportid',
+            'nasporttype',
+            'acctstarttime',
+            'acctstoptime',
+            'acctsessiontime',
+            'acctinputoctets',
+            'acctoutputoctets'
+        ])
+            ->orderBy('radacctid', 'desc')
+            ->where('nasipaddress', $nasIP)
+            ->limit($limit);
     }
 
     /**

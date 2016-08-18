@@ -12,13 +12,17 @@
                         @endforeach
                     </tr>
 
-                    @foreach($dataSet as $data)
-                        <tr>
-                            @foreach($data as $column)
-                                <td>{{ $column }}</td>
-                            @endforeach
-                        </tr>
-                    @endforeach
+                    @if(isset($partial))
+                        @include($partial, ['dataSet' => $dataSet])
+                    @else
+                        @foreach($dataSet as $data)
+                            <tr>
+                                @foreach($data as $column)
+                                    <td>{{ $column }}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

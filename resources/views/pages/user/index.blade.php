@@ -10,7 +10,7 @@
     @include(
         'partials.table.crud-list',
         [
-            'title'             => 'User List',
+            'title'             => '',
             'filterPlaceHolder' => 'Username',
             'headers'           => ['ID', 'Username', 'Password', 'Status', 'Primary Group'],
             'dataSet'           => $users,
