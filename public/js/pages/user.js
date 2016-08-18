@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    console.log("MOO!");
-
     $('#testConnectivityButton').click(function() {
         $('#testConnectivityModal').on('show', function() {
             $('#testConnectivityiFrame').attr('src', testConnectivityiFrameSource);
