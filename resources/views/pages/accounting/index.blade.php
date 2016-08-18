@@ -8,15 +8,18 @@
 @endpush
 
 @section("content")
-    <div class="row">
-        <div class="col-md-12">
+    <div class="box">
+        <div class="box-header">
+            <h4>Filters</h4>
+        </div>
+        <div class="box-body">
             {!! BootForm::open()->action(route('accounting::index'))->get()->addClass('form-inline') !!}
                 {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
                 {!! BootForm::text('Client IP', 'framedipaddress')->value($filter['framedipaddress']) !!}
                 {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
                 {!! BootForm::text('Date Start', 'acctstarttime')->value($filter['acctstarttime']) !!}
                 {!! BootForm::text('Date Stop', 'acctstoptime')->value($filter['acctstoptime']) !!}
-                {!! BootForm::submit('Search') !!}
+                {!! BootForm::submit('Search')->addClass('btn-success') !!}
             {!! BootForm::close() !!}<br />
         </div>
     </div>
