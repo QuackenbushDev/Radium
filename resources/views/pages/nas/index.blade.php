@@ -11,6 +11,8 @@
         'partials.table.crud-list',
         [
             'title'             => '',
+            'createLink'        => route('nas::create'),
+            'createLinkName'    => 'New NAS',
             'filterPlaceHolder' => 'Nas',
             'headers'           => ['ID', 'Nas Name', 'Short Name', 'Type', 'Ports', 'Server', 'Community', 'Description'],
             'dataSet'           => $nasList,
