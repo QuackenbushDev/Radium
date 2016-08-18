@@ -17,7 +17,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            {!! BootForm::submit('Test User Connectivity')->addClass('pull-right btn-lg btn-danger') !!}
+            {!! BootForm::submit('Test User Connectivity')->addClass('pull-right btn-lg btn-success') !!}
         </div>
     </div>
     {!! BootForm::close() !!}

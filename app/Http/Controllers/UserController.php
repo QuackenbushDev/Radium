@@ -194,8 +194,32 @@ class UserController extends Controller {
         );
     }
 
-    public function testResults(Request $request, $id) {
+    public function testUser(Request $request, $id) {
+        $user = RadiusCheck::find($id);
+        $radiusServer = $request->input('radius_server', '') . ':' . $request->input('radius_port', '0');
+        $radiusSecret = $request->input('radius_secret');
 
+        $echo = "echo \"User-Name='". $user->username . "',User-Password='" . $user->value . "'\"";
+        $radClient = "radclient -c '1' -n '3' -r '3' -t '3' -x '" . $radiusServer . "' 'auth' '" . $radiusSecret . "'";
+        $command = $echo . " | " . $radClient;
+
+        try {
+            $process = new Process($command);
+            $process->mustRun();
+
+            $output = $process->getOutput();
+        } catch (ProcessFailedException $e) {
+            $output = $e->getMessage();
+        }
+
+        return view()->make(
+            'pages.user.test-results',
+            [
+                'user'    => $user,
+                'command' => $command,
+                'output'  => $output,
+            ]
+        );
     }
 
     public function disableUser(Request $request, $id) {

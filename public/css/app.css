@@ -1,7 +1,7 @@
-#disconnectUserModal .modal-dialog {
+#disconnectUserModal .modal-dialog, #testConnectivityModal .modal-dialog {
   width: 900px; }
 
-#disconnectUserModal iframe {
+#disconnectUserModal iframe, #testConnectivityModal iframe {
   width: 100%;
   height: 600px;
   border: none; }

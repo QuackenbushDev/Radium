@@ -26,7 +26,7 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::post('/disconnect/{id}', ['as' => 'doDisconnect', 'uses' => 'UserController@disconnectUser']);
 
     Route::get('/test/{id}', ['as' => 'test', 'uses' => 'UserController@testiFrame']);
-    Route::post('/disconnect/{id}', ['as' => 'doTest', 'uses' => 'UserController@testUser']);
+    Route::post('/test/{id}', ['as' => 'doTest', 'uses' => 'UserController@testUser']);
 });
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {

@@ -3,10 +3,6 @@ $(document).ready(function() {
     console.log('User ID ', userID);
 
     $('#testUserConnectivity').click(function() {
-        $('#testConnectivityModal').on('show', function() {
-            $('#testConnectivityiFrame').attr('src', '/user/test/' + userID);
-        });
-
         $('#testConnectivityModal').modal({show: true});
     });
 

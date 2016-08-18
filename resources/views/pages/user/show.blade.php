@@ -139,6 +139,21 @@
         </div>
     </div>
 
+    <div id="testConnectivityModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Test User Connectivity</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe id="testConnectivityiFrame" src="{{ route("user::test", $user->id) }}"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
         <script type="text/javascript" src="/js/pages/dashboard.js"></script>
