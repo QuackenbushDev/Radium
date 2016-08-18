@@ -1,7 +1,4 @@
 $(document).ready(function() {
-    var userID = $('#userID').val();
-    console.log('User ID ', userID);
-
     $('#testUserConnectivity').click(function() {
         $('#testConnectivityModal').modal({show: true});
     });
