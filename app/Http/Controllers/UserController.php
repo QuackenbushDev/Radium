@@ -131,6 +131,9 @@ class UserController extends Controller {
             ]);
         }
 
+        $request->session()->flash('message', 'Successfully created new user!');
+        $request->session()->flash('alert-class', 'alert-success');
+
         return redirect(route('user::show', $user->id));
     }
 
