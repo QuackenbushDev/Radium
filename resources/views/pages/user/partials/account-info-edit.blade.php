@@ -5,7 +5,7 @@
         {!! BootForm::text('Password', 'user_password')->value($user->value) !!}
         <div class="form-group">
             <label class="control-label" for="user_groups">Groups</label>
-            <select name="user_groups[]" id="user_groups" class="form-control" multiple="multiple">
+            <select id="user_groups" name="user_groups[]" class="form-control" multiple="multiple">
                 @foreach($groups as $group)
                     @if(in_array($group, $userGroups))
                         <option selected>{{ $group }}</option>
@@ -15,7 +15,11 @@
                 @endforeach
             </select>
         </div>
-        {!! BootForm::textArea('Notes', 'userinfo_notes') !!}
+        {!! BootForm::text('New Group', 'add_user_group_input') !!}
+        {!! BootForm::button('Add Group', 'add_user_group_button') !!}
+        <br /><br />
+
+        {!! BootForm::textArea('Notes', 'userinfo_notes')->defaultValue($userInfo->notes) !!}
     </div>
 
     <div class="col-md-6">

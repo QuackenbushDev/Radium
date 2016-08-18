@@ -27,4 +27,8 @@
         </div>
     </div>
     {!! BootForm::close() !!}
+
+    @push('scripts')
+        <script src="{{ asset('/js/pages/user.js') }}"></script>
+    @endpush
 @endsection
