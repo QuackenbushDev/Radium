@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use App\RadiusAccount;
 use App\RadiusCheck;
 use App\RadiusReply;
@@ -124,15 +126,75 @@ class UserController extends Controller {
 
     public function disconnectiFrame($id) {
         $user = RadiusCheck::find($id);
-        $nasList = Nas::all();
+        $nasList = [];
 
-        return view()->make('pages.user.disconnect-iframe', [
+        foreach (Nas::all() as $nas) {
+            $nasList[$nas->id] = $nas->shortname . ' (' . $nas->nasname . ')';
+        }
+
+        return view()->make('pages.user.disconnect-form', [
             'user' => $user,
             'nasList' => $nasList,
         ]);
     }
 
-    public function disconnectUser(Request $request) {
+    public function disconnectUser(Request $request, $id) {
+        $user = RadiusCheck::find($id);
+        $nas  = Nas::find($request->input('nas_id'));
+
+        $attributes = $request->input('attributes');
+        $attributes = str_replace("\r\n", "\n", $attributes);
+        $attributes = explode("\n", $attributes);
+        $attributeLine = implode(',', $attributes);
+
+        $echo = "echo \"User-Name='". $user->username . "'";
+        if (!empty($attributeLine)) {
+            $echo .= ',' . $attributeLine . '"';
+        } else {
+            $echo .= '"';
+        }
+
+        $radClient = "radclient -c '1' -n '3' -r '3' -t '3' -x '"
+            . $nas->nasname . ":" . $request->input('nas_port') . "' '"
+            . $request->input('packet_type', 'disconnect') . "' '" . $nas->secret . "'";
+
+        $command = $echo . " | " . $radClient;
+
+        try {
+            $process = new Process($command);
+            $process->mustRun();
+
+            $output = $process->getOutput();
+        } catch (ProcessFailedException $e) {
+            $output = $e->getMessage();
+        }
+
+        return view()->make(
+            'pages.user.disconnect-results',
+            [
+                'user'    => $user,
+                'command' => $command,
+                'output'  => $output,
+            ]
+        );
+    }
+
+    public function testiFrame(Request $request, $id) {
+        $user = RadiusCheck::find($id);
+
+        return view()->make(
+            'pages.user.test-form',
+            [
+                'user'         => $user,
+                'radiusServer' => config('radium.radius_server'),
+                'radiusPort'   => config('radium.radius_port'),
+                'radiusSecret' => config('radium.radius_secret'),
+                'nasPort'      => config('radium.nas_port'),
+            ]
+        );
+    }
+
+    public function testResults(Request $request, $id) {
 
     }
 

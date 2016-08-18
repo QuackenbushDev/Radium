@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.scss"],"names":[],"mappings":"AAAA;EAEI,aAAa,EACd;;AAED;EACE,YAAY;EACZ,cAAc;EACd,aAAa,EACd","file":"app.css","sourcesContent":["#disconnectUserModal {\n  .modal-dialog {\n    width: 900px;\n  }\n\n  iframe {\n    width: 100%;\n    height: 600px;\n    border: none;\n  }\n}"],"sourceRoot":"/source/"}

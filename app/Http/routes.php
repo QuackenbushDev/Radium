@@ -21,6 +21,12 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
     Route::get('/disable/{id}', ['as' => 'disable', 'uses' => 'UserController@disableUser']);
     Route::get('/enable/{id}', ['as' => 'enable', 'uses' => 'UserController@enableUser']);
+
+    Route::get('/disconnect/{id}', ['as' => 'disconnect', 'uses' => 'UserController@disconnectiFrame']);
+    Route::post('/disconnect/{id}', ['as' => 'doDisconnect', 'uses' => 'UserController@disconnectUser']);
+
+    Route::get('/test/{id}', ['as' => 'test', 'uses' => 'UserController@testiFrame']);
+    Route::post('/disconnect/{id}', ['as' => 'doTest', 'uses' => 'UserController@testUser']);
 });
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {

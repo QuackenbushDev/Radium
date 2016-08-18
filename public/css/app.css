@@ -1,0 +1,9 @@
+#disconnectUserModal .modal-dialog {
+  width: 900px; }
+
+#disconnectUserModal iframe {
+  width: 100%;
+  height: 600px;
+  border: none; }
+
+/*# sourceMappingURL=app.css.map */

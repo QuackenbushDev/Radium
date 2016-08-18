@@ -1,18 +1,17 @@
 $(document).ready(function() {
-    $('#testConnectivityButton').click(function() {
+    var userID = $('#userID').val();
+    console.log('User ID ', userID);
+
+    $('#testUserConnectivity').click(function() {
         $('#testConnectivityModal').on('show', function() {
-            $('#testConnectivityiFrame').attr('src', testConnectivityiFrameSource);
+            $('#testConnectivityiFrame').attr('src', '/user/test/' + userID);
         });
 
         $('#testConnectivityModal').modal({show: true});
     });
 
     $('#disconnectUser').click(function() {
-        $('#disconnectModal').on('show', function() {
-            $('#disconnectiFrame').attr('src', disconnectiFrameSource);
-        });
-
-        $('#disconnectModal').modal({show: true});
+        $('#disconnectUserModal').modal({show: true});
     });
 
     $('button[name=add_user_group_button]').click(function() {

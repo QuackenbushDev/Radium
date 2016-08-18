@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{{ asset("css/AdminLTE.min.css") }}">
     <link rel="stylesheet" href="{{ asset("css/skins/_all-skins.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/app.css") }}">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -136,10 +137,10 @@
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script type="text/javascript" src="{{ asset("js/bootstrap.min.js") }}"></script>
-<script type="text/javascript" src="{{ asset("plugins/slimScroll/jquery.slimscroll.min.js") }}"></script>
-<script type="text/javascript" src="{{ asset("plugins/fastclick/fastclick.js") }}"></script>
-<script type="text/javascript" src="{{ asset("js/app.min.js") }}"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="/js/app.min.js"></script>
 @stack('scripts')
 </body>
 </html>

@@ -10,6 +10,7 @@
 
 @section('content')
     @include('pages.user.partials.account-info')
+    <input id="userID" type="hidden" value="{{ $user->id }}" />
 
     <div class="row">
         <div class="col-md-12">
@@ -123,8 +124,24 @@
         )
     </div>
 
+    <div id="disconnectUserModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Disconnect User</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe id="disconnectiFrame" src="{{ route("user::disconnect", $user->id) }}"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
         <script type="text/javascript" src="/js/pages/dashboard.js"></script>
+        <script type="text/javascript" src="/js/pages/user.js"></script>
     @endpush
 @endsection

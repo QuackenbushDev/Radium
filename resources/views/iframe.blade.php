@@ -19,6 +19,8 @@
     @stack('css')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    @yield('content')
+    <div class="container">
+        @yield('content')
+    </div>
     @stack('scripts')
 </body>
