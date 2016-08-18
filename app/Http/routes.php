@@ -16,7 +16,7 @@ Route::get('/accounting', ['as' => 'accounting::index', 'uses' => 'AccountingCon
 
 Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
-    Route::put('/{id}', ['as' => 'update', 'uses' => 'UserController@save']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'UserController@store']);
     Route::get('/{id}', ['as' => 'show', 'uses' => 'UserController@show']);
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
     Route::get('/disable/{id}', ['as' => 'disable', 'uses' => 'UserController@disableUser']);

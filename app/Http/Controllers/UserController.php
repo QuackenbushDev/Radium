@@ -35,13 +35,7 @@ class UserController extends Controller {
 
         $userCheck = RadiusCheck::getUserAttributes($user->username)->get()->toArray();
         $userReply = RadiusReply::getUserAttributes($user->username)->get()->toArray();
-
-        $userInfo = RadiusAccountInfo::where('username', $user->username)->firstOrCreate([
-            'username' => $user->username,
-            'enable_portal' => true,
-            'enable_password_resets' => true,
-
-        ]);
+        $userInfo = RadiusAccountInfo::firstOrCreate(['username' => $user->username]);
 
         return view()->make(
             'pages.user.show',
@@ -64,27 +58,68 @@ class UserController extends Controller {
 
     public function edit($id) {
         $user = RadiusCheck::find($id);
-        $groups = RadiusUserGroup::getUserGroups($user->username);
+        $userGroups = RadiusUserGroup::getUserGroups($user->username);
+        $groups = array_flatten(RadiusUserGroup::select('groupname')->groupBy('groupname')->get()->toArray());
         $userCheck = RadiusCheck::getUserAttributes($user->username)->get()->toArray();
         $userReply = RadiusReply::getUserAttributes($user->username)->get()->toArray();
-
-        $userInfo = RadiusAccountInfo::where('username', $user->username)->firstOrCreate([
-            'username' => $user->username,
-            'enable_portal' => true,
-            'enable_password_resets' => true,
-
-        ]);
+        $userInfo = RadiusAccountInfo::firstOrNew(['username' => $user->username]);
 
         return view()->make(
             'pages.user.edit',
             [
                 'user'                  => $user,
+                'userGroups'            => $userGroups,
                 'groups'                => $groups,
                 'userCheck'             => $userCheck,
                 'userReply'             => $userReply,
                 'userInfo'              => $userInfo,
             ]
         );
+    }
+
+    public function store(Request $request, $id) {
+        $userRecord = RadiusCheck::find($id);
+        $userRecord->value = $request->input('user_password', '');
+        $userRecord->save();
+
+        $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
+        $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
+
+        $userInfoRecord = RadiusAccountInfo::where('username', '=', $userRecord->username)
+            ->update([
+                'notes'                  => $request->input('userinfo_notes', ''),
+                'name'                   => $request->input('userinfo_name', ''),
+                'email'                  => $request->input('userinfo_email', ''),
+                'company'                => $request->input('userinfo_company', ''),
+                'home_phone'             => $request->input('userinfo_home_phone', ''),
+                'office_phone'           => $request->input('userinfo_office_phone', ''),
+                'mobile_phone'           => $request->input('userinfo_mobile_phone', ''),
+                'address'                => $request->input('userinfo_address'),
+                'enable_portal'          => $enablePortal,
+                'enable_password_resets' => $enablePasswordResets,
+            ]);
+
+        $newGroupList = $request->input('user_groups', []);
+        if (!empty($newGroupList)) {
+            $userGroups = array_flatten(RadiusUserGroup::getUserGroups($userRecord->username));
+
+            foreach(array_diff($newGroupList, $userGroups) as $group) {
+                RadiusUserGroup::create([
+                    'username' => $userRecord->username,
+                    'groupname' => $group,
+                    'priority' => 0
+                ]);
+            }
+
+            RadiusUserGroup::where('username', $userRecord->username)
+                ->whereIn('groupname', array_diff($userGroups, $newGroupList))
+                ->delete();
+        }
+
+        $request->session()->flash('message', 'Successfully updated user account.');
+        $request->session()->flash('alert-class', 'alert-success');
+
+        return redirect(route('user::show', $id));
     }
 
     public function disconnectiFrame($id) {

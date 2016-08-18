@@ -14,7 +14,6 @@ class RadiusAccountInfo extends Model {
      * @var array
      */
     protected $fillable = [
-        'username',
         'name',
         'email',
         'company',
