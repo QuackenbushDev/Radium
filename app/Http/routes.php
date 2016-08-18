@@ -17,7 +17,7 @@ Route::get('/accounting', ['as' => 'accounting::index', 'uses' => 'AccountingCon
 Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
     Route::get('/create', ['as' => 'create', 'uses' => 'UserController@create']);
-    Route::put('/create', ['as' => 'save', 'uses' => 'UserController@save']);
+    Route::post('/create', ['as' => 'save', 'uses' => 'UserController@save']);
 
     Route::get('/disable/{id}', ['as' => 'disable', 'uses' => 'UserController@disableUser']);
     Route::get('/enable/{id}', ['as' => 'enable', 'uses' => 'UserController@enableUser']);
@@ -34,8 +34,9 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
 });
 
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
-    Route::get('/create', ['as' => 'create', 'uses' => 'NasController@create']);
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'NasController@edit']);
+    Route::get('/create', ['as' => 'create', 'uses' => 'NasController@create']);
+    Route::post('/create', ['as' => 'save', 'uses' => 'NasController@save']);
 
     Route::get('/', ['as' => 'index', 'uses' => 'NasController@index']);
     Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@store']);

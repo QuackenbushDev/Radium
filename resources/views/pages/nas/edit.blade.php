@@ -9,8 +9,12 @@
 @endpush
 
 @section('content')
-    {!! BootForm::open()->action(route('nas::update', ['id' => $nas->id])) !!}
+    @if(isset($new) && $new)
+        {!! BootForm::open()->action(route('nas::save')) !!}
+    @else
+        {!! BootForm::open()->action(route('nas::update', ['id' => $nas->id])) !!}
         <input type="hidden" name="_method" value="PUT">
+    @endif
 
     <div class="row">
         <div class="col-md-12">

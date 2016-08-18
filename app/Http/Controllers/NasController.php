@@ -55,6 +55,37 @@ class NasController extends Controller {
         );
     }
 
+    public function create() {
+        $nas = new Nas();
+
+        return view()->make(
+            'pages.nas.edit',
+            [
+                'new'   => true,
+                'nas'   => $nas,
+                'types' => $this->types,
+            ]
+        );
+    }
+
+    public function save(Request $request) {
+        $nas = new Nas();
+        $nas->nasname = $request->input('nas_name', '');
+        $nas->shortname = $request->input('short_name', '');
+        $nas->type = $request->input('type', '');
+        $nas->ports = $request->input('ports', '');
+        $nas->secret = $request->input('secret', '');
+        $nas->server = $request->input('server', '');
+        $nas->community = $request->input('community', '');
+        $nas->description = $request->input('description', '');
+        $nas->save();
+
+        $request->session()->flash('message', 'Successfully created NAS. Please restart FreeRadius for it to take effect.');
+        $request->session()->flash('alert-class', 'alert-success');
+
+        return redirect(route('nas::show', $nas->id));
+    }
+
     public function store(Request $request, $id) {
         Nas::find($id)
             ->update([
@@ -72,13 +103,5 @@ class NasController extends Controller {
         $request->session()->flash('alert-class', 'alert-success');
 
         return redirect(route('nas::show', $id));
-    }
-
-    public function create() {
-        return view()->make('pages.nas.create');
-    }
-
-    public function save() {
-
     }
 }

@@ -14,9 +14,9 @@
         {!! BootForm::open()->action(route('user::save')) !!}
     @else
         {!! BootForm::open()->action(route('user::update', ['id' => $user->id])) !!}
+        <input type="hidden" name="_method" value="PUT">
     @endif
 
-    <input type="hidden" name="_method" value="PUT">
     @include('pages.user.partials.account-info-edit')
 
     <div class="row">
