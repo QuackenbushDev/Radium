@@ -8,18 +8,12 @@ class DashboardController extends Controller {
     public function index() {
         $dailyStats = RadiusAccount::getConnections('day', date('d'), false)
             ->orderBy('connections', 'desc')
-            ->first()
-            ->toArray();
-
+            ->first();
         $monthlyStats = RadiusAccount::getConnections('month', date('m'), false)
             ->orderBy('connections', 'desc')
-            ->first()
-            ->toArray();
-
-        $monthlyBandwidthUsage = RadiusAccount::getMonthlyBandwidthUsage();
+            ->first();
         $dailyTopUser   = $this->getTopUser('day', date('d'));
         $monthlyTopUser = $this->getTopUser('month', date('m'));
-
         $loginAttempts = RadiusPostAuth::getLatestAttempts(5)
             ->get()
             ->toArray();
@@ -32,15 +26,22 @@ class DashboardController extends Controller {
                 'dailyTop'              => $dailyTopUser,
                 'monthlyTop'            => $monthlyTopUser,
                 'loginAttempts'         => $loginAttempts,
-                'monthlyBandwidthUsage' => $monthlyBandwidthUsage
             ]
         );
     }
 
-    private function getTopUser($timeframe, $value) {
-        $topUser = RadiusAccount::getConnections($timeframe, $value, true)
+    private function getTopUser($timeSpan, $value) {
+        $topUser = RadiusAccount::getConnections($timeSpan, $value, true)
             ->orderBy('total', 'desc')
             ->first();
+
+        if ($topUser === null) {
+            return [
+                'username' => 'N/A',
+                'download' => 0,
+                'upload'   => 0,
+            ];
+        }
 
         return [
             'username' => $topUser->username,

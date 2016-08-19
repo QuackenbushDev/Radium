@@ -15,15 +15,28 @@ use App\RadiusAccountInfo;
 use App\Nas;
 
 class UserController extends Controller {
-    public function index() {
+    public function index(Request $request) {
+        $filterValue = $request->input('filter', '');
         $users = RadiusCheck::getUserList();
-        return view()->make('pages.user.index', ['users' => $users]);
+
+        if (!empty($filterValue)) {
+            $users->where('radcheck.username', 'LIKE', '%' . $filterValue . '%');
+        }
+
+        $users = $users->paginate();
+
+        return view()->make(
+            'pages.user.index',
+            [
+                'users' => $users,
+                'filterValue' => $filterValue,
+            ]
+        );
     }
 
     public function show($id) {
         $user = RadiusCheck::find($id);
         $bandwidthStats = DataHelper::calculateUserBandwidth($user->username);
-        $bandwidthMonthlyUsage = RadiusAccount::getMonthlyBandwidthUsage($user->username);
         $onlineStatus = RadiusAccount::onlineStatus($user->username);
         $loginAttempts = RadiusPostAuth::getLatestAttempts('15', $user->username)
             ->get()
@@ -46,7 +59,6 @@ class UserController extends Controller {
                 'groups'                => $groups,
                 'disabledGroupName'     => config('radium.disabled_group'),
                 'bandwidthStats'        => $bandwidthStats,
-                'bandwidthMonthlyUsage' => $bandwidthMonthlyUsage,
                 'onlineStatus'          => $onlineStatus,
                 'loginAttempts'         => $loginAttempts,
                 'groupCheck'            => $groupCheck,

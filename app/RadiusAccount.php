@@ -59,7 +59,7 @@ class RadiusAccount extends Model {
      * @return mixed
      */
     public static function getConnections($timePeriod = 'day', $timeValue = null, $groupByUsername = false, $username = null) {
-        $sql = self::getTimePeriodSQL($timePeriod);
+        $sql = "username, count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total";
         $query = self::selectRaw($sql);
 
         if ($timeValue !== null) {
@@ -80,38 +80,48 @@ class RadiusAccount extends Model {
         return $query;
     }
 
-    /**
-     * calculates the total bandwidth used for the year and returns an array with
-     * download/upload converted to gb.
-     *
-     * @param string $username
-     * @param string $nasIP
-     * @return array
-     */
-    public static function getMonthlyBandwidthUsage($username = null, $nasIP = null) {
-        $sql = "MONTH(acctstarttime) AS month, sum(acctinputoctets) as download, sum(acctoutputoctets) as upload";
-        $query = self::selectRaw($sql)
-            ->groupBy('month');
+    public static function bandwidthUsage($timeSpan, $timeValue = null, $username = null, $nasIP = null) {
+        $sql = "DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) as download, sum(acctoutputoctets) as upload";
+        $query = self::selectRaw($sql);
 
-        if ($username !== null) {
-            $query->where('username', $username);
+        if ($username !== null) $query->where('username', $username);
+        if ($nasIP !== null) $query->where('nasipaddress', $nasIP);
+
+        switch($timeSpan) {
+            case "year":
+                // @TODO: finish this implementation.
+                $query->groupBy('year')
+                    ->orderBy('year', 'asc');
+                $count = 1;
+                break;
+
+            default:
+            case "month":
+                $query->having('year', '=', $timeValue)
+                    ->groupBy('month')
+                    ->orderBy('month', 'asc');
+                $count = 12;
+                break;
+
+            case "day":
+                $query->having('month', '=', $timeValue)
+                    ->groupBy('day')
+                    ->orderBy('day', 'asc');
+                $count = cal_days_in_month(CAL_GREGORIAN, $timeValue, date('Y'));
+                break;
         }
 
-        if ($nasIP !== null) {
-            $query->where('nasipaddress', $nasIP);
-        }
-
-        $query = $query->get();
+        $results = $query->get();
 
         $usage = [
-            'download' => [0,0,0,0,0,0,0,0,0,0,0,0],
-            'upload'   => [0,0,0,0,0,0,0,0,0,0,0,0]
+            'download' => array_pad([], $count, 0),
+            'upload'   => array_pad([], $count, 0)
         ];
 
-        foreach ($query as $result) {
-            $month = $result->month - 1;
-            $usage['download'][$month] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
-            $usage['upload'][$month] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
+        foreach ($results as $result) {
+            $index = $result->$timeSpan - 1;
+            $usage['download'][$index] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
+            $usage['upload'][$index] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
         }
 
         return $usage;
@@ -154,25 +164,5 @@ class RadiusAccount extends Model {
             ->orderBy('radacctid', 'desc')
             ->where('nasipaddress', $nasIP)
             ->limit($limit);
-    }
-
-    /**
-     * Return the sql statement for a desired time period
-     *
-     * @param string $timePeriod
-     * @return string
-     */
-    private static function getTimePeriodSQL($timePeriod) {
-        switch($timePeriod) {
-            default:
-            case "day":
-                return "username, count(acctstarttime) as connections, DAY(acctstarttime) AS day, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total";
-
-            case "month":
-                return "username, count(acctstarttime) as connections, MONTH(acctstarttime) AS month, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total";
-
-            case "year":
-                return "username, count(acctstarttime) as connections, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total";
-        }
     }
 }

@@ -22,23 +22,35 @@ class NasController extends Controller {
         'mikrotik'   => 'Mikrotik',
     ];
 
-    public function index() {
-        $nasList = Nas::paginate();
+    public function index(Request $request) {
+        $filterValue = $request->input('filter', '');
+        $nasList = Nas::select('*');
 
-        return view()->make('pages.nas.index', ['nasList' => $nasList]);
+        if (!empty($filterValue)) {
+            $nasList->where("nasname", 'LIKE', '%' . $filterValue . '%')
+                ->orWhere('shortname', 'LIKE', '%' . $filterValue . '%');
+        }
+
+        $nasList = $nasList->paginate();
+
+        return view()->make(
+            'pages.nas.index',
+            [
+                'nasList' => $nasList,
+                'filter'  => $request->input('filter', ''),
+            ]
+        );
     }
 
     public function show($id) {
         $nas = Nas::find($id);
         $latestActivity = RadiusAccount::getLatestNasActivity($nas->nasname, 15)->get();
-        $bandwidthUsage = RadiusAccount::getMonthlyBandwidthUsage(null, $nas->nasname);
 
         return view()->make(
             'pages.nas.show',
             [
                 'nas' => $nas,
                 'latestActivity' => $latestActivity,
-                'bandwidthUsage' => $bandwidthUsage,
             ]
         );
     }

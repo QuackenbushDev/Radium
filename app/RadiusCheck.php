@@ -58,8 +58,7 @@ class RadiusCheck extends Model {
                     ->where('disabled.groupname', '=', config('radium.disabled_group'));
             })
             ->orderBy('radcheck.id', 'asc')
-            ->groupBy('radcheck.username')
-            ->paginate();
+            ->groupBy('radcheck.username');
     }
 
     /**

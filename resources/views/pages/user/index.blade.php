@@ -14,6 +14,8 @@
             'createLink'        => route('user::create'),
             'createLinkName'    => 'New User',
             'filterPlaceHolder' => 'Username',
+            'filterAction'      => route('user::index'),
+            'filterValue'       => $filterValue,
             'headers'           => ['ID', 'Username', 'Password', 'Status', 'Primary Group'],
             'dataSet'           => $users,
             'dataPartial'       => 'pages.user.partials.index-table-data',

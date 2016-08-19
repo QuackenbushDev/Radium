@@ -14,6 +14,8 @@
             'createLink'        => route('nas::create'),
             'createLinkName'    => 'New NAS',
             'filterPlaceHolder' => 'Nas',
+            'filterAction'      => route('nas::index'),
+            'filterValue'       => $filter,
             'headers'           => ['ID', 'Nas Name', 'Short Name', 'Type', 'Ports', 'Server', 'Community', 'Description'],
             'dataSet'           => $nasList,
             'dataPartial'       => 'pages.nas.partials.index-table-data',

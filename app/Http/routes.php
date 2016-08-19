@@ -42,3 +42,17 @@ Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
     Route::put('/{id}', ['as' => 'update', 'uses' => 'NasController@store']);
     Route::get('/{id}', ['as' => 'show', 'uses' => 'NasController@show']);
 });
+
+Route::group(['prefix' => 'api', 'as' => 'api::'], function() {
+    route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
+});
+
+Route::group(['prefix' => 'portal', 'as' => 'portal::'], function() {
+    Route::get('/login', ['as' => 'login', 'uses' => 'PortalController@login']);
+    Route::post('/login', ['as' => 'login', 'uses' => 'PortalController@doLogin']);
+
+    Route::get('/profile', ['as' => 'profile', 'uses' => 'PortalController@profile']);
+    Route::put('/profile', ['as' => 'saveProfile', 'uses' => 'PortalController@saveProfile']);
+
+    Route::get('/', ['as' => 'dashboard', 'uses' => 'PortalController@dashboard']);
+});

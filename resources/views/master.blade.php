@@ -137,10 +137,19 @@
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<script type="text/javascript" src="/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="{{ asset('/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/fastclick/fastclick.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/chartjs/Chart.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/widgets/bandwidth-graph.js') }}"></script>
 <script type="text/javascript" src="/js/app.min.js"></script>
 @stack('scripts')
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        @stack('documentReady')
+    });
+</script>
+
 </body>
 </html>

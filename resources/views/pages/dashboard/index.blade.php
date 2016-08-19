@@ -53,11 +53,31 @@
         )
     </div>
 
-    {{-- TODO: REPLACE THIS WITH AN API CALL! --}}
-    <script type="text/javascript">
-        var usage = {!! json_encode($monthlyBandwidthUsage) !!};
-    </script>
-    @include('pages.dashboard.graph')
+    @include(
+        'widgets.bandwidth-chat',
+        [
+            'id'        => 'dashboardBandwidthMonthlySummary',
+            'title'     => date('Y') . ' Bandwidth Summary',
+            'timeSpan'  => 'month',
+            'timeValue' => 2016,
+            'username'  => "",
+            'nasIP'     => "",
+            'height'    => '300px',
+        ]
+    )
+
+    @include(
+        'widgets.bandwidth-chat',
+        [
+            'id'        => 'dashboardBandwidthDailySummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Bandwidth Summary',
+            'timeSpan'  => 'day',
+            'timeValue' => date('m'),
+            'username'  => "",
+            'nasIP'     => "",
+            'height'    => '300px',
+        ]
+    )
 
     <div class="row">
         @include(
@@ -70,8 +90,4 @@
             ]
         )
     </div>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
-    <script type="text/javascript" src="/js/pages/dashboard.js"></script>
 @endsection
