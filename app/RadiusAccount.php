@@ -80,10 +80,10 @@ class RadiusAccount extends Model {
         return $query;
     }
 
-    public static function connectionCountSummary($timePeriod, $timeValue, $username, $nasIP) {
+    public static function connectionCountSummary($timeSpan, $timeValue, $username, $nasIP) {
         $sql = 'count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year';
         $query = self::selectRaw($sql)
-            ->groupBy($timePeriod);
+            ->groupBy($timeSpan);
 
         if ($username !== null) {
             $query->where('username', $username);
@@ -93,7 +93,34 @@ class RadiusAccount extends Model {
             $query->where('nasipaddress', $nasIP);
         }
 
-        return $query;
+        switch($timeSpan) {
+            case "year":
+                $count = 0;
+                break;
+
+            default:
+            case "month":
+                $count = 12;
+                break;
+
+            case "day":
+                $count = cal_days_in_month(CAL_GREGORIAN, $timeValue, date('Y'));
+                break;
+        }
+
+        $results = $query->get();
+        $data = array_pad([], $count, 0);
+
+        foreach ($results as $result) {
+            if ($timeSpan === 'year') {
+                $data[] += $result->connections;
+            } else {
+                $index = $result->$timeSpan - 1;
+                $data[$index] += (int) $result->connections;
+            }
+        }
+
+        return $data;
     }
 
     /**

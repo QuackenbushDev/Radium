@@ -31,16 +31,7 @@ class APIController extends Controller {
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
         $headers = $this->generateHeaders($timeSpan);
-        $data = [];
-
-        $connections = array_flatten(
-            RadiusAccount::connectionCountSummary($timeSpan, $timeValue, $username, $nasIP)
-                ->get()
-        );
-
-        foreach($connections as $connection) {
-            $data[$connection->$timeSpan] = $connection->connections;
-        }
+        $data = RadiusAccount::connectionCountSummary($timeSpan, $timeValue, $username, $nasIP);
 
         return response()->json([
             'headers' => $headers,
