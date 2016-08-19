@@ -13,12 +13,6 @@
     <input id="userID" type="hidden" value="{{ $user->id }}" />
 
     <div class="row">
-        <div class="col-md-12">
-            <h3>Attributes</h3>
-        </div>
-    </div>
-
-    <div class="row">
         @include(
             'widgets.table',
             [

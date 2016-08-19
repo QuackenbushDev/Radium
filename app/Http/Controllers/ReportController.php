@@ -1,11 +1,44 @@
 <?php namespace App\Http\Controllers;
 
-use DateTime;
 use Illuminate\Http\Request;
 use App\RadiusAccount;
 
-class AccountingController extends Controller {
-    public function index(Request $request) {
+class ReportController extends Controller {
+    public function onlineUsers(Request $request) {
+        return view()->make(
+            'pages.reports.online-users',
+            [
+
+            ]
+        );
+    }
+
+    public function connectionAttempts(Request $request) {
+        return view()->make(
+            'pages.reports.connection-attempts',
+            [
+
+            ]
+        );
+    }
+
+    public function bandwidth(Request $request) {
+        $filter = [
+            'username'        => $request->input('username', ''),
+            'nasipaddress'    => $request->input('nasipaddress', ''),
+            'acctstarttime'   => $request->input('acctstarttime', ''),
+            'acctstoptime'    => $request->input('acctstoptime', '')
+        ];
+
+        return view()->make(
+            'pages.reports.bandwidth',
+            [
+                'filter' => $filter,
+            ]
+        );
+    }
+
+    public function accounting(Request $request) {
         $columns = [
             'radacctid',
             'radacct.username',
@@ -41,6 +74,12 @@ class AccountingController extends Controller {
         }
 
         $dataSet = $radiusAccounting->paginate()->appends($filter);
-        return view()->make('pages.accounting.index', ['accountingList' => $dataSet, 'filter' => $filter]);
+        return view()->make(
+            'pages.reports.accounting',
+            [
+                'accountingList' => $dataSet,
+                'filter' => $filter
+            ]
+        );
     }
 }

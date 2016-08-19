@@ -12,7 +12,6 @@
 */
 
 Route::get('/', 'DashboardController@index');
-Route::get('/accounting', ['as' => 'accounting::index', 'uses' => 'AccountingController@index']);
 
 Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
@@ -56,4 +55,9 @@ Route::group(['prefix' => 'portal', 'as' => 'portal::'], function() {
     Route::put('/profile', ['as' => 'saveProfile', 'uses' => 'PortalController@saveProfile']);
 
     Route::get('/', ['as' => 'dashboard', 'uses' => 'PortalController@dashboard']);
+});
+
+Route::group(['prefix' => 'report', 'as' => 'report::'], function() {
+    Route::get('/accounting', ['as' => 'accounting', 'uses' => 'ReportController@accounting']);
+    Route::get('/bandwidth', ['as' => 'bandwidth', 'uses' => 'ReportController@bandwidth']);
 });

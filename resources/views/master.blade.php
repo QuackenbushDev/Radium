@@ -84,12 +84,12 @@
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
+                    <a href="{{ route('report::bandwidth') }}">
                         <i class="fa fa-dashboard"></i> <span>Bandwidth</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="{{ route('accounting::index') }}">
+                    <a href="{{ route('report::accounting') }}">
                         <i class="fa fa-table"></i> <span>Accounting</span>
                     </a>
                 </li>
