@@ -49,12 +49,12 @@ class RadiusAccount extends Model {
     protected $hidden = [];
 
     /**
-     * retrieves the number of connections for a specific time period (day, month, year)
+     * retrieves the connections for a specific time period (day, month, year)
      * and optionally limits it to a specific user.
      *
      * @param string $timePeriod
      * @param string $timeValue
-     * @param boolean $groupByUsername
+     * @param bool $groupByUsername
      * @param string $username
      * @return mixed
      */
@@ -80,6 +80,32 @@ class RadiusAccount extends Model {
         return $query;
     }
 
+    public static function connectionCountSummary($timePeriod, $timeValue, $username, $nasIP) {
+        $sql = 'count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year';
+        $query = self::selectRaw($sql)
+            ->groupBy($timePeriod);
+
+        if ($username !== null) {
+            $query->where('username', $username);
+        }
+
+        if ($nasIP !== null) {
+            $query->where('nasipaddress', $nasIP);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Retrieves the bandwidth summary for a username and/or nas.
+     * Results are normalized in binary GiB format to keep everything consistent.
+     *
+     * @param $timeSpan
+     * @param null $timeValue
+     * @param null $username
+     * @param null $nasIP
+     * @return array
+     */
     public static function bandwidthUsage($timeSpan, $timeValue = null, $username = null, $nasIP = null) {
         $sql = "DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) as download, sum(acctoutputoctets) as upload";
         $query = self::selectRaw($sql);
@@ -89,10 +115,8 @@ class RadiusAccount extends Model {
 
         switch($timeSpan) {
             case "year":
-                // @TODO: finish this implementation.
-                $query->groupBy('year')
-                    ->orderBy('year', 'asc');
-                $count = 1;
+                $query->orderBy('year', 'asc');
+                $count = 0;
                 break;
 
             default:
@@ -119,9 +143,14 @@ class RadiusAccount extends Model {
         ];
 
         foreach ($results as $result) {
-            $index = $result->$timeSpan - 1;
-            $usage['download'][$index] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
-            $usage['upload'][$index] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
+            if ($timeSpan === 'year') {
+                $usage['download'][] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
+                $usage['upload'][] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
+            } else {
+                $index = $result->$timeSpan - 1;
+                $usage['download'][$index] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
+                $usage['upload'][$index] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
+            }
         }
 
         return $usage;

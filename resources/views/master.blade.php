@@ -141,7 +141,7 @@
 <script type="text/javascript" src="{{ asset('/plugins/fastclick/fastclick.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/plugins/chartjs/Chart.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/widgets/bandwidth-graph.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/widgets/graphs.js') }}"></script>
 <script type="text/javascript" src="/js/app.min.js"></script>
 @stack('scripts')
 

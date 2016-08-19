@@ -44,7 +44,8 @@ Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
 });
 
 Route::group(['prefix' => 'api', 'as' => 'api::'], function() {
-    route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
+    Route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
+    Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
 });
 
 Route::group(['prefix' => 'portal', 'as' => 'portal::'], function() {
