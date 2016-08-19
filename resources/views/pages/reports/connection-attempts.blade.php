@@ -4,7 +4,7 @@
 @section('pageDescription', '')
 @push('breadcrumbs')
 <li>Reports</li>
-<li><a href="{{ route('report::onlineUsers') }}"><i class="fa fa-user"></i> Online Users</a></li>
+<li><a href="{{ route('report::onlineUsers') }}"><i class="fa fa-lock"></i> Online Users</a></li>
 @endpush
 
 @section("content")

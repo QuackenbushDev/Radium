@@ -63,12 +63,12 @@
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
+                    <a href="{{ route('group::index') }}">
                         <i class="fa fa-group"></i> <span>Groups</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
+                    <a href="{{ route('proxy::index') }}">
                         <i class="fa fa-lock"></i> <span>Proxies</span>
                     </a>
                 </li>
@@ -95,13 +95,13 @@
                 </li>
                 <li class="header">Graphs</li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>User</span>
+                    <a href="{{ route('graph::user') }}">
+                        <i class="fa fa-user"></i> <span>User</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Statistics</span>
+                    <a href="{{ route('graph::statistics') }}">
+                        <i class="fa fa-pie-chart"></i> <span>Statistics</span>
                     </a>
                 </li>
             </ul>
@@ -137,8 +137,6 @@
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script type="text/javascript" src="{{ asset('/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/plugins/fastclick/fastclick.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/plugins/chartjs/Chart.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/widgets/graphs.js') }}"></script>

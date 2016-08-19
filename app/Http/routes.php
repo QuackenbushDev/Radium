@@ -32,6 +32,31 @@ Route::group(['prefix' => 'user', 'as' => 'user::'], function() {
     Route::get('/{id}', ['as' => 'show', 'uses' => 'UserController@show']);
 });
 
+Route::group(['prefix' => 'group', 'as' => 'group::'], function() {
+    Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'GroupController@edit']);
+    Route::get('/create', ['as' => 'create', 'uses' => 'GroupController@create']);
+    Route::post('/create', ['as' => 'save', 'uses' => 'GroupController@save']);
+
+    Route::get('/', ['as' => 'index', 'uses' => 'GroupController@index']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'GroupController@store']);
+    Route::get('/{id}', ['as' => 'show', 'uses' => 'GroupController@show']);
+});
+
+Route::group(['prefix' => 'proxy', 'as' => 'proxy::'], function() {
+    Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'ProxyController@edit']);
+    Route::get('/create', ['as' => 'create', 'uses' => 'ProxyController@create']);
+    Route::post('/create', ['as' => 'save', 'uses' => 'ProxyController@save']);
+
+    Route::get('/', ['as' => 'index', 'uses' => 'ProxyController@index']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'ProxyController@store']);
+    Route::get('/{id}', ['as' => 'show', 'uses' => 'ProxyController@show']);
+});
+
+Route::group(['prefix' => 'graph', 'as' => 'graph::'], function() {
+    Route::get('/user', ['as' => 'user', 'uses' => 'GraphController@user']);
+    Route::get('/statistics', ['as' => 'statistics', 'uses' => 'GraphController@statistics']);
+});
+
 Route::group(['prefix' => 'nas', 'as' => 'nas::'], function() {
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'NasController@edit']);
     Route::get('/create', ['as' => 'create', 'uses' => 'NasController@create']);
