@@ -63,12 +63,6 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <h3>Bandwidth Usage</h3>
-        </div>
-    </div>
-
-    <div class="row">
         <div class="col-md-4">
             @include(
                 'pages.user.partials.bandwidth-summary',
@@ -122,6 +116,32 @@
             'timeValue' => date('m'),
             'username'  => $user->username,
             'nasIP'     => "",
+            'height'    => '300px',
+        ]
+    )
+
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'userConnectionSummary',
+            'title'     => date('Y') . ' Connection Summary',
+            'timeSpan'  => 'month',
+            'timeValue' => '',
+            'username'  => $user->username,
+            'nasIP'     => '',
+            'height'    => '300px',
+        ]
+    )
+
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'userDailyConnectionSummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'timeSpan'  => 'day',
+            'timeValue' => date('m'),
+            'username'  => $user->username,
+            'nasIP'     => '',
             'height'    => '300px',
         ]
     )
