@@ -74,18 +74,18 @@
                 </li>
                 <li class="header">Reports</li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Online Users</span>
+                    <a href="{{ route('report::onlineUsers') }}">
+                        <i class="fa fa-user"></i> <span>Online Users</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Connection Attempts</span>
+                    <a href="{{ route('report::connectionAttempts') }}">
+                        <i class="fa fa-lock"></i> <span>Connection Attempts</span>
                     </a>
                 </li>
                 <li class="treeview">
                     <a href="{{ route('report::bandwidth') }}">
-                        <i class="fa fa-dashboard"></i> <span>Bandwidth</span>
+                        <i class="fa fa-area-chart"></i> <span>Bandwidth</span>
                     </a>
                 </li>
                 <li class="treeview">

@@ -5,10 +5,13 @@ use App\RadiusAccount;
 
 class ReportController extends Controller {
     public function onlineUsers(Request $request) {
+        $onlineUserList = RadiusAccount::onlineUsers()
+            ->paginate();
+
         return view()->make(
             'pages.reports.online-users',
             [
-
+                'onlineUserList' => $onlineUserList,
             ]
         );
     }

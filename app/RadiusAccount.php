@@ -80,6 +80,15 @@ class RadiusAccount extends Model {
         return $query;
     }
 
+    /**
+     * calculates the number of connections and returns it in an array.
+     *
+     * @param $timeSpan
+     * @param $timeValue
+     * @param $username
+     * @param $nasIP
+     * @return array
+     */
     public static function connectionCountSummary($timeSpan, $timeValue, $username, $nasIP) {
         $sql = 'count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year';
         $query = self::selectRaw($sql)
@@ -197,6 +206,22 @@ class RadiusAccount extends Model {
             ->where('username', $username);
 
         return ($query->count() > 0) ? true : false;
+    }
+
+    /**
+     * returns a list of online users.
+     *
+     * @return mixed
+     */
+    public static function onlineUsers() {
+        $sql = 'radacctid, username, framedipaddress, nasipaddress, sum(acctsessiontime), count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total';
+
+        $query = self::selectRaw($sql)
+            ->whereRaw('AcctStopTime IS NULL')
+            ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
+            ->groupBy('username', 'acctstarttime');
+
+        return $query;
     }
 
     /**

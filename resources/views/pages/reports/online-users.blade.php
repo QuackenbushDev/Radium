@@ -1,7 +1,21 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: chris
- * Date: 8/19/2016
- * Time: 11:11 AM
- */
+@extends("master")
+
+@section('pageTitle', 'Online User Report')
+@section('pageDescription', '')
+@push('breadcrumbs')
+    <li>Reports</li>
+    <li><a href="{{ route('report::onlineUsers') }}"><i class="fa fa-user"></i> Online Users</a></li>
+@endpush
+
+@section("content")
+    @include(
+        'partials.table.crud-list',
+        [
+            'title'             => '',
+            'disableFilter'     => true,
+            'headers'           => ['ID', 'Username', 'IP Address', 'NAS IP Address', 'Connections', 'Session Time', 'IN', 'OUT', 'Total'],
+            'dataSet'           => $onlineUserList,
+            'dataPartial'       => 'pages.reports.partials.online-user-table-data',
+        ]
+    )
+@endsection

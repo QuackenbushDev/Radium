@@ -4,7 +4,7 @@
 @section('pageDescription', '')
 @push('breadcrumbs')
     <li>Reports</li>
-    <li><a href="{{ route('report::bandwidth') }}"><i class="fa fa-table"></i> Bandwidth</a></li>
+    <li><a href="{{ route('report::bandwidth') }}"><i class="fa fa-area-chart"></i> Bandwidth</a></li>
 @endpush
 
 @section("content")
@@ -16,8 +16,6 @@
             {!! BootForm::open()->action(route('report::bandwidth'))->get()->addClass('form-inline') !!}
             {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
             {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
-            {!! BootForm::text('Date Start', 'acctstarttime')->value($filter['acctstarttime']) !!}
-            {!! BootForm::text('Date Stop', 'acctstoptime')->value($filter['acctstoptime']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
             {!! BootForm::close() !!}<br />
         </div>
