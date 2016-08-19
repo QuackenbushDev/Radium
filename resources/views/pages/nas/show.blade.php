@@ -87,9 +87,22 @@
         'widgets.connection-chart',
         [
             'id'        => 'nasConnectionSummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'title'     => date('Y') . ' Connection Summary',
             'timeSpan'  => 'month',
             'timeValue' => '',
+            'username'  => "",
+            'nasIP'     => $nas->nasname,
+            'height'    => '300px',
+        ]
+    )
+
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'nasDailyConnectionSummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'timeSpan'  => 'day',
+            'timeValue' => date('m'),
             'username'  => "",
             'nasIP'     => $nas->nasname,
             'height'    => '300px',
@@ -109,8 +122,3 @@
         )
     </div>
 @endsection
-
-@push('scripts')
-    <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
-    <script type="text/javascript" src="/js/pages/dashboard.js"></script>
-@endpush
