@@ -11,7 +11,7 @@
         @include(
             'widgets.3colpanel',
             [
-                'widget_value'       => $dailyStats['connections'],
+                'widget_value'       => ($dailyStats !== null) ? $dailyStats['connections'] : 0,
                 'widget_description' => 'Total connections on ' . date("m-d-Y"),
                 'widget_link'        => '#',
                 'widget_icon'        => 'fa-area-chart',
@@ -22,7 +22,7 @@
         @include(
             'widgets.3colpanel',
             [
-                'widget_value'       => $monthlyStats['connections'],
+                'widget_value'       => ($monthlyStats !== null) ? $monthlyStats['connections'] : 0,
                 'widget_description' => 'Total connections for ' . date('M Y'),
                 'widget_link'        => '#',
                 'widget_icon'        => 'fa-area-chart',

@@ -25,6 +25,12 @@ class APIController extends Controller {
         ]);
     }
 
+    /**
+     * Returns an array of headers and connection counts for the specified time span
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function connectionCount(Request $request) {
         $timeSpan = $request->input('timeSpan', 'month');
         $timeValue = $request->input('timeValue', '');
@@ -39,6 +45,13 @@ class APIController extends Controller {
         ]);
     }
 
+    /**
+     * Returns an array of years (where data is available), months,
+     * or a list with the number of days starting from 1
+     *
+     * @param $timeSpan
+     * @return array
+     */
     private function generateHeaders($timeSpan) {
         switch ($timeSpan) {
             case "year":
