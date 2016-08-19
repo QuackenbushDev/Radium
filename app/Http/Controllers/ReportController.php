@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\RadiusAccount;
+use App\RadiusPostAuth;
 
 class ReportController extends Controller {
     public function onlineUsers(Request $request) {
@@ -17,10 +18,39 @@ class ReportController extends Controller {
     }
 
     public function connectionAttempts(Request $request) {
+        $filter = [
+            'username'  => $request->input('username', ''),
+            'reply'     => (int) $request->input('reply', ''),
+            'datestart' => $request->input('datestart', ''),
+            'datestop'  => $request->input('datestop', '')
+        ];
+
+        $authList = RadiusPostAuth::select(['id', 'username', 'pass', 'reply', 'authdate']);
+
+        if (!empty($filter['username'])) {
+            $authList->where('username', $filter['username']);
+        }
+
+        if (!empty($filter['reply']) && $filter['reply'] > 0) {
+            $reply = ($filter['reply'] === 1) ? 'Access-Accept' : 'Access-Reject';
+            $authList->where('reply', $reply);
+        }
+
+        if (!empty($filter['datestart'])) {
+            $authList->where('authdate', '>=', $filter['datestart']);
+        }
+
+        if (!empty($filter['datestop'])) {
+            $authList->where('authdate', '<=', $filter['datestop']);
+        }
+
+        $authList = $authList->paginate();
+
         return view()->make(
             'pages.reports.connection-attempts',
             [
-
+                'filter' => $filter,
+                'authList' => $authList,
             ]
         );
     }

@@ -23,6 +23,7 @@
             {!! BootForm::close() !!}<br />
         </div>
     </div>
+
     @include(
         'partials.table.crud-list',
         [
