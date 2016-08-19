@@ -44,8 +44,8 @@ function drawLineChart(id, labels, dataset1, dataset2) {
         datasets: [
             {
                 label: "Download",
-                fillColor: "rgba(0, 153, 51, 0)",
-                strokeColor: "rgba(0, 153, 51, 1)",
+                fillColor: "rgba(0, 153, 51, 0.5)",
+                strokeColor: "rgba(0, 153, 51, 0.5)",
                 pointColor: "rgba(0, 153, 51, 1)",
                 pointStrokeColor: "#c1c7d1",
                 pointHighlightFill: "#fff",
@@ -54,8 +54,8 @@ function drawLineChart(id, labels, dataset1, dataset2) {
             },
             {
                 label: "Upload",
-                fillColor: "rgba(60,141,188,0)",
-                strokeColor: "rgba(60,141,188,1)",
+                fillColor: "rgba(60,141,188,0.5)",
+                strokeColor: "rgba(60,141,188,0.5)",
                 pointColor: "#3b8bba",
                 pointStrokeColor: "rgba(60,141,188,1)",
                 pointHighlightFill: "#fff",
