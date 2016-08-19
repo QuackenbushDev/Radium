@@ -27,7 +27,7 @@
         'partials.table.crud-list',
         [
             'title'             => '',
-            'filterPlaceHolder' => '',
+            'disableFilter'     => true,
             'headers'           => ['ID', 'Username', 'IP Address', 'Start Time', 'Stop Time', 'Session Time', 'IN', 'OUT', 'Termination', 'NAS IP Address'],
             'dataSet'           => $accountingList,
             'dataPartial'       => 'pages.accounting.partials.index-table-data',

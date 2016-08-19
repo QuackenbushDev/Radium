@@ -7,11 +7,13 @@
                     <a href="{{ $createLink }}">{{ $createLinkName }}</a>
                 @endif
 
-                {!! BootForm::open()->action($filterAction)->get() !!}
-                <div class="pull-right">
-                    <label><input name="filter" type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}" value="{{ $filterValue }}"></label>
-                </div>
-                {!! BootForm::close() !!}
+                @if(!isset($disableFilter))
+                    {!! BootForm::open()->action($filterAction)->get() !!}
+                    <div class="pull-right">
+                        <label><input name="filter" type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}" value="{{ $filterValue }}"></label>
+                    </div>
+                    {!! BootForm::close() !!}
+                @endif
             </div>
             <div class="box-body">
                 <div class="dataTables_wrapper form-inline dt-bootstrap">

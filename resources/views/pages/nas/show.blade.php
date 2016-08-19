@@ -83,6 +83,19 @@
         ]
     )
 
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'nasConnectionSummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'timeSpan'  => 'month',
+            'timeValue' => '',
+            'username'  => "",
+            'nasIP'     => $nas->nasname,
+            'height'    => '300px',
+        ]
+    )
+
     <div class="row">
         @include(
             'widgets.table',

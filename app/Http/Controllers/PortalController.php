@@ -9,6 +9,14 @@ class PortalController extends Controller {
 
     }
 
+    public function passwordReset() {
+
+    }
+
+    public function doPasswordReset() {
+
+    }
+
     public function dashboard() {
 
     }

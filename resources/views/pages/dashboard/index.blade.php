@@ -79,6 +79,19 @@
         ]
     )
 
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'dashboardConnectionSummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'timeSpan'  => 'month',
+            'timeValue' => '',
+            'username'  => "",
+            'nasIP'     => "",
+            'height'    => '300px',
+        ]
+    )
+
     <div class="row">
         @include(
             'widgets.table',

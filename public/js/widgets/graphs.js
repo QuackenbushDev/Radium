@@ -30,7 +30,7 @@ function makeConnectionChart(id, timeSpan, timeValue, username, nasIP) {
     $.ajax({
         url: url
     }).done(function(data) {
-        drawBarChart(id, data['headers'], connections);
+        drawBarChart(id, data['headers'], data['dataSet'], 'Connections');
     });
 }
 
@@ -44,9 +44,9 @@ function drawLineChart(id, labels, dataset1, dataset2) {
         datasets: [
             {
                 label: "Download",
-                fillColor: "rgb(210, 214, 222)",
-                strokeColor: "rgb(210, 214, 222)",
-                pointColor: "rgb(210, 214, 222)",
+                fillColor: "rgba(0, 153, 51, 0)",
+                strokeColor: "rgba(0, 153, 51, 1)",
+                pointColor: "rgba(0, 153, 51, 1)",
                 pointStrokeColor: "#c1c7d1",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgb(220,220,220)",
@@ -54,8 +54,8 @@ function drawLineChart(id, labels, dataset1, dataset2) {
             },
             {
                 label: "Upload",
-                fillColor: "rgba(60,141,188,0.9)",
-                strokeColor: "rgba(60,141,188,0.8)",
+                fillColor: "rgba(60,141,188,0)",
+                strokeColor: "rgba(60,141,188,1)",
                 pointColor: "#3b8bba",
                 pointStrokeColor: "rgba(60,141,188,1)",
                 pointHighlightFill: "#fff",
@@ -88,7 +88,7 @@ function drawLineChart(id, labels, dataset1, dataset2) {
     chart.Line(chartData, chartOptions);
 }
 
-function drawBarChar(id, labels, dataset) {
+function drawBarChart(id, labels, dataset, dataSetLabel) {
     var chartObject = $("#" + id).get(0).getContext("2d");
     var chart = new Chart(chartObject);
 
@@ -97,14 +97,14 @@ function drawBarChar(id, labels, dataset) {
 
         datasets: [
             {
-                label: "Download",
-                fillColor: "rgb(210, 214, 222)",
-                strokeColor: "rgb(210, 214, 222)",
-                pointColor: "rgb(210, 214, 222)",
+                label: dataSetLabel,
+                fillColor: "rgba(60,141,188,1)",
+                strokeColor: "rgba(60,141,188,1)",
+                pointColor: "rgba(60,141,188,1)",
                 pointStrokeColor: "#c1c7d1",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgb(220,220,220)",
-                data: dataset1
+                data: dataset
             }
         ]
     };
@@ -129,5 +129,5 @@ function drawBarChar(id, labels, dataset) {
         responsive: true
     };
 
-    chart.Line(chartData, chartOptions);
+    chart.Bar(chartData, chartOptions);
 }
