@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class RadiusIPPool extends Model {
-    protected $table = 'radippool';
+class Proxy extends Model {
+    protected $table = 'radium_proxy';
 
     /**
      * The attributes that are mass assignable.
@@ -11,14 +11,13 @@ class RadiusIPPool extends Model {
      * @var array
      */
     protected $fillable = [
-        'pool_name',
-        'framedipaddress',
-        'nasipaddress',
-        'calledstationid',
-        'callingstationid',
-        'expiry_time',
-        'username',
-        'pool_key'
+        'name',
+        'synchronous',
+        'retry_delay',
+        'retry_count',
+        'dead_time',
+        'default_fallback',
+        'post_proxy_authorize',
     ];
 
     /**

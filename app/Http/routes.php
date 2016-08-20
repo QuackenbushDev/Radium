@@ -42,6 +42,16 @@ Route::group(['prefix' => 'group', 'as' => 'group::'], function() {
     Route::get('/{id}', ['as' => 'show', 'uses' => 'GroupController@show']);
 });
 
+Route::group(['prefix' => 'ip', 'as' => 'ip::'], function() {
+    Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'IPController@edit']);
+    Route::get('/create', ['as' => 'create', 'uses' => 'IPController@create']);
+    Route::post('/create', ['as' => 'save', 'uses' => 'IPController@save']);
+
+    Route::get('/', ['as' => 'index', 'uses' => 'IPController@index']);
+    Route::put('/{id}', ['as' => 'update', 'uses' => 'IPController@store']);
+    Route::get('/{id}', ['as' => 'show', 'uses' => 'IPController@show']);
+});
+
 Route::group(['prefix' => 'proxy', 'as' => 'proxy::'], function() {
     Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'ProxyController@edit']);
     Route::get('/create', ['as' => 'create', 'uses' => 'ProxyController@create']);

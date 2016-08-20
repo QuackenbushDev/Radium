@@ -54,14 +54,10 @@ return [
             'visibility' => 'public',
         ],
 
-        's3' => [
-            'driver' => 's3',
-            'key' => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+        'config' => [
+            'driver' => 'local',
+            'root'   => env('RADIUM_CONFIG_FOLDER', ''),
         ],
-
     ],
 
 ];
