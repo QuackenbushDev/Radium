@@ -15,7 +15,7 @@
                 @if(Auth::check())
                     <ul class="nav navbar-nav">
                         <li class="user-menu">
-                            <a href="#">
+                            <a href="{{ route('operator::show', Auth()->user()->id) }}">
                                 <span class="hidden-xs">{{ Auth()->user()->name }}</span>
                             </a>
                         </li>
@@ -26,7 +26,7 @@
                 @else
                     <ul class="nav navbar-nav">
                         <li class="user-menu">
-                            <a href="#">
+                            <a href="{{ route('portal::profile') }}">
                                 <span class="hidden-xs">{{ session()->get('portal_username') }}</span>
                             </a>
                         </li>

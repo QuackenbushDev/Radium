@@ -1,8 +1,9 @@
 <?php namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 
-class PortalAuthentication {
+class APIAuthentication {
     /**
      * Handle an incoming request.
      *
@@ -13,14 +14,8 @@ class PortalAuthentication {
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $guestPaths = [
-            '/portal/login',
-            '/portal/logout',
-            '/portal/forgotPassword'
-        ];
-
-        if (!session()->has('portal_username') && !in_array($request->getPathInfo(), $guestPaths)) {
-            return redirect(route('portal::login'));
+        if (!Auth::check() && !session()->get('portal_username')) {
+            return abort(503, 'authentication required.');
         }
 
         return $next($request);

@@ -35,6 +35,16 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/{id}', ['as' => 'show', 'uses' => 'UserController@show']);
     });
 
+    Route::group(['prefix' => 'operator', 'as' => 'operator::'], function() {
+        Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'OperatorController@edit']);
+        Route::get('/create', ['as' => 'create', 'uses' => 'OperatorController@create']);
+        Route::post('/create', ['as' => 'save', 'uses' => 'OperatorController@save']);
+
+        Route::get('/', ['as' => 'index', 'uses' => 'OperatorController@index']);
+        Route::put('/{id}', ['as' => 'update', 'uses' => 'OperatorController@store']);
+        Route::get('/{id}', ['as' => 'show', 'uses' => 'OperatorController@show']);
+    });
+
     Route::group(['prefix' => 'group', 'as' => 'group::'], function() {
         Route::get('/edit/{id}', ['as' => 'edit', 'uses' => 'GroupController@edit']);
         Route::get('/create', ['as' => 'create', 'uses' => 'GroupController@create']);
@@ -88,7 +98,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
-Route::group(['prefix' => 'api', 'as' => 'api::'], function() {
+Route::group(['prefix' => 'api', 'as' => 'api::', 'middleware' => ['api.auth']], function() {
     Route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
     Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
 });
