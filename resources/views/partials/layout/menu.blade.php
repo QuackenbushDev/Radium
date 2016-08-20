@@ -42,11 +42,6 @@
                         <i class="fa fa-group"></i> <span>Groups</span>
                     </a>
                 </li>
-                <li class="treeview">
-                    <a href="{{ route('proxy::index') }}">
-                        <i class="fa fa-lock"></i> <span>Proxies</span>
-                    </a>
-                </li>
                 <li class="header">Reports</li>
                 <li class="treeview">
                     <a href="{{ route('report::onlineUsers') }}">

@@ -1,6 +1,6 @@
 @extends("master")
 
-@section('pageTitle', $operator->name)
+@section('pageTitle', 'Edit Operator')
 @push('breadcrumbs')
     <li><a href="{{ route('operator::index') }}"><i class="fa fa-user"></i> Operator</a></li>
     <li>Edit</li>

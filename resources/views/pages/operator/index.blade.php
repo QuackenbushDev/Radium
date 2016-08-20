@@ -16,7 +16,7 @@
             'filterPlaceHolder' => 'Name',
             'filterAction'      => route('operator::index'),
             'filterValue'       => $filterValue,
-            'headers'           => ['ID', 'E-Mail', 'Created At', 'Updated At'],
+            'headers'           => ['ID', 'Name', 'E-Mail', 'Created At', 'Updated At'],
             'dataSet'           => $operatorList,
             'dataPartial'       => 'pages.operator.partials.index-table-data',
         ]

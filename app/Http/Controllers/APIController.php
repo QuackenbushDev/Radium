@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Dictionary;
 use App\RadiusAccount;
 use Illuminate\Http\Request;
 
@@ -52,6 +53,27 @@ class APIController extends Controller {
             'headers' => $headers,
             'dataSet' => $data,
         ]);
+    }
+
+    /**
+     * Returns a list of vendors found in the dictionary
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function vendorList(Request $request) {
+        return response()->json(Dictionary::vendorList());
+    }
+
+    /**
+     * returns a list of vendor attributes found in the dictionary
+     *
+     * @param Request $request
+     * @param $vendor
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function vendorAttributes(Request $request, $vendor) {
+        return response()->json(Dictionary::vendorAttributes($vendor));
     }
 
     /**
