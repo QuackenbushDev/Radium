@@ -12,16 +12,29 @@
         </a>
         <nav class="navbar navbar-static-top">
             <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#">
-                            <span class="hidden-xs">Samuel Faunt</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
-                </ul>
+                @if(Auth::check())
+                    <ul class="nav navbar-nav">
+                        <li class="user-menu">
+                            <a href="#">
+                                <span class="hidden-xs">{{ Auth()->user()->name }}</span>
+                            </a>
+                        </li>
+                        <li>
+                                <a href="/logout"><i class="fa fa-sign-out"></i></a>
+                        </li>
+                    </ul>
+                @else
+                    <ul class="nav navbar-nav">
+                        <li class="user-menu">
+                            <a href="#">
+                                <span class="hidden-xs">{{ session()->get('portal_username') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/portal/logout"><i class="fa fa-sign-out"></i></a>
+                        </li>
+                    </ul>
+                @endif
             </div>
         </nav>
     </header>

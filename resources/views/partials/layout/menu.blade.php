@@ -1,4 +1,4 @@
-@if (!session()->has('user_id'))
+@if (!Auth::check())
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu">

@@ -93,7 +93,6 @@ Route::group(['prefix' => 'api', 'as' => 'api::'], function() {
     Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
 });
 
-
 Route::group(['prefix' => 'portal', 'as' => 'portal::', 'middleware' => ['portal.auth']], function() {
     Route::get('/login', ['as' => 'login', 'uses' => 'PortalController@login']);
     Route::post('/login', ['as' => 'doLogin', 'uses' => 'PortalController@doLogin']);

@@ -1,4 +1,5 @@
 @extends('blank')
+@section('pageTitle', 'Operator Login')
 
 @section('content')
     <div class="login-box">
