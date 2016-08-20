@@ -1,4 +1,4 @@
-@if (Session::has('portal_username'))
+@if (!session()->has('user_id'))
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu">

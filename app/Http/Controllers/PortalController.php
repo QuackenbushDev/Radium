@@ -8,7 +8,7 @@ use App\RadiusPostAuth;
 class PortalController extends Controller {
     public function login(Request $request) {
         return view()->make(
-            'pages.auth.login-form',
+            'pages.portal.login',
             [
                 'action'             => route('portal::doLogin'),
                 'forgotPasswordLink' => route('portal::passwordReset'),
