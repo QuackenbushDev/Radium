@@ -1,4 +1,4 @@
-@extends('iframe')
+@extends('blank')
 
 @section('content')
     <div class="row">

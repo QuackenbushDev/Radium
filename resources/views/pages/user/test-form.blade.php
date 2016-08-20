@@ -1,4 +1,4 @@
-@extends('iframe')
+@extends('blank')
 
 @section('content')
     {!! BootForm::open()->action(route('user::doTest', $user->id)) !!}

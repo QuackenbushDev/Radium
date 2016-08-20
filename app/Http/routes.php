@@ -82,19 +82,23 @@ Route::group(['prefix' => 'api', 'as' => 'api::'], function() {
     Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
 });
 
-Route::group(['prefix' => 'portal', 'as' => 'portal::'], function() {
-    Route::get('/login', ['as' => 'login', 'uses' => 'PortalController@login']);
-    Route::post('/login', ['as' => 'login', 'uses' => 'PortalController@doLogin']);
-
-    Route::get('/profile', ['as' => 'profile', 'uses' => 'PortalController@profile']);
-    Route::put('/profile', ['as' => 'saveProfile', 'uses' => 'PortalController@saveProfile']);
-
-    Route::get('/', ['as' => 'dashboard', 'uses' => 'PortalController@dashboard']);
-});
-
 Route::group(['prefix' => 'report', 'as' => 'report::'], function() {
     Route::get('/accounting', ['as' => 'accounting', 'uses' => 'ReportController@accounting']);
     Route::get('/bandwidth', ['as' => 'bandwidth', 'uses' => 'ReportController@bandwidth']);
     Route::get('/onlineUsers', ['as' => 'onlineUsers', 'uses' => 'ReportController@onlineUsers']);
     Route::get('/connectionAttempts', ['as' => 'connectionAttempts', 'uses' => 'ReportController@connectionAttempts']);
+});
+
+Route::group(['prefix' => 'portal', 'as' => 'portal::', 'middleware' => ['portal.auth']], function() {
+    Route::get('/login', ['as' => 'login', 'uses' => 'PortalController@login']);
+    Route::post('/login', ['as' => 'doLogin', 'uses' => 'PortalController@doLogin']);
+    Route::get('/logout', ['as' => 'logout', 'uses' => 'PortalController@logout']);
+
+    Route::get('/forgotPassword', ['as' => 'passwordReset', 'uses' => 'PortalController@passwordReset']);
+    Route::post('/forgotPassword', ['as' => 'doPasswordReset', 'uses' => 'PortalController@doPasswordReset']);
+
+    Route::get('/profile', ['as' => 'profile', 'uses' => 'PortalController@profile']);
+    Route::put('/profile', ['as' => 'saveProfile', 'uses' => 'PortalController@saveProfile']);
+
+    Route::get('/', ['as' => 'dashboard', 'uses' => 'PortalController@dashboard']);
 });
