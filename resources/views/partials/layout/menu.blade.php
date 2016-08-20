@@ -79,6 +79,12 @@
                         <i class="fa fa-pie-chart"></i> <span>Statistics</span>
                     </a>
                 </li>
+                <li class="header">Admin</li>
+                <li class="treeview">
+                    <a href="{{ route('operator::index') }}">
+                        <i class="fa fa-user"></i> <span>Operators</span>
+                    </a>
+                </li>
             </ul>
         </section>
     </aside>
