@@ -1,15 +1,15 @@
-@if (Session::has('portal_user'))
+@if (Session::has('portal_username'))
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="treeview">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ route('portal::dashboard') }}">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ route('portal::profile') }}">
                         <i class="fa fa-user"></i> <span>Profile</span>
                     </a>
                 </li>

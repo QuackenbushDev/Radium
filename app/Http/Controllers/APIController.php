@@ -17,6 +17,10 @@ class APIController extends Controller {
         $nasIP = $request->input('nasIP', null);
         $headers = $this->generateHeaders($timeSpan);
 
+        if (session()->has('portal_username', '')) {
+            $username = session()->get('portal_username');
+        }
+
         $bandwidthUsage = RadiusAccount::bandwidthUsage($timeSpan, $timeValue, $username, $nasIP);
 
         return response()->json([
@@ -37,6 +41,11 @@ class APIController extends Controller {
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
         $headers = $this->generateHeaders($timeSpan);
+
+        if (session()->has('portal_username', '')) {
+            $username = session()->get('portal_username');
+        }
+
         $data = RadiusAccount::connectionCountSummary($timeSpan, $timeValue, $username, $nasIP);
 
         return response()->json([

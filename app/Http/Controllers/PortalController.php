@@ -1,9 +1,9 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Session;
 use App\RadiusCheck;
 use App\RadiusAccountInfo;
+use App\RadiusPostAuth;
 
 class PortalController extends Controller {
     public function login(Request $request) {
@@ -60,7 +60,17 @@ class PortalController extends Controller {
     }
 
     public function dashboard() {
+        $loginAttempts = RadiusPostAuth::getLatestAttempts(5)
+            ->where('username', session()->get('portal_username', ''))
+            ->get()
+            ->toArray();
 
+        return view()->make(
+            'pages.portal.dashboard',
+            [
+                'loginAttempts' => $loginAttempts,
+            ]
+        );
     }
 
     public function profile($username) {
