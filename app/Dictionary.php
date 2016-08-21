@@ -22,7 +22,8 @@ class Dictionary extends Model {
         return array_flatten(
             self::select(['vendor'])
                 ->groupBY('Vendor')
-                ->all()
+                ->get()
+                ->toArray()
         );
     }
 
@@ -30,7 +31,8 @@ class Dictionary extends Model {
         return array_flatten(
             self::select(['Attribute'])
                 ->where('Vendor', $vendor)
-                ->all()
+                ->get()
+                ->toArray()
         );
     }
 }
