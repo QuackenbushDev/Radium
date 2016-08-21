@@ -19,9 +19,9 @@ A full featured radius management system for FreeRadius setups using the mysql b
 * NPM / Gulp (css compilation)
 
 # Installation
-1. Clone Radium into your web director
+1. Clone Radium into your web director, cd into Radium, git checkout release
 2. Create a vhost for the domain that points to the public folder
 3. Copy .env.example to .env and configure the application settings
-4. Run php artisan key:generate to generate a new application secret for Radium
-5. Run php artisan db:seed --class=OperatorSeeder
-
+4. Install Composer and run composer install
+5. Run php artisan key:generate to generate a new application secret for Radium
+6. Run php artisan db:seed --class=OperatorSeeder

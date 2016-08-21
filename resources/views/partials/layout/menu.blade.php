@@ -63,7 +63,7 @@
                         <i class="fa fa-table"></i> <span>Accounting</span>
                     </a>
                 </li>
-                <li class="header">Graphs</li>
+                <!--<li class="header">Graphs</li>
                 <li class="treeview">
                     <a href="{{ route('graph::user') }}">
                         <i class="fa fa-user"></i> <span>User</span>
@@ -73,7 +73,7 @@
                     <a href="{{ route('graph::statistics') }}">
                         <i class="fa fa-pie-chart"></i> <span>Statistics</span>
                     </a>
-                </li>
+                </li>-->
                 <li class="header">Admin</li>
                 <li class="treeview">
                     <a href="{{ route('operator::index') }}">
