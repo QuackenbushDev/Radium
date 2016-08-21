@@ -34,7 +34,7 @@ class RadiusReply extends Model {
      * @return mixed
      */
     public static function getUserAttributes($username) {
-        return self::select(['attribute', 'op', 'value'])
+        return self::select(['id', 'attribute', 'op', 'value'])
             ->where('username', $username);
     }
 }

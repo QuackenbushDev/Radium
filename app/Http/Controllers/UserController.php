@@ -74,8 +74,6 @@ class UserController extends Controller {
         $user = RadiusCheck::find($id);
         $userGroups = RadiusUserGroup::getUserGroups($user->username);
         $groups = array_flatten(RadiusUserGroup::select('groupname')->groupBy('groupname')->get()->toArray());
-        $userCheck = RadiusCheck::getUserAttributes($user->username)->get()->toArray();
-        $userReply = RadiusReply::getUserAttributes($user->username)->get()->toArray();
         $userInfo = RadiusAccountInfo::firstOrNew(['username' => $user->username]);
 
         return view()->make(
@@ -84,8 +82,6 @@ class UserController extends Controller {
                 'user'                  => $user,
                 'userGroups'            => $userGroups,
                 'groups'                => $groups,
-                'userCheck'             => $userCheck,
-                'userReply'             => $userReply,
                 'userInfo'              => $userInfo,
             ]
         );
@@ -102,8 +98,6 @@ class UserController extends Controller {
                 'user'                  => $user,
                 'userGroups'            => [],
                 'groups'                => $groups,
-                'userCheck'             => [],
-                'userReply'             => [],
                 'userInfo'              => $userInfo,
                 'new'                   => true,
             ]
@@ -186,6 +180,39 @@ class UserController extends Controller {
             RadiusUserGroup::where('username', $userRecord->username)
                 ->whereIn('groupname', array_diff($userGroups, $newGroupList))
                 ->delete();
+        }
+
+        $attributes = $request->input('attributes', []);
+        $deletedAttributes = $request->input('deleted', []);
+        foreach(['check', 'reply'] as $type) {
+            if (array_key_exists($type, $deletedAttributes)) {
+                foreach ($deletedAttributes[$type] as $attributeID) {
+                    if ($type === 'check') {
+                        RadiusCheck::where('id', $attributeID)
+                            ->delete();
+                    } else {
+                        RadiusReply::where('id', $attributeID)
+                            ->delete();
+                    }
+                }
+            }
+
+            if (array_key_exists($type, $attributes)) {
+                foreach($attributes[$type] as $attribute => $values) {
+                    $attributeID = $values['id'];
+                    if ($attributeID === '0') {
+                        $record = ($type === 'check') ? new RadiusCheck() : new RadiusReply();
+                    } else {
+                        $record = ($type === 'check') ? RadiusCheck::find($attributeID) : RadiusReply::find($attributeID);
+                    }
+
+                    $record->username = $userRecord->username;
+                    $record->attribute = $attribute;
+                    $record->op = $values['op'];
+                    $record->value = $values['value'];
+                    $record->save();
+                }
+            }
         }
 
         $request->session()->flash('message', 'Successfully updated user account.');

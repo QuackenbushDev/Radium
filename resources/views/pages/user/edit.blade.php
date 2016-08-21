@@ -19,11 +19,34 @@
 
     @include('pages.user.partials.account-info-edit')
 
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Attributes</h3>
+    <div class="box">
+        <div class="box-header">
+            <h4>User Attributes</h4>
+        </div>
+
+        <div class="box-body" ng-app="attributeApp">
+            @include(
+                'widgets.attribute-editor',
+                [
+                    'title'     => 'Check',
+                    'type'      => 'check',
+                    'username'  => $user->username,
+                    'groupName' => ''
+                ]
+            )
+
+            @include(
+                'widgets.attribute-editor',
+                [
+                    'title'     => 'Reply',
+                    'type'      => 'reply',
+                    'username'  => $user->username,
+                    'groupName' => ''
+                ]
+            )
         </div>
     </div>
+
 
     <div class="row">
         <div class="col-md-12 text-right">
@@ -34,6 +57,8 @@
     {!! BootForm::close() !!}
 
     @push('scripts')
+        <script src="{{ asset('/js/angular.min.js') }}"></script>
+        <script src="{{ asset('/js/widgets/attribute-editor.js') }}"></script>
         <script src="{{ asset('/js/pages/user.js') }}"></script>
     @endpush
 @endsection

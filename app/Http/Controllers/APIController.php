@@ -2,6 +2,10 @@
 
 use App\Dictionary;
 use App\RadiusAccount;
+use App\RadiusCheck;
+use App\RadiusGroupCheck;
+use App\RadiusGroupReply;
+use App\RadiusReply;
 use Illuminate\Http\Request;
 
 class APIController extends Controller {
@@ -56,24 +60,73 @@ class APIController extends Controller {
     }
 
     /**
-     * Returns a list of vendors found in the dictionary
+     * returns an array with the vendor attributes.
+     * Response format: [
+     *     "vendor" => $vendor,
+     *     "attribute" => $attribute,
+     *     "op" => $op
+     * ]
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return string
      */
-    public function vendorList(Request $request) {
-        return response()->json(Dictionary::vendorList());
+    public function attributes(Request $request) {
+        $username = $request->input('username', null);
+        $groupName = $request->input('groupName', null);
+        $type = $request->input('type');
+
+        if ($username !== null) {
+            if ($type === 'check') {
+                $data = RadiusCheck::getUserAttributes($username)
+                    ->get()
+                    ->toArray();
+            } else {
+                $data = RadiusReply::getUserAttributes($username)
+                    ->get()
+                    ->toArray();
+            }
+        } elseif($groupName !== null) {
+            if ($type === 'check') {
+                $data = RadiusGroupCheck::where('groupname', $groupName)
+                    ->get()
+                    ->toArray();
+            } else {
+                $data = RadiusGroupReply::where('groupname', $groupName)
+                    ->get()
+                    ->toArray();
+            }
+        } else {
+            return response()->json('missing_username_or_group_name');
+        }
+
+        return response()->json($data);
     }
 
     /**
      * returns a list of vendor attributes found in the dictionary
      *
      * @param Request $request
-     * @param $vendor
      * @return \Illuminate\Http\JsonResponse
      */
-    public function vendorAttributes(Request $request, $vendor) {
-        return response()->json(Dictionary::vendorAttributes($vendor));
+    public function vendorAttributes(Request $request) {
+        $vendors = [];
+        $dictionary = [];
+
+        foreach(Dictionary::all() as $entry) {
+            if (!array_key_exists($entry->Vendor, $dictionary)) {
+                $vendors[] = $entry->Vendor;
+                $dictionary[$entry->Vendor] = [];
+            }
+
+            if (!in_array($entry->Attribute, $dictionary[$entry->Vendor])) {
+                $dictionary[$entry->Vendor][] = $entry->Attribute;
+            }
+        }
+
+        return response()->json([
+            'vendors' => $vendors,
+            'dictionary' => $dictionary,
+        ]);
     }
 
     /**

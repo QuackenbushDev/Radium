@@ -10,14 +10,22 @@
 
 @section('content')
     @include('pages.user.partials.account-info')
-    <input id="userID" type="hidden" value="{{ $user->id }}" />
+
+    <div class="box">
+        <div class="box-header">
+            <h4>Notes</h4>
+        </div>
+        <div class="box-body">
+            <p>{!! nl2br($userInfo->notes) !!}</p>
+        </div>
+    </div>
 
     <div class="row">
         @include(
             'widgets.table',
             [
                 'title'    => 'User Check',
-                'headers'  => ['ID', 'GroupName', 'Attribute', 'OP', 'Value'],
+                'headers'  => ['ID', 'Attribute', 'OP', 'Value'],
                 'dataSet'  => $userCheck,
                 'colWidth' => 6
             ]
@@ -27,7 +35,7 @@
             'widgets.table',
             [
                 'title'    => 'User Reply',
-                'headers'  => ['ID', 'GroupName', 'Attribute', 'OP', 'Value'],
+                'headers'  => ['ID', 'Attribute', 'OP', 'Value'],
                 'dataSet'  => $userReply,
                 'colWidth' => 6
             ]
@@ -183,8 +191,6 @@
     </div>
 
     @push('scripts')
-        <script type="text/javascript" src="/plugins/chartjs/Chart.min.js"></script>
-        <script type="text/javascript" src="/js/pages/dashboard.js"></script>
         <script type="text/javascript" src="/js/pages/user.js"></script>
     @endpush
 @endsection

@@ -101,8 +101,8 @@ Route::group(['middleware' => 'auth'], function() {
 Route::group(['prefix' => 'api', 'as' => 'api::', 'middleware' => ['api.auth']], function() {
     Route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
     Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
-    Route::get('/vendorList', ['as' => 'vendorList', 'uses' => 'APIController@vendorList']);
-    Route::get('/vendorAttributes/{string}', ['as' => 'vendorAttributes', 'uses' => 'APIController@vendorAttributes']);
+    Route::get('/vendorAttributes', ['as' => 'vendorAttributes', 'uses' => 'APIController@vendorAttributes']);
+    Route::get('/attributes', ['as' => 'attributes', 'uses' => 'APIController@attributes']);
 });
 
 Route::group(['prefix' => 'portal', 'as' => 'portal::', 'middleware' => ['portal.auth']], function() {
