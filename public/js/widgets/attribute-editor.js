@@ -46,13 +46,15 @@ angular.module('attributeApp', [])
             $scope.type = type;
             if (username.length == 0 && groupName.length == 0) {
                 console.error('Both username and group name are empty.');
+                return;
             }
 
             $.ajax({
                 url: '/api/attributes?type=' + type + '&username=' + username + "&groupName=" + groupName
             }).done(function(data) {
-                console.log(data);
-                $scope.attributes = data;
+                if (data != 'missing_username_or_group_name') {
+                    $scope.attributes = data;
+                }
             });
         };
 

@@ -71,11 +71,11 @@ class APIController extends Controller {
      * @return string
      */
     public function attributes(Request $request) {
-        $username = $request->input('username', null);
-        $groupName = $request->input('groupName', null);
+        $username = $request->input('username', '');
+        $groupName = $request->input('groupName', '');
         $type = $request->input('type');
 
-        if ($username !== null) {
+        if (!empty($username)) {
             if ($type === 'check') {
                 $data = RadiusCheck::getUserAttributes($username)
                     ->get()
@@ -85,7 +85,7 @@ class APIController extends Controller {
                     ->get()
                     ->toArray();
             }
-        } elseif($groupName !== null) {
+        } elseif(!empty($groupName)) {
             if ($type === 'check') {
                 $data = RadiusGroupCheck::where('groupname', $groupName)
                     ->get()

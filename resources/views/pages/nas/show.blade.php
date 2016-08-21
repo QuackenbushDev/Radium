@@ -5,7 +5,7 @@
 
 @push('breadcrumbs')
     <li><a href="{{ route('nas::index') }}"><i class="fa fa-server"></i> Nas</a></li>
-    <li><a href="{{ route('nas::show', $nas->id) }}">$nas->shortname</a></li>
+    <li><a href="{{ route('nas::show', $nas->id) }}">{{ $nas->shortname }}</a></li>
 @endpush
 
 @section('content')
