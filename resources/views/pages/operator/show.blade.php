@@ -28,6 +28,30 @@
                         <td>{{ $operator->email }}</td>
                     </tr>
                     <tr>
+                        <td>Company</td>
+                        <td>{{ $operator->company }}</td>
+                    </tr>
+                    <tr>
+                        <td>Department</td>
+                        <td>{{ $operator->department }}</td>
+                    </tr>
+                    <tr>
+                        <td>Home phone</td>
+                        <td>{{ $operator->home_phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Work phone</td>
+                        <td>{{ $operator->work_phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile phone</td>
+                        <td>{{ $operator->mobile_phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td>{!! nl2br($operator->address) !!}</td>
+                    </tr>
+                    <tr>
                         <td>Created at</td>
                         <td>{{ $operator->created_at }}</td>
                     </tr>
@@ -37,6 +61,15 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="box-header">
+            <h4>Notes</h4>
+        </div>
+        <div class="box-body">
+            {!! nl2br($operator->notes) !!}
         </div>
     </div>
 @endsection

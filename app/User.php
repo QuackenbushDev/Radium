@@ -12,7 +12,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username',
         'name',
         'email',
         'department',
@@ -21,13 +20,10 @@ class User extends Authenticatable
         'work_phone',
         'mobile_phone',
         'address',
-        'city',
-        'state',
-        'country',
-        'zip',
         'notes',
-        'portal_enabled',
         'password',
+        'enable_daily_summary',
+        'enable_monthly_summary',
     ];
 
     /**
