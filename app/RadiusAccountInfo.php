@@ -25,6 +25,8 @@ class RadiusAccountInfo extends Model {
         'notes',
         'enable_portal',
         'enable_password_resets',
+        'enable_daily_summary',
+        'enable_monthly_summary',
     ];
 
     /**

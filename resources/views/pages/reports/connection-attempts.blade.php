@@ -1,10 +1,10 @@
 @extends("master")
 
-@section('pageTitle', 'Online User Report')
+@section('pageTitle', 'Connection Attempts')
 @section('pageDescription', '')
 @push('breadcrumbs')
-<li>Reports</li>
-<li><a href="{{ route('report::onlineUsers') }}"><i class="fa fa-lock"></i> Online Users</a></li>
+    <li>Reports</li>
+    <li><a href="{{ route('report::onlineUsers') }}"><i class="fa fa-lock"></i> Connection Attempts</a></li>
 @endpush
 
 @section("content")

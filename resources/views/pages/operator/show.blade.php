@@ -52,6 +52,26 @@
                         <td>{!! nl2br($operator->address) !!}</td>
                     </tr>
                     <tr>
+                        <td>Receive usage daily summary</td>
+                        <td>
+                            @if($operator->enable_daily_summary)
+                                ENABLED
+                            @else
+                                DISABLED
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Receive usage monthly summary</td>
+                        <td>
+                            @if($operator->enable_monthly_summary)
+                                ENABLED
+                            @else
+                                DISABLED
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Created at</td>
                         <td>{{ $operator->created_at }}</td>
                     </tr>

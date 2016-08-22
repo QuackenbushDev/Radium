@@ -3,17 +3,22 @@
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title pull-left">{{ $title }}</h3>
-                @if (isset($createLink))
-                    <a href="{{ $createLink }}">{{ $createLinkName }}</a>
-                @endif
-
-                @if(!isset($disableFilter))
-                    {!! BootForm::open()->action($filterAction)->get() !!}
-                    <div class="pull-right">
-                        <label><input name="filter" type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}" value="{{ $filterValue }}"></label>
+                <div class="row-fluid">
+                    <div class="col-sm-6">
+                        @if (isset($createLink))
+                            <a class="btn btn-sm btn-default" href="{{ $createLink }}">{{ $createLinkName }}</a>
+                        @endif
                     </div>
-                    {!! BootForm::close() !!}
-                @endif
+                    <div class="col-sm-6">
+                        @if(!isset($disableFilter))
+                            {!! BootForm::open()->action($filterAction)->get() !!}
+                            <div class="pull-right">
+                                <label><input name="filter" type="search" class="form-control input-sm" placeholder="{{ $filterPlaceHolder }}" value="{{ $filterValue }}"></label>
+                            </div>
+                            {!! BootForm::close() !!}
+                        @endif
+                    </div>
+                </div>
             </div>
             <div class="box-body">
                 <div class="dataTables_wrapper form-inline dt-bootstrap">

@@ -60,6 +60,19 @@ class OperatorController extends Controller {
         $operator = new User();
         $operator->name = $request->input('name');
         $operator->email = $request->input('email');
+        $operator->company = $request->input('company', '');
+        $operator->department = $request->input('department', '');
+        $operator->home_phone = $request->input('home_phone', '');
+        $operator->work_phone = $request->input('work_phone', '');
+        $operator->mobile_phone = $request->input('mobile_phone', '');
+        $operator->address = $request->input('address', '');
+        $operator->notes = $request->input('notes', '');
+
+        $enable_daily_summary = $request->input('enable_daily_summary', null);
+        $operator->enable_daily_summary = ($enable_daily_summary !== null) ? true : false;
+
+        $enable_monthly_summary = $request->input('enable_monthly_summary', null);
+        $operator->enable_monthly_summary = ($enable_monthly_summary !== null) ? true : false;
 
         if ($request->input('password', '') !== '') {
             $operator->password = bcrypt($request->input('password'));
@@ -74,6 +87,19 @@ class OperatorController extends Controller {
         $operator = User::find($id);
         $operator->name = $request->input('name');
         $operator->email = $request->input('email');
+        $operator->company = $request->input('company', '');
+        $operator->department = $request->input('department', '');
+        $operator->home_phone = $request->input('home_phone', '');
+        $operator->work_phone = $request->input('work_phone', '');
+        $operator->mobile_phone = $request->input('mobile_phone', '');
+        $operator->address = $request->input('address', '');
+        $operator->notes = $request->input('notes', '');
+
+        $enable_daily_summary = $request->input('enable_daily_summary', null);
+        $operator->enable_daily_summary = ($enable_daily_summary !== null) ? true : false;
+
+        $enable_monthly_summary = $request->input('enable_monthly_summary', null);
+        $operator->enable_monthly_summary = ($enable_monthly_summary !== null) ? true : false;
 
         if ($request->input('password', '') !== '') {
             $operator->password = bcrypt($request->input('password'));

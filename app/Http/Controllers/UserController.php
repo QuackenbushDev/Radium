@@ -114,6 +114,8 @@ class UserController extends Controller {
 
         $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
         $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
+        $enableDailySummary = ($request->input('userinfo_enable_daily_summary', '0') === '1') ? true : false;
+        $enableMonthlySummary = ($request->input('userinfo_enable_monthly_summary', '0') === '1') ? true : false;
 
         $userInfoRecord = RadiusAccountInfo::create([
                 'username'               => $user->username,
@@ -127,6 +129,8 @@ class UserController extends Controller {
                 'address'                => $request->input('userinfo_address'),
                 'enable_portal'          => $enablePortal,
                 'enable_password_resets' => $enablePasswordResets,
+                'enable_daily_summary'   => $enableDailySummary,
+                'enable_monthly_summary' => $enableMonthlySummary,
             ]);
 
         foreach($request->input('user_groups', []) as $group) {
@@ -150,6 +154,8 @@ class UserController extends Controller {
 
         $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
         $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
+        $enableDailySummary = ($request->input('userinfo_enable_daily_summary', '0') === '1') ? true : false;
+        $enableMonthlySummary = ($request->input('userinfo_enable_monthly_summary', '0') === '1') ? true : false;
 
         $userInfoRecord = RadiusAccountInfo::where('username', '=', $userRecord->username)
             ->update([
@@ -163,6 +169,8 @@ class UserController extends Controller {
                 'address'                => $request->input('userinfo_address'),
                 'enable_portal'          => $enablePortal,
                 'enable_password_resets' => $enablePasswordResets,
+                'enable_daily_summary'   => $enableDailySummary,
+                'enable_monthly_summary' => $enableMonthlySummary,
             ]);
 
         $newGroupList = $request->input('user_groups', []);

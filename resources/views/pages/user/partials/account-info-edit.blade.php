@@ -38,8 +38,32 @@
                 {!! BootForm::text('Mobile Phone', 'userinfo_mobile_phone')->value($userInfo->mobile_phone) !!}
                 {!! BootForm::text('Office Phone', 'userinfo_office_phone')->value($userInfo->office_phone) !!}
                 {!! BootForm::textArea('Address', 'userinfo_address')->rows(3)->value($userInfo->address) !!}
-                {!! BootForm::checkBox('Enable Portal', 'userinfo_enable_portal') !!}
-                {!! BootForm::checkBox('Enable self-service password resets', 'userinfo_enable_password_resets') !!}
+                <!--{!! BootForm::checkBox('Enable Portal', 'userinfo_enable_portal') !!}
+                {!! BootForm::checkBox('Enable self-service password resets', 'userinfo_enable_password_resets') !!}-->
+
+                @if ($userInfo->enable_portal)
+                    {!! BootForm::checkBox('Enable Portal', 'userinfo_enable_portal')->checked() !!}
+                @else
+                    {!! BootForm::checkBox('Enable Portal', 'userinfo_enable_portal') !!}
+                @endif
+
+                @if ($userInfo->enable_password_resets)
+                    {!! BootForm::checkBox('Enable self-service password resets', 'userinfo_enable_password_resets')->checked() !!}
+                @else
+                    {!! BootForm::checkBox('Enable self-service password resets', 'userinfo_enable_password_resets') !!}
+                @endif
+
+                @if ($userInfo->enable_daily_summary)
+                    {!! BootForm::checkbox('Enable daily summary', 'userinfo_enable_daily_summary')->checked() !!}
+                @else
+                    {!! BootForm::checkbox('Enable daily summary', 'userinfo_enable_daily_summary') !!}
+                @endif
+
+                @if ($userInfo->enable_monthly_summary)
+                    {!! BootForm::checkbox('Enable monthly summary', 'userinfo_enable_monthly_summary')->checked() !!}
+                @else
+                    {!! BootForm::checkbox('Enable monthly summary', 'userinfo_enable_monthly_summary') !!}
+                @endif
             </div>
         </div>
     </div>

@@ -35,6 +35,19 @@
                     {!! BootForm::text('Work Phone', 'work_phone')->value($operator->work_phone) !!}
                     {!! BootForm::text('Mobile Phone', 'mobile_phone')->value($operator->mobile_phone) !!}
                     {!! BootForm::textArea('Address', 'address')->rows(2)->value($operator->address) !!}
+
+                    @if ($operator->enable_daily_summary)
+                        {!! BootForm::checkbox('Enable daily summary', 'enable_daily_summary')->checked() !!}
+                    @else
+                        {!! BootForm::checkbox('Enable daily summary', 'enable_daily_summary') !!}
+                    @endif
+
+                    @if ($operator->enable_monthly_summary)
+                        {!! BootForm::checkbox('Enable monthly summary', 'enable_monthly_summary')->checked() !!}
+                    @else
+                        {!! BootForm::checkbox('Enable monthly summary', 'enable_monthly_summary') !!}
+                    @endif
+
                     {!! BootForm::textArea('Notes', 'notes')->value($operator->notes) !!}
                 </div>
             </div>
