@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ProxyWrite::class,
+        Commands\OperatorDailyEmailSummary::class,
+        Commands\OperatorMonthlyEmailSummary::class,
     ];
 
     /**
@@ -24,6 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('email:dailysummary')
+            ->daily();
+        $schedule->command('email:monthlysummary')
+            ->daily();
+
         // $schedule->command('inspire')
         //          ->hourly();
     }
