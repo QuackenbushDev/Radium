@@ -26,10 +26,11 @@ angular.module('attributeApp', [])
         $scope.deleted = [];
 
         // new attribute options
-        $scope.vendor = '';
+        $scope.vendor = 'acc';
         $scope.attribute = '';
         $scope.op = '';
         $scope.value = '';
+        $scope.valuesCount = 0;
 
         // @TODO: Find a better way to handle this to only load the dictionary once for both check/reply.
         $scope.timer = setInterval(function() {
@@ -58,12 +59,22 @@ angular.module('attributeApp', [])
             });
         };
 
+        $scope.handleAttributeSelection = function() {
+            $scope.valuesCount = $scope.attribute.values.length;
+            console.log($scope.valuesCount);
+        };
+
         $scope.addAttribute = function() {
+            var value = $scope.value;
+            if ($scope.valuesCount > 0) {
+                value = value.value;
+            }
+
             $scope.attributes.push({
                 id: 0,
-                attribute: $scope.attribute,
+                attribute: $scope.attribute.attribute,
                 op: $scope.op,
-                value: $scope.value
+                value: value
             });
 
             $scope.vendor = '';

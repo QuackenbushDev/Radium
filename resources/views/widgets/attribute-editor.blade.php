@@ -1,4 +1,4 @@
-<div class="col-md-6 col-sm-12"
+<div class="col-md-12 col-sm-12"
      ng-controller="AttributeEditorController"
      ng-init="init('{{ $type }}', '{{ $username }}', '{{ $groupName }}')"
 >
@@ -70,7 +70,8 @@
 
         <select class="input-sm"
                 ng-model="attribute"
-                ng-options="entry for entry in dictionary[vendor]"
+                ng-options="attribute for (attribute, attributeValues) in dictionary[vendor]"
+                ng-change="handleAttributeSelection()"
         ></select>
 
         <select class="input-sm" ng-model="op">
@@ -90,7 +91,20 @@
             <option>!*</option>
         </select>
 
-        <input class="input-sm" type="text" ng-model="value" />
+        <input class="input-sm"
+               type="text"
+               ng-model="value"
+               ng-show="valuesCount == 0"
+        >
+
+        <select class="input-sm"
+                ng-model="value"
+                ng-options="value.value for value in attribute.values"
+                ng-show="valuesCount > 0"
+        >
+            <option></option>
+            <option>OTHER</option>
+        </select>
 
         <a class="btn btn-sm btn-success" ng-click="addAttribute()">Add Attribute</a>
     </div>

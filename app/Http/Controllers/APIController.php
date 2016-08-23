@@ -113,14 +113,17 @@ class APIController extends Controller {
         $dictionary = [];
 
         foreach(Dictionary::all() as $entry) {
-            if (!array_key_exists($entry->Vendor, $dictionary)) {
-                $vendors[] = $entry->Vendor;
-                $dictionary[$entry->Vendor] = [];
+            if (!array_key_exists($entry->vendor, $dictionary)) {
+                $vendors[] = $entry->vendor;
+                $dictionary[$entry->vendor] = [];
             }
 
-            if (!in_array($entry->Attribute, $dictionary[$entry->Vendor])) {
-                $dictionary[$entry->Vendor][] = $entry->Attribute;
-            }
+            $dictionary[$entry->vendor][$entry->attribute] = [
+                'attribute' => $entry->attribute,
+                'type' => $entry->attribute_type,
+                'length' => $entry->length,
+                'values' => json_decode($entry->values),
+            ];
         }
 
         return response()->json([
