@@ -14,14 +14,29 @@ class Dictionary extends Model {
         'values',
     ];
 
-//    public function getValuesAttribute(){
-//        return json_decode($this->attributes['values']);
-//    }
-//
-//    public function setValuesAttribute($value) {
-//        $this->attributes['values'] = json_encode($value);
-//    }
+    /**
+     * Automatically decode the values value as an array.
+     *
+     * @return mixed
+     */
+    public function getValuesAttribute(){
+        return json_decode($this->attributes['values']);
+    }
 
+    /**
+     * Automatically encode the new values value as json.
+     *
+     * @param $value
+     */
+    public function setValuesAttribute($value) {
+        $this->attributes['values'] = json_encode($value);
+    }
+
+    /**
+     * Retrieves the dictionary version.
+     *
+     * @return mixed
+     */
     public static function dictionaryVersion() {
         return Storage::get('dictionaryVersion.txt');
     }

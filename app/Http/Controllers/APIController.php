@@ -127,7 +127,7 @@ class APIController extends Controller {
                 'attribute' => $entry->attribute,
                 //'type' => $entry->attribute_type,
                 //'length' => $entry->length,
-                'values' => json_decode($entry->values),
+                'values' => $entry->values,
             ];
         }
 

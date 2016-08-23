@@ -5,6 +5,9 @@ use App\Dictionary;
 
 class DictionarySeeder extends Seeder
 {
+    private $dictionary;
+    private $vendor;
+
     /**
      * Run the database seeds.
      *
@@ -28,7 +31,15 @@ class DictionarySeeder extends Seeder
                 continue;
             }
 
+            if (strpos($file, "dictionary") === false) {
+                echo "Skipping non dictionary file " . $file . ". If this is a mistake"
+                    ." please make sure the filename has dictionary in it.\r\n";
+                continue;
+            }
+
+            $this->dictionary = $file;
             $dictionary = $this->processDictionary($file);
+
             foreach($dictionary['vendors'] as $vendor) {
                 if (array_key_exists($vendor, $dictionaries)) {
                     $dictionaries[$vendor] = array_merge($dictionary['attributes'][$vendor], $dictionaries[$vendor]);
@@ -55,7 +66,7 @@ class DictionarySeeder extends Seeder
                     'attribute'      => $attribute,
                     'attribute_type' => $values['type'],
                     'length'         => $values['length'],
-                    'values'         => json_encode($values['values']),
+                    'values'         => $values['values'],
                 ]);
                 $count++;
             }
@@ -64,7 +75,7 @@ class DictionarySeeder extends Seeder
         echo "Number of dictionaries: " . count($dictionaries) . "\r\n";
         echo "Number of created attributes: " . $count . "\r\n";
         echo "Number of value only attributes: " . $fakeAttributes . "\r\n";
-        echo "New dictionary table created imported.\r\n";
+        echo "Dictionary compilation finished.\r\n";
     }
 
     /**
@@ -100,7 +111,7 @@ class DictionarySeeder extends Seeder
         ];
         $match = '/' . implode("|", $patterns) . '/s';
         $defaultVendor = $this->getDictionaryVendorName($fileName);
-        $vendor = $defaultVendor;
+        $this->vendor = $vendor = $defaultVendor;
         $vendors = [$vendor];
         $attributes = [
             $vendor => []
@@ -123,7 +134,7 @@ class DictionarySeeder extends Seeder
             }
 
             if (preg_match('/^END-VENDOR/s', $line)) {
-                $vendor = $defaultVendor;
+                $this->vendor = $vendor = $defaultVendor;
                 continue;
             }
 
@@ -205,6 +216,12 @@ class DictionarySeeder extends Seeder
             }
         }
 
+        if ($count >= 2 && empty($response['type'])) {
+            echo "ERROR: Could not successfully parse attribute line!\r\n";
+            echo "Dictionary: " . $this->dictionary . "\r\n";
+            echo "Vendor: " . $this->vendor . "\r\n";
+        }
+
         return $response;
     }
 
@@ -244,6 +261,12 @@ class DictionarySeeder extends Seeder
                     $count++;
                     break;
             }
+        }
+
+        if ($count >= 2 && empty($response['value'])) {
+            echo "ERROR: Could not successfully parse value line!\r\n";
+            echo "Dictionary: " . $this->dictionary . "\r\n";
+            echo "Vendor: " . $this->vendor . "\r\n";
         }
 
         return $response;
