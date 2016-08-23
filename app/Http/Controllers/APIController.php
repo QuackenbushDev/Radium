@@ -120,8 +120,8 @@ class APIController extends Controller {
 
             $dictionary[$entry->vendor][$entry->attribute] = [
                 'attribute' => $entry->attribute,
-                'type' => $entry->attribute_type,
-                'length' => $entry->length,
+                //'type' => $entry->attribute_type,
+                //'length' => $entry->length,
                 'values' => json_decode($entry->values),
             ];
         }

@@ -3,15 +3,22 @@ var dictionary = {};
 var attributesLoaded = false;
 
 $(document).ready(function() {
+    if (localStorage['dictionary'] != undefined) {
+        dictionary = JSON.parse(localStorage.getItem('dictionary'));
+        vendors = JSON.parse(localStorage.getItem('vendors'));
+        attributesLoaded = true;
+    }
+
     if (!attributesLoaded) {
         attributesLoaded = true;
 
         $.ajax({
             url: '/api/vendorAttributes'
         }).done(function(data) {
-            console.log(data);
             dictionary = data.dictionary;
             vendors = data.vendors;
+            localStorage.setItem('dictionary', JSON.stringify(data.dictionary));
+            localStorage.setItem('vendors', JSON.stringify(data.vendors));
         });
     }
 });
@@ -26,7 +33,7 @@ angular.module('attributeApp', [])
         $scope.deleted = [];
 
         // new attribute options
-        $scope.vendor = 'acc';
+        $scope.vendor = '';
         $scope.attribute = '';
         $scope.op = '';
         $scope.value = '';
