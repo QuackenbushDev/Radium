@@ -58,6 +58,11 @@ return [
             'driver' => 'local',
             'root'   => env('RADIUM_CONFIG_FOLDER', ''),
         ],
+
+        'dictionary' => [
+            'driver' => 'local',
+            'root'   => env('RADIUM_DICTIONARY_FOLDER', ''),
+        ]
     ],
 
 ];

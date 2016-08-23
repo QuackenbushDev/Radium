@@ -3,34 +3,48 @@
 use Illuminate\Database\Eloquent\Model;
 
 class Dictionary extends Model {
-    protected $table = 'dictionary';
+    protected $table = 'radium_dictionary';
     public $timestamps = false;
 
     public $fillable = [
-        'Type',
-        'Attribute',
-        'Value',
-        'Format',
-        'Vendor',
-        'RecommendedOP',
-        'RecommendedTable',
-        'RecommendedHelper',
-        'RecommendedTooltip'
+        'vendor',
+        'attribute',
+        'attribute_type',
+        'values',
     ];
 
+    public function getValueAttribute(){
+        return json_decode($this->attributes['value']);
+    }
+
+    public function setValueAttribute($value) {
+        $this->attributes['value'] = json_encode($value);
+    }
+
+    /**
+     * Get a list of vendors and return them as an array
+     *
+     * @return array
+     */
     public static function vendorList() {
         return array_flatten(
             self::select(['vendor'])
-                ->groupBY('Vendor')
+                ->groupBY('vendor')
                 ->get()
                 ->toArray()
         );
     }
 
+    /**
+     * Get a list of vendor attributes and return them as an array.
+     *
+     * @param $vendor
+     * @return array
+     */
     public static function vendorAttributes($vendor) {
         return array_flatten(
-            self::select(['Attribute'])
-                ->where('Vendor', $vendor)
+            self::select(['attribute'])
+                ->where('vendor', $vendor)
                 ->get()
                 ->toArray()
         );
