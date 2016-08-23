@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-3">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                        <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                        <a class="btn btn-link text-black" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
                     </div>
                 </div>
             </form>

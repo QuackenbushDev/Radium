@@ -29,4 +29,18 @@ class PasswordController extends Controller
     {
         $this->middleware($this->guestMiddleware());
     }
+
+    /**
+     * Override the default redirectPath() function to redirect to /dashboard upon successful
+     * password reset.
+     *
+     * @return string
+     */
+    public function redirectPath() {
+        if (property_exists($this, 'redirectPath')) {
+            return $this->redirectPath;
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/dashboard';
+    }
 }

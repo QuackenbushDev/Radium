@@ -7,6 +7,9 @@
   border: none; }
 
 .btn, .btn-success, .btn-danger {
-  color: #FFFFFF !important; }
+  color: #FFFFFF; }
+
+.text-black {
+  color: #000000; }
 
 /*# sourceMappingURL=app.css.map */
