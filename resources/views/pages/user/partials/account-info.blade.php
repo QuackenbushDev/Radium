@@ -2,7 +2,7 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-6">
-                <h3>User Information <a href="{{ route("user::edit", ['id' => $user->id]) }}">(edit)</a></h3>
+                <h3>User Information <a href="{{ route("portal::editProfile", $user->username) }}">(edit)</a></h3>
                 <table class="table table-striped">
                     <tbody>
                         <tr>
@@ -33,12 +33,14 @@
                         </tr>
                     </tbody>
                 </table>
-                <a id="testUserConnectivity" href="#" class="btn btn-lg btn-success">Test Connectivity</a>
-                <a id="disconnectUser" href="#" class="btn btn-lg btn-danger">Disconnect User</a>
-                @if(in_array($disabledGroupName, $groups))
-                    <a href="{{ route('user::enable', $user->id) }}" class="btn btn-lg btn-success">Enable User</a>
-                @else
-                    <a href="{{ route("user::disable", $user->id) }}" class="btn btn-lg btn-danger">Disable User</a>
+                @if (!session()->has('portal_username'))
+                    <a id="testUserConnectivity" href="#" class="btn btn-lg btn-success">Test Connectivity</a>
+                    <a id="disconnectUser" href="#" class="btn btn-lg btn-danger">Disconnect User</a>
+                    @if(in_array($disabledGroupName, $groups))
+                        <a href="{{ route('user::enable', $user->id) }}" class="btn btn-lg btn-success">Enable User</a>
+                    @else
+                        <a href="{{ route("user::disable", $user->id) }}" class="btn btn-lg btn-danger">Disable User</a>
+                    @endif
                 @endif
             </div>
 
@@ -74,26 +76,28 @@
                             <td>Address</td>
                             <td>{{ $userInfo->address }}</td>
                         </tr>
-                        <tr>
-                            <td>Portal Access</td>
-                            <td>
-                                @if ($userInfo->enable_portal)
-                                    ENABLED
-                                @else
-                                    DISABLED
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Allow password resets</td>
-                            <td>
-                                @if ($userInfo->enable_password_resets)
-                                    ENABLED
-                                @else
-                                    DISABLED
-                                @endif
-                            </td>
-                        </tr>
+                        @if(!session()->has('portal_username'))
+                            <tr>
+                                <td>Portal Access</td>
+                                <td>
+                                    @if ($userInfo->enable_portal)
+                                        ENABLED
+                                    @else
+                                        DISABLED
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Allow password resets</td>
+                                <td>
+                                    @if ($userInfo->enable_password_resets)
+                                        ENABLED
+                                    @else
+                                        DISABLED
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                         <tr>
                             <td>Receive usage daily summary</td>
                             <td>

@@ -26,7 +26,7 @@
                 @else
                     <ul class="nav navbar-nav">
                         <li class="user-menu">
-                            <a href="{{ route('portal::profile') }}">
+                            <a href="{{ route('portal::profile', session()->get('portal_username')) }}">
                                 <span class="hidden-xs">{{ session()->get('portal_username') }}</span>
                             </a>
                         </li>

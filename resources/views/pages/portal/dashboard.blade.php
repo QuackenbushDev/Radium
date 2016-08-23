@@ -7,6 +7,38 @@
 @endpush
 
 @section("content")
+    <div class="row">
+        <div class="col-md-4">
+            @include(
+                'pages.user.partials.bandwidth-summary',
+                [
+                    'title' => 'Daily Summary (' . date('M-d') . ')',
+                    'data' => $bandwidthStats['day']
+                ]
+            )
+        </div>
+
+        <div class="col-md-4">
+            @include(
+                'pages.user.partials.bandwidth-summary',
+                [
+                    'title' => 'Monthly (' . date('M Y') . ')',
+                    'data' => $bandwidthStats['month']
+                ]
+            )
+        </div>
+
+        <div class="col-md-4">
+            @include(
+                'pages.user.partials.bandwidth-summary',
+                [
+                    'title' => 'Yearly (' . date('Y') . ')',
+                    'data' => $bandwidthStats['year']
+                ]
+            )
+        </div>
+    </div>
+
     @include(
         'widgets.bandwidth-chat',
         [

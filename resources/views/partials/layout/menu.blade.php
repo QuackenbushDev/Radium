@@ -9,7 +9,7 @@
                     </a>
                 </li>
                 <li class="treeview">
-                    <a href="{{ route('portal::profile') }}">
+                    <a href="{{ route('portal::profile', session()->get('portal_username')) }}">
                         <i class="fa fa-user"></i> <span>Profile</span>
                     </a>
                 </li>
