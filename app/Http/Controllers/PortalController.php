@@ -2,6 +2,7 @@
 
 use App\RadiusAccount;
 use App\RadiusUserGroup;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\RadiusCheck;
 use App\RadiusAccountInfo;
@@ -55,10 +56,17 @@ class PortalController extends Controller {
     }
 
     public function passwordReset() {
-
+        return view()->make('pages.portal.forgot-password');
     }
 
     public function doPasswordReset() {
+    }
+
+    public function changePassword(Request $request, $resetToken) {
+
+    }
+
+    public function doChangePassword(Request $request) {
 
     }
 
