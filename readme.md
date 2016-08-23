@@ -16,9 +16,8 @@ A full featured radius management system for FreeRadius setups using the mysql b
 # Requirements
 * Composer
 * PHP 5.3+
-* MySQL 5.7.8+
+* MySQL 5.7.8+ (for better json support. System falls back to a text column for older versions.)
 * NPM / Gulp (css compilation)
-* Dictionary table from daloradius (see #24 until implemented).
 
 # Installation
 1. Clone Radium into your web director, cd into Radium, git checkout release
