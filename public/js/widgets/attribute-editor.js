@@ -3,24 +3,29 @@ var dictionary = {};
 var attributesLoaded = false;
 
 $(document).ready(function() {
-    if (localStorage['dictionary'] != undefined) {
-        dictionary = JSON.parse(localStorage.getItem('dictionary'));
-        vendors = JSON.parse(localStorage.getItem('vendors'));
-        attributesLoaded = true;
-    }
+    $.ajax({
+        url: '/api/dictionaryVersion'
+    }).done(function(data) {
+        if (localStorage.getItem('dictionaryVersion') == data) {
+            dictionary = JSON.parse(localStorage.getItem('dictionary'));
+            vendors = JSON.parse(localStorage.getItem('vendors'));
+            attributesLoaded = true;
+        } else {
+            if (!attributesLoaded) {
+                attributesLoaded = true;
+                localStorage.setItem('dictionaryVersion', data);
 
-    if (!attributesLoaded) {
-        attributesLoaded = true;
-
-        $.ajax({
-            url: '/api/vendorAttributes'
-        }).done(function(data) {
-            dictionary = data.dictionary;
-            vendors = data.vendors;
-            localStorage.setItem('dictionary', JSON.stringify(data.dictionary));
-            localStorage.setItem('vendors', JSON.stringify(data.vendors));
-        });
-    }
+                $.ajax({
+                    url: '/api/vendorAttributes'
+                }).done(function(data) {
+                    dictionary = data.dictionary;
+                    vendors = data.vendors;
+                    localStorage.setItem('dictionary', JSON.stringify(data.dictionary));
+                    localStorage.setItem('vendors', JSON.stringify(data.vendors));
+                });
+            }
+        }
+    });
 });
 
 angular.module('attributeApp', [])

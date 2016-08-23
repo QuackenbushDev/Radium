@@ -16,6 +16,8 @@ class DictionarySeeder extends Seeder
             DB::statement("TRUNCATE TABLE  `radium_dictionary`");
         }
 
+        Storage::put('dictionaryVersion.txt', md5(date('Y-m-d_g-i-s')));
+
         $exclude = explode("|", config('radium.exclude_dictionaries'));
         $files = Storage::disk('dictionary')->files();
         $dictionaries = [];

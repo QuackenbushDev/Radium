@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class Dictionary extends Model {
     protected $table = 'radium_dictionary';
@@ -13,12 +14,16 @@ class Dictionary extends Model {
         'values',
     ];
 
-    public function getValueAttribute(){
-        return json_decode($this->attributes['value']);
-    }
+//    public function getValuesAttribute(){
+//        return json_decode($this->attributes['values']);
+//    }
+//
+//    public function setValuesAttribute($value) {
+//        $this->attributes['values'] = json_encode($value);
+//    }
 
-    public function setValueAttribute($value) {
-        $this->attributes['value'] = json_encode($value);
+    public static function dictionaryVersion() {
+        return Storage::get('dictionaryVersion.txt');
     }
 
     /**

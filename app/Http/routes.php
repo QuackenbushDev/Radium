@@ -102,6 +102,7 @@ Route::group(['prefix' => 'api', 'as' => 'api::', 'middleware' => ['api.auth']],
     Route::get('/bandwidthUsage', ['as' => 'bandwidthUsage', 'uses' => 'APIController@bandwidthUsage']);
     Route::get('/connectionCount', ['as' => 'connectionCount', 'uses' => 'APIController@connectionCount']);
     Route::get('/vendorAttributes', ['as' => 'vendorAttributes', 'uses' => 'APIController@vendorAttributes']);
+    Route::get('/dictionaryVersion', ['as' => 'dictionaryVersion', 'uses' => 'APIController@dictionaryVersion']);
     Route::get('/attributes', ['as' => 'attributes', 'uses' => 'APIController@attributes']);
 });
 

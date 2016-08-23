@@ -7,6 +7,7 @@ use App\RadiusGroupCheck;
 use App\RadiusGroupReply;
 use App\RadiusReply;
 use Illuminate\Http\Request;
+use Storage;
 
 class APIController extends Controller {
     /**
@@ -100,6 +101,10 @@ class APIController extends Controller {
         }
 
         return response()->json($data);
+    }
+
+    public function dictionaryVersion() {
+        return response(Storage::get('dictionaryVersion.txt'));
     }
 
     /**
