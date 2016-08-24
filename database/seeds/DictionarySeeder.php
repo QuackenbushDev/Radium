@@ -193,11 +193,6 @@ class DictionarySeeder extends Seeder
                 continue;
             }
 
-            $tmp = $this->splitLine($value);
-            if (count($tmp) > 1) {
-                $value = end($tmp);
-            }
-
             switch($count) {
                 case 0:
                     $response['attribute'] = $value;
@@ -279,7 +274,7 @@ class DictionarySeeder extends Seeder
      * @return array
      */
     private function splitLine($line) {
-        $line = str_replace("\t", " ", $line);
-        return explode(" ", $line);
+        $line = str_replace(" ", "\t", $line);
+        return explode("\t", $line);
     }
 }
