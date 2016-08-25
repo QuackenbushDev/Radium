@@ -35,6 +35,11 @@ return [
     'nas_port' => env('RADIUM_NAS_PORT', ''),
 
     /**
+     * Default value for the nas type when creating new nas entries.
+     */
+    'nas_default_type' => env('RADIUM_DEFAULT_NAS_TYPE', ''),
+
+    /**
      * The system path to the FreeRadius configuration folder.
      */
     'config_folder' => env('RADIUM_CONFIG_FOLDER', ''),
@@ -57,5 +62,4 @@ return [
      * existing one is updated.
      */
     'proxy_file' => env('RADIUM_PROXY_FILE', ''),
-
 ];

@@ -69,6 +69,7 @@ class NasController extends Controller {
 
     public function create() {
         $nas = new Nas();
+        $nas->type = config('radium.nas_default_type');
 
         return view()->make(
             'pages.nas.edit',
