@@ -59,8 +59,15 @@ class RadiusAccount extends Model {
      * @return mixed
      */
     public static function getConnections($timePeriod = 'day', $timeValue = null, $groupByUsername = false, $username = null) {
-        $sql = "username, count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total";
-        $query = self::selectRaw($sql);
+        $columns = 'username'
+            . ',COUNT(acctstarttime) AS connections'
+            . ',DAY(acctstarttime) AS day'
+            . ',MONTH(acctstarttime) AS month'
+            . ',YEAR(acctstarttime) AS year'
+            . ',SUM(acctinputoctets) AS acctinputoctets'
+            . ',SUM(acctoutputoctets) AS acctoutputoctets'
+            . ',SUM(acctinputoctets + acctoutputoctets) AS total';
+        $query = self::selectRaw($columns);
 
         if ($timeValue !== null) {
             $query->having($timePeriod, '=', $timeValue);
@@ -90,7 +97,10 @@ class RadiusAccount extends Model {
      * @return array
      */
     public static function connectionCountSummary($timeSpan, $timeValue, $username, $nasIP) {
-        $sql = 'count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year';
+        $sql = 'COUNT(acctstarttime) AS connections'
+            . ',DAY(acctstarttime) AS day'
+            . ',MONTH(acctstarttime) AS month'
+            . ',YEAR(acctstarttime) AS year';
         $query = self::selectRaw($sql)
             ->groupBy($timeSpan);
 
@@ -143,8 +153,12 @@ class RadiusAccount extends Model {
      * @return array
      */
     public static function bandwidthUsage($timeSpan, $timeValue = null, $username = null, $nasIP = null) {
-        $sql = "DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) as upload, sum(acctoutputoctets) as download";
-        $query = self::selectRaw($sql);
+        $columns = 'DAY(acctstarttime) AS day'
+            . ',MONTH(acctstarttime) AS month'
+            . ',YEAR(acctstarttime) AS year'
+            . ',SUM(acctinputoctets) AS upload'
+            . ',SUM(acctoutputoctets) AS download';
+        $query = self::selectRaw($columns);
 
         if ($username !== null) $query->where('username', $username);
         if ($nasIP !== null) $query->where('nasipaddress', $nasIP);
@@ -232,9 +246,20 @@ class RadiusAccount extends Model {
      * @return mixed
      */
     public static function onlineUsers() {
-        $sql = 'radacctid, username, framedipaddress, nasipaddress, sum(acctsessiontime) as acctsessiontime, count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total';
+        $columns = 'radacctid'
+            . ',username'
+            . ',framedipaddress'
+            . ',nasipaddress'
+            . ',SUM(acctsessiontime) AS acctsessiontime'
+            . ',COUNT(acctstarttime) AS connections'
+            . ',DAY(acctstarttime) AS day'
+            . ',MONTH(acctstarttime) AS month'
+            . ',YEAR(acctstarttime) AS year'
+            . ',SUM(acctinputoctets) AS acctinputoctets'
+            . ',SUM(acctoutputoctets) AS acctoutputoctets'
+            . ',SUM(acctinputoctets + acctoutputoctets) AS total';
 
-        $query = self::selectRaw($sql)
+        $query = self::selectRaw(implode(',', $columns))
             ->whereRaw('AcctStopTime IS NULL')
             ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
             ->groupBy('username', 'acctstarttime');
@@ -275,19 +300,17 @@ class RadiusAccount extends Model {
      * @return mixed
      */
     public static function topUsers($nasIP = null, $acctstattime = null, $acctstoptime = null, $limit = 15) {
-        $columns = [
-            'username',
-            'nasipaddress',
-            'MIN(acctstarttime) as acctstarttime',
-            'MAX(acctstoptime) as acctstoptime',
-            'SUM(acctsessiontime) as acctsessiontime',
-            'SUM(acctoutputoctets) as download',
-            'SUM(acctinputoctets) as upload',
-            'SUM(acctoutputoctets + acctinputoctets) as total',
-            'count(acctsessiontime) as connections'
-        ];
+        $columns = 'username'
+            . ',nasipaddress'
+            . ',MIN(acctstarttime) as acctstarttime'
+            . ',MAX(acctstoptime) as acctstoptime'
+            . ',SUM(acctsessiontime) as acctsessiontime'
+            . ',SUM(acctoutputoctets) as download'
+            . ',SUM(acctinputoctets) as upload'
+            . ',SUM(acctoutputoctets + acctinputoctets) as total'
+            . ',COUNT(acctsessiontime) as connections';
 
-        $query = self::selectRaw(implode(", ", $columns))
+        $query = self::selectRaw($columns)
             ->orderBy('total', 'desc')
             ->groupBy('username')
             ->limit($limit);
