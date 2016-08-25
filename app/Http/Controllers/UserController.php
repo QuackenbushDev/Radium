@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use App\RadiusAccount;
@@ -358,5 +359,16 @@ class UserController extends Controller {
         $request->session()->flash('alert-class', 'alert-success');
 
         return redirect(route('user::show', $user->id));
+    }
+
+    private function hashPassword($passwordType, $password) {
+        switch($passwordType) {
+            case 'Crypt-Password':
+                return crypt($password, Str::random());
+
+            default:
+            case 'Cleartext-Password':
+                return $password;
+        }
     }
 }

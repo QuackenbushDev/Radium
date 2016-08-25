@@ -12,7 +12,7 @@
         <div class="box-header">
             <h4>Filters</h4>
         </div>
-        <div class="box-body">
+        <div class="box-body filter">
             {!! BootForm::open()->action(route('report::accounting'))->get()->addClass('form-inline') !!}
             {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
             {!! BootForm::text('Client IP', 'framedipaddress')->value($filter['framedipaddress']) !!}
@@ -20,7 +20,7 @@
             {!! BootForm::text('Date Start', 'acctstarttime')->value($filter['acctstarttime']) !!}
             {!! BootForm::text('Date Stop', 'acctstoptime')->value($filter['acctstoptime']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
-            {!! BootForm::close() !!}<br />
+            {!! BootForm::close() !!}
         </div>
     </div>
 
@@ -29,7 +29,7 @@
         [
             'title'             => '',
             'disableFilter'     => true,
-            'headers'           => ['ID', 'Username', 'IP Address', 'Start Time', 'Stop Time', 'Session Time', 'IN', 'OUT', 'Termination', 'NAS IP Address'],
+            'headers'           => ['ID', 'Username', 'IP Address', 'Start Time', 'Stop Time', 'Session Time', 'Upload', 'Download', 'Termination', 'NAS IP Address'],
             'dataSet'           => $accountingList,
             'dataPartial'       => 'pages.reports.partials.accounting-table-data',
         ]

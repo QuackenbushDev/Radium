@@ -12,14 +12,14 @@
         <div class="box-header">
             <h4>Filters</h4>
         </div>
-        <div class="box-body">
+        <div class="box-body filter">
             {!! BootForm::open()->action(route('report::connectionAttempts'))->get()->addClass('form-inline') !!}
             {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
             {!! BootForm::select('Reply', 'reply', ['', 'Access-Accept', 'Access-Reject'])->select($filter['reply']) !!}
             {!! BootForm::text('Date Start', 'datestart')->value($filter['datestart']) !!}
             {!! BootForm::text('Date Stop', 'datestop')->value($filter['datestop']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
-            {!! BootForm::close() !!}<br />
+            {!! BootForm::close() !!}
         </div>
     </div>
 

@@ -10,11 +10,11 @@
                     <td>{{ $data['connections'] }}</td>
                 </tr>
                 <tr>
-                    <td>IN</td>
+                    <td>Up</td>
                     <td>{{ $data['in'] }}</td>
                 </tr>
                 <tr>
-                    <td>OUT</td>
+                    <td>Down</td>
                     <td>{{ $data['out'] }}</td>
                 </tr>
                 <tr>

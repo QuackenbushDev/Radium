@@ -13,7 +13,7 @@
         [
             'title'             => '',
             'disableFilter'     => true,
-            'headers'           => ['ID', 'Username', 'IP Address', 'NAS IP Address', 'Connections', 'Session Time', 'IN', 'OUT', 'Total'],
+            'headers'           => ['ID', 'Username', 'IP Address', 'NAS IP Address', 'Connections', 'Session Time', 'Download', 'Upload', 'Total'],
             'dataSet'           => $onlineUserList,
             'dataPartial'       => 'pages.reports.partials.online-user-table-data',
         ]

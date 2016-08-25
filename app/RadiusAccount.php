@@ -143,7 +143,7 @@ class RadiusAccount extends Model {
      * @return array
      */
     public static function bandwidthUsage($timeSpan, $timeValue = null, $username = null, $nasIP = null) {
-        $sql = "DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) as download, sum(acctoutputoctets) as upload";
+        $sql = "DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) as upload, sum(acctoutputoctets) as download";
         $query = self::selectRaw($sql);
 
         if ($username !== null) $query->where('username', $username);

@@ -12,15 +12,12 @@
         <div class="box-header">
             <h4>Filters</h4>
         </div>
-        <div class="box-body">
+        <div class="box-body filter">
             {!! BootForm::open()->action(route('report::bandwidth'))->get()->addClass('form-inline') !!}
             {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
             {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
-            {!! BootForm::close() !!}<br />
-        </div>
-        <div class="box-footer">
-            <p>Showing report for: username: {{ $filter['username'] }}, nas: {{ $filter['nasipaddress'] }}</p>
+            {!! BootForm::close() !!}
         </div>
     </div>
 

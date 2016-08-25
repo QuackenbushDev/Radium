@@ -12,4 +12,13 @@
 .text-black {
   color: #000000; }
 
+.filter {
+  padding-bottom: 25px; }
+  .filter .form-group:first-child {
+    padding-left: 0; }
+  .filter .form-group {
+    padding-left: 25px; }
+    .filter .form-group label {
+      padding-right: 5px; }
+
 /*# sourceMappingURL=app.css.map */

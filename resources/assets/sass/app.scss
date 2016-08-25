@@ -17,3 +17,19 @@
 .text-black {
   color: #000000;
 }
+
+.filter {
+  padding-bottom: 25px;
+
+  .form-group:first-child {
+    padding-left: 0;
+  }
+
+  .form-group {
+    padding-left: 25px;
+
+    label {
+      padding-right: 5px;
+    }
+  }
+}
