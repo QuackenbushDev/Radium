@@ -115,4 +115,26 @@ class ReportController extends Controller {
             ]
         );
     }
+
+    public function topUsers(Request $request) {
+        $filter = [
+            'nasipaddress'  => $request->input('nasipaddress', ''),
+            'acctstarttime' => $request->input('acctstarttime', ''),
+            'acctstoptime'  => $request->input('acctstoptime', ''),
+        ];
+        $userList = RadiusAccount::topUsers(
+            $filter['nasipaddress'],
+            $filter['acctstarttime'],
+            $filter['acctstoptime'],
+            25
+        )->paginate();
+
+        return view()->make(
+            'pages.reports.top-users',
+            [
+                'userList' => $userList,
+                'filter'   => $filter,
+            ]
+        );
+    }
 }

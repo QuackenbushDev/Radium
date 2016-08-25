@@ -49,6 +49,11 @@
                     </a>
                 </li>
                 <li class="treeview">
+                    <a href="{{ route('report::topUsers') }}">
+                        <i class="fa fa-group"></i> <span>Top Users</span>
+                    </a>
+                </li>
+                <li class="treeview">
                     <a href="{{ route('report::connectionAttempts') }}">
                         <i class="fa fa-lock"></i> <span>Connection Attempts</span>
                     </a>
@@ -63,17 +68,6 @@
                         <i class="fa fa-table"></i> <span>Accounting</span>
                     </a>
                 </li>
-                <!--<li class="header">Graphs</li>
-                <li class="treeview">
-                    <a href="{{ route('graph::user') }}">
-                        <i class="fa fa-user"></i> <span>User</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="{{ route('graph::statistics') }}">
-                        <i class="fa fa-pie-chart"></i> <span>Statistics</span>
-                    </a>
-                </li>-->
                 <li class="header">Admin</li>
                 <li class="treeview">
                     <a href="{{ route('operator::index') }}">

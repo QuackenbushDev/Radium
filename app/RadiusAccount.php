@@ -264,4 +264,46 @@ class RadiusAccount extends Model {
             ->where('nasipaddress', $nasIP)
             ->limit($limit);
     }
+
+    /**
+     * Retrieves the top users for the specified filter.
+     *
+     * @param string $nasIP
+     * @param string $acctstattime
+     * @param string $acctstoptime
+     * @param int $limit
+     * @return mixed
+     */
+    public static function topUsers($nasIP = null, $acctstattime = null, $acctstoptime = null, $limit = 15) {
+        $columns = [
+            'username',
+            'nasipaddress',
+            'MIN(acctstarttime) as acctstarttime',
+            'MAX(acctstoptime) as acctstoptime',
+            'SUM(acctsessiontime) as acctsessiontime',
+            'SUM(acctoutputoctets) as download',
+            'SUM(acctinputoctets) as upload',
+            'SUM(acctoutputoctets + acctinputoctets) as total',
+            'count(acctsessiontime) as connections'
+        ];
+
+        $query = self::selectRaw(implode(", ", $columns))
+            ->orderBy('total', 'desc')
+            ->groupBy('username')
+            ->limit($limit);
+
+        if (!empty($nasIP)) {
+            $query->where("nasipaddress", 'LIKE', '%' . $nasIP . '%');
+        }
+
+        if (!empty($acctstattime)) {
+            $query->where('acctstarttime', '>=', $acctstattime);
+        }
+
+        if (!empty($acctstoptime)) {
+            $query->where('acctstoptime', '<=', $acctstoptime);
+        }
+
+        return $query;
+    }
 }

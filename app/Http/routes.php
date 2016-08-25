@@ -95,6 +95,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/bandwidth', ['as' => 'bandwidth', 'uses' => 'ReportController@bandwidth']);
         Route::get('/onlineUsers', ['as' => 'onlineUsers', 'uses' => 'ReportController@onlineUsers']);
         Route::get('/connectionAttempts', ['as' => 'connectionAttempts', 'uses' => 'ReportController@connectionAttempts']);
+        Route::get('/topUsers', ['as' => 'topUsers', 'uses' => 'ReportController@topUsers']);
     });
 });
 
