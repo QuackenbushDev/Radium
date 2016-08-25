@@ -208,6 +208,24 @@ class RadiusAccount extends Model {
         return ($query->count() > 0) ? true : false;
     }
 
+
+    /**
+     * Retrieves a list of online sessions for a user. This is used for the disconnect command.
+     *
+     * @param $username
+     * @return mixed
+     */
+    public static function getOnlineUserSessions($username) {
+        $query = self::select('username')
+            ->whereRaw('acctstoptime IS NULL')
+            ->where('username', $username)
+            ->orWhere('acctstoptime', '0000-00-00 00:00:00')
+            ->where('username', $username)
+            ->get();
+
+        return $query;
+    }
+
     /**
      * returns a list of online users.
      *

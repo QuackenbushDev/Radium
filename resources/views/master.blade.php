@@ -61,7 +61,7 @@
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            <b>Version</b> 0.1.1
+            <b>Version</b> 0.1.1 (Rendered in {{ number_format(microtime(true) - LARAVEL_START, 3) }} seconds)
         </div>
         <strong>Copyright &copy; 2016 <a href="#">Radium</a>.</strong> All rights reserved.
     </footer>
