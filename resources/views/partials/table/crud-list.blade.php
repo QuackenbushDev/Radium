@@ -6,7 +6,7 @@
                 <div class="row-fluid">
                     <div class="col-sm-6">
                         @if (isset($createLink))
-                            <a class="btn btn-sm btn-default" href="{{ $createLink }}">{{ $createLinkName }}</a>
+                            <a class="btn btn-sm btn-default text-black" href="{{ $createLink }}">{{ $createLinkName }}</a>
                         @endif
                     </div>
                     <div class="col-sm-6">
