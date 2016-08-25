@@ -200,9 +200,9 @@ class RadiusAccount extends Model {
      */
     public static function onlineStatus($username) {
         $query = self::select('username')
-            ->where('AcctStopTime', 'IS', 'NULL')
-            ->where('Username', $username)
-            ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
+            ->whereRaw('acctstoptime IS NULL')
+            ->where('username', $username)
+            ->orWhere('acctstoptime', '0000-00-00 00:00:00')
             ->where('username', $username);
 
         return ($query->count() > 0) ? true : false;
