@@ -35,6 +35,11 @@ class APIController extends Controller {
         ]);
     }
 
+    public function bandwidthUsageGraph(Request $request) {
+        $graphData = json_decode($this->bandwidthUsage($request)->getContent());
+        dd($graphData);
+    }
+
     /**
      * Returns an array of headers and connection counts for the specified time span
      *

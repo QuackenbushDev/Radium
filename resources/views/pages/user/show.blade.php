@@ -97,7 +97,7 @@
     </div>
 
     @include(
-        'widgets.bandwidth-chat',
+        'widgets.bandwidth-chart',
         [
             'id'        => 'dashboardBandwidthMonthlySummary',
             'title'     => date('Y') . ' Bandwidth Summary',
@@ -110,7 +110,7 @@
     )
 
     @include(
-        'widgets.bandwidth-chat',
+        'widgets.bandwidth-chart',
         [
             'id'        => 'dashboardBandwidthDailySummary',
             'title'     => date('M') . ' ' . date('Y') . ' Bandwidth Summary',

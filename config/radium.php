@@ -62,4 +62,10 @@ return [
      * existing one is updated.
      */
     'proxy_file' => env('RADIUM_PROXY_FILE', ''),
+
+    /**
+     * The path to the r executable on your system. This is used for graphing capabilities
+     * for sending e-mail summaries.
+     */
+    'r_path' => env('RADIUM_R_PATH', ''),
 ];

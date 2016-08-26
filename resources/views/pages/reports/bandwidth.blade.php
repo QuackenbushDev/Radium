@@ -22,7 +22,7 @@
     </div>
 
     @include(
-        'widgets.bandwidth-chat',
+        'widgets.bandwidth-chart',
         [
             'id'        => 'reportBandwidthMonthlySummary',
             'title'     => date('Y') . ' Bandwidth Summary',
@@ -35,7 +35,7 @@
     )
 
     @include(
-        'widgets.bandwidth-chat',
+        'widgets.bandwidth-chart',
         [
             'id'        => 'reportBandwidthDailySummary',
             'title'     => date('M') . ' ' . date('Y') . ' Bandwidth Summary',

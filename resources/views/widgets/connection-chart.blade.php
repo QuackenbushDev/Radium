@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="chart">
-                            <canvas id="{{ $id }}" style="height: {{ $height }};"></canvas>
+                            <canvas id="{{ $id }}" height="{{ $height }}"></canvas>
                         </div>
                     </div>
                 </div>
