@@ -2,7 +2,12 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-6">
-                <h3>User Information <a href="{{ route("portal::editProfile", $user->username) }}">(edit)</a></h3>
+                @if(!session()->has('portal_username'))
+                    <h3>User Information <a href="{{ route("user::edit", $user->id) }}">(edit)</a></h3>
+                @else
+                    <h3>User Information <a href="{{ route("portal::editProfile", $user->username) }}">(edit)</a></h3>
+                @endif
+
                 <table class="table table-striped">
                     <tbody>
                         <tr>
@@ -99,9 +104,9 @@
                             </tr>
                         @endif
                         <tr>
-                            <td>Receive usage daily summary</td>
+                            <td>Receive weekly usage summary</td>
                             <td>
-                                @if($userInfo->enable_daily_summary)
+                                @if($userInfo->enable_weekly_summary)
                                     ENABLED
                                 @else
                                     DISABLED
@@ -109,7 +114,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Receive usage monthly summary</td>
+                            <td>Receive monthly usage summary</td>
                             <td>
                                 @if($userInfo->enable_monthly_summary)
                                     ENABLED

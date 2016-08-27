@@ -28,9 +28,9 @@
                 {!! BootForm::text('Password', 'user_password') !!}
 
                 @if ($userInfo->enable_daily_summary)
-                    {!! BootForm::checkbox('Enable daily summary', 'userinfo_enable_daily_summary')->checked() !!}
+                    {!! BootForm::checkbox('Enable weekly usage summary', 'userinfo_enable_weekly_summary')->checked() !!}
                 @else
-                    {!! BootForm::checkbox('Enable daily summary', 'userinfo_enable_daily_summary') !!}
+                    {!! BootForm::checkbox('Enable weekly usage summary', 'userinfo_enable_weekly_summary') !!}
                 @endif
 
                 @if ($userInfo->enable_monthly_summary)

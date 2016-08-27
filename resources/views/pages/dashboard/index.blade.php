@@ -82,7 +82,7 @@
     @include(
         'widgets.connection-chart',
         [
-            'id'        => 'dashboardConnectionSummary',
+            'id'        => 'dashboardConnectionMonthlySummary',
             'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
             'timeSpan'  => 'month',
             'timeValue' => '',
@@ -91,6 +91,20 @@
             'height'    => '300px',
         ]
     )
+
+    @include(
+        'widgets.connection-chart',
+        [
+            'id'        => 'dashboardConnectionDailySummary',
+            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
+            'timeSpan'  => 'day',
+            'timeValue' => date('m'),
+            'username'  => "",
+            'nasIP'     => "",
+            'height'    => '300px',
+        ]
+    )
+
 
     <div class="row">
         @include(

@@ -6,6 +6,7 @@ use App\RadiusCheck;
 use App\RadiusGroupCheck;
 use App\RadiusGroupReply;
 use App\RadiusReply;
+use App\Utils\Graph;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -21,7 +22,7 @@ class APIController extends Controller {
         $timeValue = $request->input('timeValue', '');
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
-        $headers = $this->generateHeaders($timeSpan);
+        $headers = Graph::generateHeaders($timeSpan);
 
         if (session()->has('portal_username', '')) {
             $username = session()->get('portal_username');
@@ -35,11 +36,6 @@ class APIController extends Controller {
         ]);
     }
 
-    public function bandwidthUsageGraph(Request $request) {
-        $graphData = json_decode($this->bandwidthUsage($request)->getContent());
-        dd($graphData);
-    }
-
     /**
      * Returns an array of headers and connection counts for the specified time span
      *
@@ -51,7 +47,7 @@ class APIController extends Controller {
         $timeValue = $request->input('timeValue', '');
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
-        $headers = $this->generateHeaders($timeSpan);
+        $headers = Graph::generateHeaders($timeSpan);
 
         if (session()->has('portal_username', '')) {
             $username = session()->get('portal_username');
@@ -140,36 +136,5 @@ class APIController extends Controller {
             'vendors' => $vendors,
             'dictionary' => $dictionary,
         ]);
-    }
-
-    /**
-     * Returns an array of years (where data is available), months,
-     * or a list with the number of days starting from 1
-     *
-     * @param $timeSpan
-     * @return array
-     */
-    private function generateHeaders($timeSpan) {
-        switch ($timeSpan) {
-            case "year":
-                return array_flatten(
-                    RadiusAccount::selectRaw('YEAR(acctstarttime) as year')
-                        ->groupBy('year')
-                        ->get()
-                        ->toArray()
-                );
-
-            case "month":
-                return array_flatten(cal_info(CAL_GREGORIAN)['months']);
-
-            case "day":
-                $headers = [];
-                for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++) {
-                    $headers[] = (string) $i;
-                }
-                return $headers;
-        }
-
-        return [];
     }
 }

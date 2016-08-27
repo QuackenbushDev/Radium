@@ -15,9 +15,10 @@ A full featured radius management system for FreeRadius setups using the mysql b
 
 # Requirements
 * Composer
-* PHP 5.3+
+* PHP 5.6+ (Preferably 7.x)
 * MySQL 5.7.8+ (for better json support. System falls back to a text column for older versions.)
 * NPM / Gulp (css compilation)
+* Python w/ matplotlib (e-mail graphs)
 
 # Installation
 1. Clone Radium into your web director, cd into Radium, git checkout release

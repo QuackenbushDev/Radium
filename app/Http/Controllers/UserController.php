@@ -115,7 +115,7 @@ class UserController extends Controller {
 
         $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
         $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
-        $enableDailySummary = ($request->input('userinfo_enable_daily_summary', '0') === '1') ? true : false;
+        $enableWeeklySummary = ($request->input('userinfo_enable_weekly_summary', '0') === '1') ? true : false;
         $enableMonthlySummary = ($request->input('userinfo_enable_monthly_summary', '0') === '1') ? true : false;
 
         $userInfoRecord = RadiusAccountInfo::create([
@@ -130,7 +130,7 @@ class UserController extends Controller {
                 'address'                => $request->input('userinfo_address'),
                 'enable_portal'          => $enablePortal,
                 'enable_password_resets' => $enablePasswordResets,
-                'enable_daily_summary'   => $enableDailySummary,
+                'enable_weekly_summary'  => $enableWeeklySummary,
                 'enable_monthly_summary' => $enableMonthlySummary,
             ]);
 
@@ -155,7 +155,7 @@ class UserController extends Controller {
 
         $enablePortal = ($request->input('userinfo_enable_portal', '0') === '1') ? true : false;
         $enablePasswordResets = ($request->input('userinfo_enable_password_resets', '0') === '1') ? true : false;
-        $enableDailySummary = ($request->input('userinfo_enable_daily_summary', '0') === '1') ? true : false;
+        $enableWeeklySummary = ($request->input('userinfo_enable_weekly_summary', '0') === '1') ? true : false;
         $enableMonthlySummary = ($request->input('userinfo_enable_monthly_summary', '0') === '1') ? true : false;
 
         $userInfoRecord = RadiusAccountInfo::where('username', '=', $userRecord->username)
@@ -170,7 +170,7 @@ class UserController extends Controller {
                 'address'                => $request->input('userinfo_address'),
                 'enable_portal'          => $enablePortal,
                 'enable_password_resets' => $enablePasswordResets,
-                'enable_daily_summary'   => $enableDailySummary,
+                'enable_weekly_summary'  => $enableWeeklySummary,
                 'enable_monthly_summary' => $enableMonthlySummary,
             ]);
 
