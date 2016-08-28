@@ -10,7 +10,7 @@ import urllib, base64
 def graph(title, labels, data):
     fig, ax = plt.subplots()
     index = np.arange(len(labels))
-    bar_width = 0.35
+    bar_width = 0.4
     opacity = 0.7
     plt.figure(figsize=(600/72, 300/72), dpi=72)
 

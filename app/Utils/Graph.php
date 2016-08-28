@@ -41,7 +41,7 @@ class Graph {
     public static function createConnectionGraphPNG($timeSpan = 'month', $timeValue = null, $username = null, $nasIP = null) {
         $data = RadiusAccount::connectionCountSummary($timeSpan, $timeValue, $username, $nasIP);
         $headers = self::generateHeaders($timeSpan);
-        $command = 'python ' . base_path() . '\scripts\bw-graph.py "Connections" "' . implode("|", $headers) . '" "Connections"  "' . implode("|", $data) . '"';
+        $command = 'python ' . base_path() . '\scripts\connection-graph.py "Connections" "' . implode("|", $headers) . '" "Connections"  "' . implode("|", $data) . '"';
 
         try {
             $process = new Process($command);
@@ -73,6 +73,11 @@ class Graph {
 
             case "month":
                 return array_flatten(cal_info(CAL_GREGORIAN)['abbrevmonths']);
+
+            case "week":
+                $date = new \DateTime();
+                $date->sub(new \DateInterval('P7D'));
+                break;
 
             case "day":
                 $headers = [];
