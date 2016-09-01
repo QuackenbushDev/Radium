@@ -68,8 +68,8 @@ class OperatorController extends Controller {
         $operator->address = $request->input('address', '');
         $operator->notes = $request->input('notes', '');
 
-        $enable_daily_summary = $request->input('enable_daily_summary', null);
-        $operator->enable_daily_summary = ($enable_daily_summary !== null) ? true : false;
+        $enable_weekly_summary = $request->input('enable_weekly_summary', null);
+        $operator->enable_weekly_summary = ($enable_weekly_summary !== null) ? true : false;
 
         $enable_monthly_summary = $request->input('enable_monthly_summary', null);
         $operator->enable_monthly_summary = ($enable_monthly_summary !== null) ? true : false;
@@ -95,8 +95,8 @@ class OperatorController extends Controller {
         $operator->address = $request->input('address', '');
         $operator->notes = $request->input('notes', '');
 
-        $enable_daily_summary = $request->input('enable_daily_summary', null);
-        $operator->enable_daily_summary = ($enable_daily_summary !== null) ? true : false;
+        $enable_weekly_summary = $request->input('enable_weekly_summary', null);
+        $operator->enable_weekly_summary = ($enable_weekly_summary !== null) ? true : false;
 
         $enable_monthly_summary = $request->input('enable_monthly_summary', null);
         $operator->enable_monthly_summary = ($enable_monthly_summary !== null) ? true : false;

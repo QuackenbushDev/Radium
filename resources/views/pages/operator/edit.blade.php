@@ -36,10 +36,10 @@
                     {!! BootForm::text('Mobile Phone', 'mobile_phone')->value($operator->mobile_phone) !!}
                     {!! BootForm::textArea('Address', 'address')->rows(2)->value($operator->address) !!}
 
-                    @if ($operator->enable_daily_summary)
-                        {!! BootForm::checkbox('Enable daily summary', 'enable_daily_summary')->checked() !!}
+                    @if ($operator->enable_weekly_summary)
+                        {!! BootForm::checkbox('Enable weekly summary', 'enable_weekly_summary')->checked() !!}
                     @else
-                        {!! BootForm::checkbox('Enable daily summary', 'enable_daily_summary') !!}
+                        {!! BootForm::checkbox('Enable weekly summary', 'enable_weekly_summary') !!}
                     @endif
 
                     @if ($operator->enable_monthly_summary)

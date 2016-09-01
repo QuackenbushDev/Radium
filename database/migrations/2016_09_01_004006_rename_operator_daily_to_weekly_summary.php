@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RenameRadiusUserDailyToWeeklySummarColumn extends Migration
+class RenameOperatorDailyToWeeklySummary extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class RenameRadiusUserDailyToWeeklySummarColumn extends Migration
      */
     public function up()
     {
-        Schema::table('radius_account_info', function ($table) {
+        Schema::table('users', function ($table) {
             $table->renameColumn('enable_daily_summary', 'enable_weekly_summary');
         });
     }
@@ -24,7 +24,7 @@ class RenameRadiusUserDailyToWeeklySummarColumn extends Migration
      */
     public function down()
     {
-        Schema::table('radius_account_info', function ($table) {
+        Schema::table('users', function ($table) {
             $table->renameColumn('enable_weekly_summary', 'enable_daily_summary');
         });
     }

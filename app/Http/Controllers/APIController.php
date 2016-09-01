@@ -22,7 +22,7 @@ class APIController extends Controller {
         $timeValue = $request->input('timeValue', '');
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
-        $headers = Graph::generateHeaders($timeSpan);
+        $headers = Graph::generateHeaders($timeSpan, $timeValue);
 
         if (session()->has('portal_username', '')) {
             $username = session()->get('portal_username');
@@ -47,7 +47,7 @@ class APIController extends Controller {
         $timeValue = $request->input('timeValue', '');
         $username = $request->input('username', null);
         $nasIP = $request->input('nasIP', null);
-        $headers = Graph::generateHeaders($timeSpan);
+        $headers = Graph::generateHeaders($timeSpan, $timeValue);
 
         if (session()->has('portal_username', '')) {
             $username = session()->get('portal_username');

@@ -12,7 +12,16 @@ def graph(title, labels, data):
     index = np.arange(len(labels))
     bar_width = 0.4
     opacity = 0.7
-    plt.figure(figsize=(600/72, 300/72), dpi=72)
+    plt.figure(figsize=(750/72, 300/72), dpi=72)
+
+    ymax=0
+    for value in data[0][1]:
+        value = float(value)
+        if (value > ymax):
+            ymax = value
+    ymax+= ymax * 0.20
+
+    plt.axis(xmin=0, xmax=len(labels), ymax=ymax)
 
     plt.bar(index, data[0][1], bar_width,
         alpha=opacity,

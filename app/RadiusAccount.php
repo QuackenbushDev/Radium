@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\DataHelper;
-use Symfony\Component\VarDumper\Cloner\Data;
+use DateTime;
+use Exception;
 
 class RadiusAccount extends Model {
     protected $table = 'radacct';
@@ -101,8 +102,7 @@ class RadiusAccount extends Model {
             . ',DAY(acctstarttime) AS day'
             . ',MONTH(acctstarttime) AS month'
             . ',YEAR(acctstarttime) AS year';
-        $query = self::selectRaw($sql)
-            ->groupBy($timeSpan);
+        $query = self::selectRaw($sql);
 
         if ($username !== null) {
             $query->where('username', $username);
@@ -112,9 +112,23 @@ class RadiusAccount extends Model {
             $query->where('nasipaddress', $nasIP);
         }
 
+        if ($timeSpan === 'week') {
+            $query->groupBy('day');
+        } else {
+            $query->groupBy($timeSpan);
+        }
+
         switch($timeSpan) {
             case "year":
                 $count = 0;
+                break;
+
+            case "week":
+                $dateStop = new DateTime($timeValue);
+                $dateStop->modify("+7 days");
+                $query->where('acctstarttime', '>=', $timeValue)
+                    ->where('acctstarttime', '<=', $dateStop);
+                $count = 7;
                 break;
 
             default:
@@ -133,6 +147,9 @@ class RadiusAccount extends Model {
         foreach ($results as $result) {
             if ($timeSpan === 'year') {
                 $data[] += $result->connections;
+            } elseif ($timeSpan === 'week') {
+                $index = self::calculateWeekIndex($timeValue, $result);
+                $data[$index] += (int) $result->connections;
             } else {
                 $index = $result->$timeSpan - 1;
                 $data[$index] += (int) $result->connections;
@@ -177,6 +194,18 @@ class RadiusAccount extends Model {
                 $count = 12;
                 break;
 
+            case "week":
+                $dateStop = new DateTime($timeValue);
+                $dateStop->modify("+7 days");
+
+                $query->where('acctstarttime', '>=', $timeValue)
+                    ->where('acctstarttime', '<=', $dateStop)
+                    ->groupBy('day', 'month')
+                    ->orderBy('day', 'asc')
+                    ->orderBy('month', 'asc');
+                $count = 7;
+                break;
+
             case "day":
                 $query->having('month', '=', $timeValue)
                     ->groupBy('day')
@@ -192,10 +221,14 @@ class RadiusAccount extends Model {
             'upload'   => array_pad([], $count, 0)
         ];
 
-        foreach ($results as $result) {
+        foreach ($results as $index => $result) {
             if ($timeSpan === 'year') {
                 $usage['download'][] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
                 $usage['upload'][] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
+            } elseif ($timeSpan === 'week') {
+                $index = self::calculateWeekIndex($timeValue, $result);
+                $usage['download'][$index] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
+                $usage['upload'][$index] += (float) DataHelper::convertToHumanReadableSize($result->upload, 2, 'binary', 3, false);
             } else {
                 $index = $result->$timeSpan - 1;
                 $usage['download'][$index] += (float) DataHelper::convertToHumanReadableSize($result->download, 2, 'binary', 3, false);
@@ -328,5 +361,20 @@ class RadiusAccount extends Model {
         }
 
         return $query;
+    }
+
+    private static function calculateWeekIndex($startDate, $record) {
+        $day = new \DateTime($startDate);
+        for ($i = 0; $i <= 7; $i++) {
+            if ($i > 0) {
+                $day->modify('+1 days');
+            }
+
+            if ((int) $day->format('d') === $record->day) {
+                return $i;
+            }
+        }
+
+        throw new Exception("Couldn't calculate day index.");
     }
 }

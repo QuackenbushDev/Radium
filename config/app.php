@@ -155,6 +155,7 @@ return [
          */
         AdamWathan\BootForms\BootFormsServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
 
         /*
          * Application Service Providers...

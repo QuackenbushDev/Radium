@@ -52,9 +52,9 @@
                         <td>{!! nl2br($operator->address) !!}</td>
                     </tr>
                     <tr>
-                        <td>Receive usage daily summary</td>
+                        <td>Receive usage weekly summary</td>
                         <td>
-                            @if($operator->enable_daily_summary)
+                            @if($operator->enable_weekly_summary)
                                 ENABLED
                             @else
                                 DISABLED

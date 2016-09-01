@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "adamwathan/bootforms": "^0.8.1",
         "barryvdh/laravel-debugbar": "^2.2",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "fedeisas/laravel-mail-css-inliner": "^1.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

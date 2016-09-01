@@ -22,7 +22,7 @@ class User extends Authenticatable
         'address',
         'notes',
         'password',
-        'enable_daily_summary',
+        'enable_weekly_summary',
         'enable_monthly_summary',
     ];
 
