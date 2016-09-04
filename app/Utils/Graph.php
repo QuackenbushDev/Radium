@@ -99,7 +99,7 @@ class Graph {
 
             case "day":
                 $headers = [];
-                for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); $i++) {
+                for ($i = 1; $i <= cal_days_in_month(CAL_GREGORIAN, $timeValue, date('Y')); $i++) {
                     $headers[] = (string) $i;
                 }
                 return $headers;

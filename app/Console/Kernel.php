@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\ProxyWrite::class,
         Commands\DictionaryCompile::class,
         Commands\OperatorEmailSummary::class,
+        Commands\UserEmailSummary::class,
     ];
 
     /**
