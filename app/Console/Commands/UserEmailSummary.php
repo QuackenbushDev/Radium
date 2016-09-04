@@ -58,7 +58,9 @@ class UserEmailSummary extends Command
         }
 
         foreach ($users as $user) {
-            $this->dispatch(new SendUserSummary($user, $type));
+            if (!empty($user->email)) {
+                $this->dispatch(new SendUserSummary($user, $type));
+            }
         }
 
         echo "Your job has been queued!";

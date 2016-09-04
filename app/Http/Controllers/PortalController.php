@@ -8,6 +8,7 @@ use App\RadiusCheck;
 use App\RadiusAccountInfo;
 use App\RadiusPostAuth;
 use App\Utils\DataHelper;
+use Illuminate\Support\Str;
 
 class PortalController extends Controller {
     public function login(Request $request) {
@@ -59,7 +60,22 @@ class PortalController extends Controller {
         return view()->make('pages.portal.forgot-password');
     }
 
-    public function doPasswordReset() {
+    public function doPasswordReset(Request $request) {
+        $email = $request->input('email', null);
+
+        if ($email !== null) {
+            $user = RadiusAccountInfo::where('email', $email)->firstOrFail();
+            $user->reset_password_token = Str::random(30);
+            $user->save();
+
+            Mail::send('', function($m) use ($user) {
+
+            });
+
+            // redirect stuff
+        } else {
+            session()->flash();
+        }
     }
 
     public function changePassword(Request $request, $resetToken) {
