@@ -292,7 +292,7 @@ class RadiusAccount extends Model {
             . ',SUM(acctoutputoctets) AS acctoutputoctets'
             . ',SUM(acctinputoctets + acctoutputoctets) AS total';
 
-        $query = self::selectRaw(implode(',', $columns))
+        $query = self::selectRaw($columns)
             ->whereRaw('AcctStopTime IS NULL')
             ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
             ->groupBy('username', 'acctstarttime');
