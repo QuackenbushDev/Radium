@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\RadiusAccount;
 use App\RadiusPostAuth;
+use DateTime;
 
 class ReportController extends Controller {
     public function onlineUsers(Request $request) {
