@@ -14,12 +14,12 @@
 
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                     <div class="col-md-12 has-feedback">
-                        <input type="email" class="form-control" name="username" placeholder="username" value="{{ old('username') }}">
+                        <input type="email" class="form-control" name="email" placeholder="email" value="{{ old('email') }}">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
 
-                        @if ($errors->has('username'))
+                        @if ($errors->has('email'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('username') }}</strong>
+                                <strong>{{ $errors->first('email') }}</strong>
                             </span>
                         @endif
                     </div>

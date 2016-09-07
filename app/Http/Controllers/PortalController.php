@@ -61,20 +61,36 @@ class PortalController extends Controller {
     }
 
     public function doPasswordReset(Request $request) {
-        $email = $request->input('email', null);
+        try {
+            $user = RadiusAccountInfo::where('email', $request->input('email'))
+                ->where('enable_password_resets', true)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            request()->flash();
+            session()->flash('message', 'E-Mail address not found.');
+            session()->flash('alert-class', 'error');
 
-        if ($email !== null) {
-            $user = RadiusAccountInfo::where('email', $email)->firstOrFail();
+            return redirect(route('portal::passwordReset'));
+        }
+
+        if ($user !== null) {
             $user->reset_password_token = Str::random(30);
             $user->save();
 
-            Mail::send('', function($m) use ($user) {
+            $link = route('portalResetPassword', $user->reset_password_token);
 
+            Mail::send('email.portal.password-reset', ['link' => $link], function($m) use ($user) {
+                $m->to($user->email);
+                $m->subject('Password Reset');
             });
 
-            // redirect stuff
+            return redirect('');
         } else {
-            session()->flash();
+            request()->flash();
+            session()->flash('message', 'E-Mail address not found.');
+            session()->flash('alert-class', 'error');
+
+            return redirect(route('portal::passwordReset'));
         }
     }
 

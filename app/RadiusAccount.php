@@ -137,6 +137,10 @@ class RadiusAccount extends Model {
                 break;
 
             case "day":
+                $query->having('month', '=', $timeValue)
+                    ->having('year', '=', date('Y'))
+                    ->groupBy('day')
+                    ->orderBy('day', 'asc');
                 $count = cal_days_in_month(CAL_GREGORIAN, $timeValue, date('Y'));
                 break;
         }
@@ -208,6 +212,7 @@ class RadiusAccount extends Model {
 
             case "day":
                 $query->having('month', '=', $timeValue)
+                    ->having('year', '=', date('Y'))
                     ->groupBy('day')
                     ->orderBy('day', 'asc');
                 $count = cal_days_in_month(CAL_GREGORIAN, $timeValue, date('Y'));

@@ -71,7 +71,7 @@
             'id'        => 'dashboardConnectionSummary',
             'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
             'timeSpan'  => 'month',
-            'timeValue' => '',
+            'timeValue' => date('m'),
             'username'  => session()->get('portal_username'),
             'nasIP'     => "",
             'height'    => '300px',
