@@ -9,8 +9,15 @@ use App\RadiusAccountInfo;
 use App\RadiusPostAuth;
 use App\Utils\DataHelper;
 use Illuminate\Support\Str;
+use League\Flysystem\Exception;
 
 class PortalController extends Controller {
+    /**
+     * Displays the login form for portal users
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function login(Request $request) {
         return view()->make(
             'pages.portal.login',
@@ -23,6 +30,12 @@ class PortalController extends Controller {
         );
     }
 
+    /**
+     * Authenticates a user for the portal access
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function doLogin(Request $request) {
         $user = RadiusCheck::where('username', $request->input('username', null))
             ->first();
@@ -50,16 +63,34 @@ class PortalController extends Controller {
         return redirect(route('portal::dashboard'));
     }
 
+    /**
+     * Flushes a session to logout a user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function logout(Request $request) {
         session()->flush();
 
         return redirect(route('portal::login'));
     }
 
+    /**
+     * Displays password reset form
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function passwordReset() {
         return view()->make('pages.portal.forgot-password');
     }
 
+    /**
+     * Queues a password reset e-mail if the submitted user exists, and has the ability
+     * to reset their own password.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function doPasswordReset(Request $request) {
         try {
             $user = RadiusAccountInfo::where('email', $request->input('email'))
@@ -94,14 +125,70 @@ class PortalController extends Controller {
         }
     }
 
-    public function changePassword(Request $request, $resetToken) {
+    /**
+     * Displays the password change form
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function changePassword(Request $request) {
+        $token = $request->input('token', null);
+        try {
+            if ($token === null) {
+                throw new ModelNotFoundException();
+            }
 
+            $account = RadiusCheck::where('reset_token', $token)
+                ->firstOrFail();
+        } catch(ModelNotFoundException $e) {
+            return redirect(route('portal::resetPassword'));
+        }
+
+        return view('pages.portal.change-password', [
+            'token' => $token,
+            'user_id' => $account->id
+        ]);
     }
 
+
+    /**
+     * Changes a users password based on their reset token, and redirects the user to the
+     * portal.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function doChangePassword(Request $request) {
+        $token = $request->input('token', null);
+        $userID = $request->input('user_id');
 
+        try {
+            $account = RadiusCheck::where('reset_token', $token)
+                ->where('id', $userID)
+                ->firstOrFail();
+
+            $password = $request->input('password', null);
+            $passwordConfirmation = $request->input('passwordConfirmation', null);
+
+            if ($password !== $passwordConfirmation) {
+                throw new ModelNotFoundException();
+            }
+        } catch (ModelNotFoundException $e) {
+            session()->flash();
+            return redirect(route(''));
+        }
+
+        $account->value = $password;
+        $account->save();
+
+        return redirect(route(''));
     }
 
+    /**
+     * Displays the portal dashboard for a user
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function dashboard() {
         $bandwidthStats = DataHelper::calculateUserBandwidth(session()->get('portal_username'));
         $loginAttempts = RadiusPostAuth::getLatestAttempts(5)
@@ -109,7 +196,7 @@ class PortalController extends Controller {
             ->get()
             ->toArray();
 
-        return view()->make(
+        return view(
             'pages.portal.dashboard',
             [
                 'loginAttempts'  => $loginAttempts,
@@ -118,13 +205,20 @@ class PortalController extends Controller {
         );
     }
 
+    /**
+     * Displays the users profile page.
+     *
+     * @param Request $request
+     * @param $username
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function profile(Request $request, $username) {
         $user = RadiusAccount::where('username', $username)->first();
         $userInfo = RadiusAccountInfo::where('username', $username)->first();
         $onlineStatus = RadiusAccount::onlineStatus($user->username);
         $groups = RadiusUserGroup::getUserGroups($user->username);
 
-        return view()->make(
+        return view(
             'pages.portal.profile',
             [
                 'user'         => $user,
@@ -135,11 +229,17 @@ class PortalController extends Controller {
         );
     }
 
+    /**
+     * Displays the profile edit form for a user to update their details
+     *
+     * @param $username
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editProfile($username) {
         $user = RadiusAccount::where('username', $username)->first();
         $userInfo = RadiusAccountInfo::where('username', $username)->first();
 
-        return view()->make(
+        return view(
             'pages.portal.profile-edit',
             [
                 'user'     => $user,
@@ -149,6 +249,12 @@ class PortalController extends Controller {
 
     }
 
+    /**
+     * Handles updating the profile and redircting the user back to the profile view page
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function saveProfile(Request $request) {
         $userRecord = RadiusCheck::where('username', session()->get('portal_username'))->first();
 

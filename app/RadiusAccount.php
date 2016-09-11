@@ -368,6 +368,14 @@ class RadiusAccount extends Model {
         return $query;
     }
 
+    /**
+     * Calculates the records array index for a given week range.
+     *
+     * @param $startDate
+     * @param $record
+     * @return int
+     * @throws Exception
+     */
     private static function calculateWeekIndex($startDate, $record) {
         $day = new \DateTime($startDate);
         for ($i = 0; $i <= 7; $i++) {

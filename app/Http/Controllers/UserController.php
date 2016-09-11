@@ -16,6 +16,12 @@ use App\RadiusAccountInfo;
 use App\Nas;
 
 class UserController extends Controller {
+    /**
+     * User listing
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request) {
         $filterValue = $request->input('filter', '');
         $users = RadiusCheck::getUserList();
@@ -35,6 +41,12 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Displays a users record
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show($id) {
         $user = RadiusCheck::find($id);
         $bandwidthStats = DataHelper::calculateUserBandwidth($user->username);
@@ -71,6 +83,12 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Displays the edit form for a user.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function edit($id) {
         $user = RadiusCheck::find($id);
         $userGroups = RadiusUserGroup::getUserGroups($user->username);
@@ -88,6 +106,11 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Displays an empty edit for to create a new user record.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create() {
         $user = new RadiusCheck();
         $groups = array_flatten(RadiusUserGroup::select('groupname')->groupBy('groupname')->get()->toArray());
@@ -105,6 +128,12 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Creates a new user record with the submitted information
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function save(Request $request) {
         $user = new RadiusCheck();
         $user->username = $request->input('user_username', '');
@@ -148,6 +177,13 @@ class UserController extends Controller {
         return redirect(route('user::show', $user->id));
     }
 
+    /**
+     * Updates a user record with the submitted information
+     *
+     * @param Request $request
+     * @param null $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request, $id = null) {
         $userRecord = RadiusCheck::find($id);
         $userRecord->value = $request->input('user_password', '');
@@ -230,6 +266,13 @@ class UserController extends Controller {
         return redirect(route('user::show', $id));
     }
 
+
+    /**
+     * Renders the disconnect iFrame
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function disconnectiFrame($id) {
         $user = RadiusCheck::find($id);
         $nasList = [];
@@ -244,6 +287,13 @@ class UserController extends Controller {
         ]);
     }
 
+    /**
+     * Runs the disconnect command to disconnect a given user
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function disconnectUser(Request $request, $id) {
         $user = RadiusCheck::find($id);
         $nas  = Nas::find($request->input('nas_id'));
@@ -285,6 +335,13 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Displays the testing iFrame to verify a user account is working
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function testiFrame(Request $request, $id) {
         $user = RadiusCheck::find($id);
 
@@ -300,6 +357,13 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Runs the test command to verify a user account is working
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function testUser(Request $request, $id) {
         $user = RadiusCheck::find($id);
         $radiusServer = $request->input('radius_server', '') . ':' . $request->input('radius_port', '0');
@@ -328,6 +392,13 @@ class UserController extends Controller {
         );
     }
 
+    /**
+     * Disables a user account
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function disableUser(Request $request, $id) {
         $user = RadiusCheck::find($id);
         $groups = RadiusUserGroup::getUserGroups($user->username);
@@ -350,6 +421,13 @@ class UserController extends Controller {
         return redirect(route('user::show', $user->id));
     }
 
+    /**
+     * Reenable a user account
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function enableUser(Request $request, $id) {
         $user = RadiusCheck::find($id);
         $disabledGroupName = config('radium.disabled_group');
@@ -361,6 +439,13 @@ class UserController extends Controller {
         return redirect(route('user::show', $user->id));
     }
 
+    /**
+     * Hashes a users password with the selected hashing mechanism
+     *
+     * @param $passwordType
+     * @param $password
+     * @return string
+     */
     private function hashPassword($passwordType, $password) {
         switch($passwordType) {
             case 'Crypt-Password':

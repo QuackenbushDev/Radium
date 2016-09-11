@@ -5,6 +5,11 @@ use App\RadiusPostAuth;
 use App\Utils\DataHelper;
 
 class DashboardController extends Controller {
+    /**
+     * Displays the dashboard for a given user
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index() {
         $dailyStats = RadiusAccount::getConnections('day', date('d'), false)
             ->orderBy('connections', 'desc')
@@ -30,6 +35,13 @@ class DashboardController extends Controller {
         );
     }
 
+    /**
+     * Helper function to generate widget information.
+     *
+     * @param $timeSpan
+     * @param $value
+     * @return array
+     */
     private function getTopUser($timeSpan, $value) {
         $topUser = RadiusAccount::getConnections($timeSpan, $value, true)
             ->orderBy('total', 'desc')

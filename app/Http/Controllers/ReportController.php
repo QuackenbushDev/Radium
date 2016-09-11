@@ -6,6 +6,12 @@ use App\RadiusPostAuth;
 use DateTime;
 
 class ReportController extends Controller {
+    /**
+     * Displays the online user report
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function onlineUsers(Request $request) {
         $onlineUserList = RadiusAccount::onlineUsers()
             ->paginate();
@@ -18,6 +24,12 @@ class ReportController extends Controller {
         );
     }
 
+    /**
+     * Displays the recent connection attempts.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function connectionAttempts(Request $request) {
         $filter = [
             'username'  => $request->input('username', ''),
@@ -56,6 +68,12 @@ class ReportController extends Controller {
         );
     }
 
+    /**
+     * Generates a bandwidth usage report
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function bandwidth(Request $request) {
         $filter = [
             'username'        => $request->input('username', ''),
@@ -72,6 +90,13 @@ class ReportController extends Controller {
         );
     }
 
+    /**
+     * Generates the accounting report for a more details bandwidth summary on
+     * a per connection basis
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function accounting(Request $request) {
         $columns = [
             'radacctid',
@@ -117,6 +142,12 @@ class ReportController extends Controller {
         );
     }
 
+    /**
+     * Displays the top users by bandwidth usage
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function topUsers(Request $request) {
         $filter = [
             'nasipaddress'  => $request->input('nasipaddress', ''),

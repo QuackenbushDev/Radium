@@ -5,6 +5,11 @@ use App\RadiusAccount;
 use Illuminate\Http\Request;
 
 class NasController extends Controller {
+    /**
+     * Array of router manufactures
+     *
+     * @var array
+     */
     private $types = [
         ''           => '',
         'other'      => 'Other',
@@ -22,6 +27,12 @@ class NasController extends Controller {
         'mikrotik'   => 'Mikrotik',
     ];
 
+    /**
+     * Nas listing page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request) {
         $filterValue = $request->input('filter', '');
         $nasList = Nas::select('*');
@@ -42,6 +53,12 @@ class NasController extends Controller {
         );
     }
 
+    /**
+     * Nas detail view
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show($id) {
         $nas = Nas::find($id);
         $latestActivity = RadiusAccount::getLatestNasActivity($nas->nasname, 15)->get();
@@ -55,6 +72,12 @@ class NasController extends Controller {
         );
     }
 
+    /**
+     * Nas edit view
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function edit($id) {
         $nas = Nas::find($id);
 
@@ -67,6 +90,11 @@ class NasController extends Controller {
         );
     }
 
+    /**
+     * Nas create view
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create() {
         $nas = new Nas();
         $nas->type = config('radium.nas_default_type');
@@ -81,17 +109,23 @@ class NasController extends Controller {
         );
     }
 
+    /**
+     * Creates a new nas
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function save(Request $request) {
-        $nas = new Nas();
-        $nas->nasname = $request->input('nas_name', '');
-        $nas->shortname = $request->input('short_name', '');
-        $nas->type = $request->input('type', '');
-        $nas->ports = $request->input('ports', '');
-        $nas->secret = $request->input('secret', '');
-        $nas->server = $request->input('server', '');
-        $nas->community = $request->input('community', '');
-        $nas->description = $request->input('description', '');
-        $nas->save();
+        $nas = Nas::create([
+            'nasname'     => $request->input('nas_name', ''),
+            'shortname'   => $request->input('short_name', ''),
+            'type'        => $request->input('type', ''),
+            'ports'       => $request->input('ports', ''),
+            'secret'      => $request->input('secret', ''),
+            'server'      => $request->input('server', ''),
+            'community'   => $request->input('community', ''),
+            'description' => $request->input('description', '')
+        ]);
 
         $request->session()->flash('message', 'Successfully created NAS. Please restart FreeRadius for it to take effect.');
         $request->session()->flash('alert-class', 'alert-success');
@@ -99,6 +133,13 @@ class NasController extends Controller {
         return redirect(route('nas::show', $nas->id));
     }
 
+    /**
+     * Updates an existing nas with the submitted information.
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request, $id) {
         Nas::find($id)
             ->update([

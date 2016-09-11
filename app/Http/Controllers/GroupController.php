@@ -7,6 +7,12 @@ use App\RadiusGroupCheck;
 use App\RadiusGroupReply;
 
 class GroupController extends Controller {
+    /**
+     * Displays the group listing page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request) {
         $groupList = RadiusUserGroup::selectRaw('groupname, count(groupname) as count')
             ->groupBy('groupname')
@@ -22,6 +28,13 @@ class GroupController extends Controller {
         );
     }
 
+    /**
+     * Displays a single group entry
+     *
+     * @param Request $request
+     * @param $groupname
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show(Request $request, $groupname) {
         $group = RadiusUserGroup::selectRaw('groupname, count(groupname) as count')
             ->where('groupname', $groupname)
@@ -52,6 +65,13 @@ class GroupController extends Controller {
         );
     }
 
+    /**
+     * Displays the edit form for a group
+     *
+     * @param Request $request
+     * @param $groupname
+     * @return \Illuminate\Contracts\View\View
+     */
     public function edit(Request $request, $groupname) {
         $group = RadiusUserGroup::selectRaw('groupname, count(groupname) as count')
             ->where('groupname', $groupname)
@@ -66,6 +86,11 @@ class GroupController extends Controller {
         );
     }
 
+    /**
+     * Displays the form to create a new group
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create() {
         $group = new RadiusUserGroup();
 
@@ -78,6 +103,12 @@ class GroupController extends Controller {
         );
     }
 
+    /**
+     * Creates a new group
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function save(Request $request) {
         $groupName = $request->input('groupName', '');
 
@@ -109,6 +140,13 @@ class GroupController extends Controller {
         return redirect(route('group::show', $group->groupname));
     }
 
+    /**
+     * Updates a group
+     *
+     * @param Request $request
+     * @param null $groupname
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request, $groupname = null) {
         $attributes = $request->input('attributes', []);
         $deletedAttributes = $request->input('deleted', []);

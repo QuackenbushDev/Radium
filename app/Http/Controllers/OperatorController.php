@@ -4,6 +4,12 @@ use Illuminate\Http\Request;
 use App\User;
 
 class OperatorController extends Controller {
+    /**
+     * Displays the operator listing page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request) {
         $filterValue = $request->input('filter', '');
         if (!empty($filterValue)) {
@@ -22,6 +28,12 @@ class OperatorController extends Controller {
         );
     }
 
+    /**
+     * Displays a single operator
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function show($id) {
         $operator = User::find($id);
 
@@ -33,6 +45,13 @@ class OperatorController extends Controller {
         );
     }
 
+    /**
+     * Displays the operator edit form
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\View
+     */
     public function edit(Request $request, $id) {
         $operator = User::find($id);
 
@@ -44,6 +63,12 @@ class OperatorController extends Controller {
         );
     }
 
+
+    /**
+     * Displays the create new operator form
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create() {
         $operator = new User();
 
@@ -56,6 +81,12 @@ class OperatorController extends Controller {
         );
     }
 
+    /**
+     * Creates a new operator for the system
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function save(Request $request) {
         $operator = new User();
         $operator->name = $request->input('name');
@@ -83,6 +114,13 @@ class OperatorController extends Controller {
         return redirect(route('operator::show', $operator->id));
     }
 
+    /**
+     * Updates an existing operator with the submitted information
+     *
+     * @param Request $request
+     * @param null $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(Request $request, $id = null) {
         $operator = User::find($id);
         $operator->name = $request->input('name');
