@@ -9,7 +9,8 @@ use App\RadiusAccountInfo;
 use App\RadiusPostAuth;
 use App\Utils\DataHelper;
 use Illuminate\Support\Str;
-use League\Flysystem\Exception;
+use Mail;
+use Exception;
 
 class PortalController extends Controller {
     /**
@@ -93,7 +94,7 @@ class PortalController extends Controller {
      */
     public function doPasswordReset(Request $request) {
         try {
-            $user = RadiusAccountInfo::where('email', $request->input('email'))
+            $accountInfo = RadiusAccountInfo::where('email', $request->input('email'))
                 ->where('enable_password_resets', true)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -104,16 +105,24 @@ class PortalController extends Controller {
             return redirect(route('portal::passwordReset'));
         }
 
-        if ($user !== null) {
-            $user->reset_password_token = Str::random(30);
-            $user->save();
+        if ($accountInfo !== null) {
+            $accountInfo->reset_password_token = Str::random(30);
+            $accountInfo->save();
 
-            $link = route('portalResetPassword', ['token', $user->reset_password_token]);
+            $link = route('portal::changePassword', ['token', $accountInfo->reset_password_token]);
 
-            Mail::send('email.portal.password-reset', ['link' => $link], function($m) use ($user) {
-                $m->to($user->email);
-                $m->subject('Password Reset');
-            });
+            Mail::send(
+                'email.portal.password-reset',
+                [
+                    'title' => 'Password Reset',
+                    'name'  => $accountInfo->name,
+                    'link'  => $link
+                ],
+                function($m) use ($accountInfo) {
+                    $m->to($accountInfo->email);
+                    $m->subject('Password Reset');
+                }
+            );
 
             return redirect('');
         } else {
@@ -177,9 +186,8 @@ class PortalController extends Controller {
                 throw new ModelNotFoundException();
             }
         } catch (ModelNotFoundException $e) {
-            dd($account, $token, $userID, $e);
-            //session()->flash();
-            //return redirect(route('portal::changePassword', ['token' => $token]));
+            session()->flash();
+            return redirect(route('portal::changePassword', ['token' => $token]));
         }
 
         session()->flash('message', 'Password successfully reset!');
