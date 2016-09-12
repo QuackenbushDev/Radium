@@ -20,7 +20,7 @@
             <form action="{{ $action }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $userID }}" name="userID" />
-
+                <input type="hidden" value="{{ $token }}" name="token" />
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" name="email" value="{{ $email }}" disabled>
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>

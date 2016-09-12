@@ -138,16 +138,17 @@ class PortalController extends Controller {
                 throw new ModelNotFoundException();
             }
 
-            $account = RadiusCheck::where('reset_token', $token)
+            $accountInfo = RadiusAccountInfo::where('reset_password_token', $token)
                 ->firstOrFail();
         } catch(ModelNotFoundException $e) {
             return redirect(route('portal::resetPassword'));
         }
 
         return view('pages.portal.change-password', [
-            'token' => $token,
-            'user_id' => $account->id,
-            'email' => $account->email
+            'action'  => route('portal::doChangePassword'),
+            'token'   => $token,
+            'userID'  => $accountInfo->id,
+            'email'   => $accountInfo->email
         ]);
     }
 
@@ -164,10 +165,9 @@ class PortalController extends Controller {
         $userID = $request->input('userID');
 
         try {
-            $account = RadiusCheck::where('reset_token', $token)
-                ->where('id', $userID)
-                ->firstOrFail();
+            $account = RadiusCheck::findOrFail($userID);
             $accountInfo = RadiusAccountInfo::where('username', $account->username)
+                ->where('reset_password_token', $token)
                 ->firstOrFail();
 
             $password = $request->input('password', null);
@@ -177,14 +177,15 @@ class PortalController extends Controller {
                 throw new ModelNotFoundException();
             }
         } catch (ModelNotFoundException $e) {
-            session()->flash();
-            return redirect(route(''));
+            dd($account, $token, $userID, $e);
+            //session()->flash();
+            //return redirect(route('portal::changePassword', ['token' => $token]));
         }
 
         session()->flash('message', 'Password successfully reset!');
         session()->flash('alert-class', 'success');
 
-        $accountInfo->update(['password_reset_token' => null]);
+        $accountInfo->update(['reset_password_token' => null]);
         $account->update(['value' => $password]);
 
         return redirect(route('portal::login'));

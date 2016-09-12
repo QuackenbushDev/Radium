@@ -16,7 +16,8 @@ class PortalAuthentication {
         $guestPaths = [
             '/portal/login',
             '/portal/logout',
-            '/portal/forgotPassword'
+            '/portal/forgotPassword',
+            '/portal/changePassword'
         ];
 
         if (!session()->has('portal_username') && !in_array($request->getPathInfo(), $guestPaths)) {
