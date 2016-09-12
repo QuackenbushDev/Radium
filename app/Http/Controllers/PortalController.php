@@ -108,7 +108,7 @@ class PortalController extends Controller {
             $user->reset_password_token = Str::random(30);
             $user->save();
 
-            $link = route('portalResetPassword', $user->reset_password_token);
+            $link = route('portalResetPassword', ['token', $user->reset_password_token]);
 
             Mail::send('email.portal.password-reset', ['link' => $link], function($m) use ($user) {
                 $m->to($user->email);
@@ -146,7 +146,8 @@ class PortalController extends Controller {
 
         return view('pages.portal.change-password', [
             'token' => $token,
-            'user_id' => $account->id
+            'user_id' => $account->id,
+            'email' => $account->email
         ]);
     }
 
@@ -160,11 +161,13 @@ class PortalController extends Controller {
      */
     public function doChangePassword(Request $request) {
         $token = $request->input('token', null);
-        $userID = $request->input('user_id');
+        $userID = $request->input('userID');
 
         try {
             $account = RadiusCheck::where('reset_token', $token)
                 ->where('id', $userID)
+                ->firstOrFail();
+            $accountInfo = RadiusAccountInfo::where('username', $account->username)
                 ->firstOrFail();
 
             $password = $request->input('password', null);
@@ -178,10 +181,13 @@ class PortalController extends Controller {
             return redirect(route(''));
         }
 
-        $account->value = $password;
-        $account->save();
+        session()->flash('message', 'Password successfully reset!');
+        session()->flash('alert-class', 'success');
 
-        return redirect(route(''));
+        $accountInfo->update(['password_reset_token' => null]);
+        $account->update(['value' => $password]);
+
+        return redirect(route('portal::login'));
     }
 
     /**

@@ -115,6 +115,8 @@ Route::group(['prefix' => 'portal', 'as' => 'portal::', 'middleware' => ['portal
 
     Route::get('/forgotPassword', ['as' => 'passwordReset', 'uses' => 'PortalController@passwordReset']);
     Route::post('/forgotPassword', ['as' => 'doPasswordReset', 'uses' => 'PortalController@doPasswordReset']);
+    Route::get('/changePassword', ['as' => 'changePassword', 'uses' => 'PortalController@changePassword']);
+    Route::post('/changePassword', ['as' => 'doChangePassword', 'uses' => 'PortalController@doChangePassword']);
 
     Route::get('/profile/edit/{username}', ['as' => 'editProfile', 'uses' => 'PortalController@editProfile']);
     Route::get('/profile/{username}', ['as' => 'profile', 'uses' => 'PortalController@profile']);
