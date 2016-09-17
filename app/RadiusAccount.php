@@ -369,6 +369,29 @@ class RadiusAccount extends Model {
     }
 
     /**
+     * Returns today's accounting records for processing
+     *
+     * @return mixed
+     */
+    public function getUnprocessed() {
+        $columns = 'username'
+            . ',nasipaddress'
+            . ',acctstarttime'
+            . ',DAY(acctstarttime)'
+            . ',YEAR(acctstarttime)'
+            . ',acctstoptime'
+            . ',SUM(acctoctetsin)'
+            . ',SUM(acctoctetsout)'
+            . ',SUM(acctoctetsin + acctoctetsout) as total';
+
+        return self::selectRaw($columns)
+            ->where('processed', false)
+            ->whereRaw('acctstoptime IS NOT NULL')
+            ->groupBy('username', 'nasipaddress')
+            ->get();
+    }
+
+    /**
      * Calculates the records array index for a given week range.
      *
      * @param $startDate

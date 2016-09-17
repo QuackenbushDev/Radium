@@ -124,7 +124,7 @@ class PortalController extends Controller {
                 }
             );
 
-            return redirect('');
+            return redirect('portal::passwordResetSuccess');
         } else {
             request()->flash();
             session()->flash('message', 'E-Mail address not found.');
@@ -132,6 +132,16 @@ class PortalController extends Controller {
 
             return redirect(route('portal::passwordReset'));
         }
+    }
+
+    /**
+     * Displays a success message for password reset requests
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function passwordResetSuccess(Request $request) {
+        return view()->make('pages.portal.forgot-password-success');
     }
 
     /**

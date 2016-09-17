@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\DictionaryCompile::class,
         Commands\OperatorEmailSummary::class,
         Commands\UserEmailSummary::class,
+        Commands\AccountingProcess::class,
     ];
 
     /**
