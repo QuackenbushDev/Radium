@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\RadiusAccount;
+use App\Utils\Bandwidth;
 use Illuminate\Console\Command;
 
 class AccountingProcess extends Command
@@ -38,6 +38,6 @@ class AccountingProcess extends Command
      */
     public function handle()
     {
-        $accountingRecords = RadiusAccount::getTodaysRecords();
+        Bandwidth::process();
     }
 }

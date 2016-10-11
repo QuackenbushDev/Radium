@@ -17,10 +17,14 @@ class CreateBandwidthActiveConnectionSummaryTable extends Migration
             $table->integer('connection_id')
                 ->unsigned()
                 ->foreign('radacct', 'id');
+            $table->integer('nas_id')
+                ->unsigned()
+                ->foreign('nas', 'id');
             $table->string('username');
-            $table->dateTime('date');
+            $table->date('date');
             $table->integer('download');
             $table->integer('upload');
+            $table->integer('total');
         });
     }
 

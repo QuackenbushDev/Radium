@@ -14,10 +14,15 @@ class CreateBandwidthSummaryTable extends Migration
     {
         Schema::create('radium_bandwidth_summary', function($table) {
             $table->increments('id');
+            $table->integer('nas_id')
+                ->unsigned()
+                ->foreign('nas', 'id');
             $table->string('username');
-            $table->dateTime('date');
+            $table->date('date');
             $table->integer('download');
             $table->integer('upload');
+            $table->integer('total');
+            $table->integer('connection_count');
         });
     }
 
