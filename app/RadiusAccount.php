@@ -74,7 +74,6 @@ class RadiusAccount extends Model {
             ->leftJoin('nas', 'nasname', '=', 'nasipaddress')
             ->where('processed', false)
             ->whereRaw('acctstoptime IS NOT NULL')
-            ->groupBy('username', 'nasipaddress', 'day', 'month', 'year')
             ->get();
     }
 
@@ -96,7 +95,7 @@ class RadiusAccount extends Model {
         return self::selectRaw($columns)
             ->leftJoin('nas', 'nasname', '=', 'nasipaddress')
             ->whereRaw('acctstoptime IS NULL')
-            ->groupBy('username', 'nasipaddress', 'day', 'month', 'year')
+            ->groupBy('radacctid', 'username', 'nas_id')
             ->get();
     }
 }

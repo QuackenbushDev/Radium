@@ -9,42 +9,37 @@ use DateTime;
 class Bandwidth
 {
     public static function process() {
-        //\DB::beginTransaction();
+        //self::processOpenConnections();
+        self::processClosedConnections();
+    }
 
-        $stats = [
-            'upload' => 0,
-            'download' => 0,
-            'total' => 0
-        ];
-
-        // Handle open connections
+    public static function processOpenConnections() {
         $currentDate = new DateTime();
         $openConnections = RadiusAccount::getOpenConnections();
+
         foreach ($openConnections as $connection) {
+            $download = (int) $connection->download;
+            $upload = (int) $connection->upload;
+            $total = (int) $connection->total;
+
             $usage = ActiveConnectionSummary::getConnectionUsage($connection->radacctid);
-            if ($usage === null) {
-                $download = $connection->download;
-                $upload = $connection->upload;
-                $total = $connection->total;
-                echo "Creating new usage record for connection.\r\n";
-            } else {
-                $download = $connection->download - $usage->download;
-                $upload = $connection->upload - $usage->upload;
-                $total = $connection->total - $usage->total;
-                echo "Existing usage found. \r\n";
+            if ($usage !== null) {
+                $download -= (int) $usage->download;
+                $upload -= (int) $usage->upload;
+                $total -= (int) $usage->total;
             }
 
-            $currentRecord = ActiveConnectionSummary::getCurrentConnection(
-                $connection->username,
-                $connection->nas_id,
-                $currentDate
-            );
+            if ($total === 0) {
+                continue;
+            }
+
+            $currentRecord = ActiveConnectionSummary::getCurrentConnection($connection->radacctid, $currentDate);
+
             if ($currentRecord !== null) {
                 $currentRecord->download += $download;
                 $currentRecord->upload += $upload;
                 $currentRecord->total += $total;
                 $currentRecord->save();
-                echo "Found existing connection: " . $currentRecord->id;
             } else {
                 ActiveConnectionSummary::create([
                     'connection_id' => $connection->radacctid,
@@ -56,23 +51,81 @@ class Bandwidth
                     'total'         => $total,
                 ]);
             }
-
-            $stats['download'] += $download;
-            $stats['upload']   += $upload;
-            $stats['total']    += $total;
         }
-
-        //\DB::rollBack();
-
-        dd(
-            "Download: " . \App\Utils\DataHelper::convertToHumanReadableSize($stats['download']),
-            "Upload: "   . \App\Utils\DataHelper::convertToHumanReadableSize($stats['upload']),
-            "Total: "    . \App\Utils\DataHelper::convertToHumanReadableSize($stats['total'])
-        );
     }
 
-    public static function getOpenConnections() {
+    public static function processClosedConnections() {
+        $connections = RadiusAccount::getUnprocessed();
 
+        foreach($connections as $connection) {
+            $summarizedConnections = ActiveConnectionSummary::getConnections($connection->radacctid);
+
+            foreach ($summarizedConnections as $summarizedConnection) {
+                $summary = BandwidthSummary::getDailySummary(
+                    $summarizedConnection->username,
+                    $summarizedConnection->nas_id,
+                    $summarizedConnection->date
+                );
+
+                if ($summary !== null) {
+                    $summary->download += $summarizedConnection->download;
+                    $summary->upload += $summarizedConnection->upload;
+                    $summary->total += $summarizedConnection->total;
+                    $summary->save();
+                } else {
+                    $summary = BandwidthSummary::create([
+                        'username' => $summarizedConnection->username,
+                        'nas_id' => $summarizedConnection->nas_id,
+                        'date' => $summarizedConnection->date,
+                        'download' => $summarizedConnection->download,
+                        'upload' => $summarizedConnection->upload,
+                        'total' => $summarizedConnection->total,
+                    ]);
+                }
+            }
+
+            $download = $connection->download;
+            $upload = $connection->upload;
+            $total = $connection->total;
+
+            $usage = BandwidthSummary::getUsageSummary(
+                $connections->username,
+                $connections->nas_id,
+                $connections->date
+            );
+
+            if ($usage !== null) {
+                $download -= $usage->download;
+                $upload -= $usage->upload;
+                $total -= $usage->total;
+            }
+
+            $activeConnection = BandwidthSummary::getDailySummary(
+                $connections->username,
+                $connections->nas_id,
+                $connections->date
+            );
+
+            if ($activeConnection !== null) {
+                $activeConnection->download += $download;
+                $activeConnection->upload += $upload;
+                $activeConnection->total += $total;
+            } else {
+                $currentDate = new DateTime();
+                $summary = BandwidthSummary::create([
+                    'username' => $connection->username,
+                    'nas_id' => $connection->nas_id,
+                    'date' => $currentDate->format("Y-m-d"),
+                    'download' => $download,
+                    'upload' => $upload,
+                    'total' => $total,
+                ]);
+            }
+        }
+    }
+
+    public static function cleanupClosedConnections() {
+        // implement....
     }
 
     /**

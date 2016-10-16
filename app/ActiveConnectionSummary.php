@@ -9,6 +9,7 @@ class ActiveConnectionSummary extends Model {
 
     public $fillable = [
         'connection_id',
+        'nas_id',
         'username',
         'date',
         'download',
@@ -24,9 +25,9 @@ class ActiveConnectionSummary extends Model {
      */
     public static function getConnectionUsage($connectionID = 0) {
         $columns = "connection_id"
-            .',sum(download)'
-            .',sum(upload)'
-            .',sum(total)';
+            .',sum(download) as download'
+            .',sum(upload) as upload'
+            .',sum(total) as total';
 
         return self::selectRaw($columns)
             ->where('connection_id', $connectionID)
@@ -37,15 +38,13 @@ class ActiveConnectionSummary extends Model {
     /**
      * Retrieves the current connection to update the daily usage
      *
-     * @param string $username
-     * @param int $nasID
+     * @param int $connectionID
      * @param DateTime $date
      */
-    public static function getCurrentConnection($username = "", $nasID = 0, DateTime $date) {
+    public static function getCurrentConnection($connectionID, DateTime $date) {
         return self::select("*")
-            ->where('username', $username)
-            ->where('nas_id', $nasID)
-            ->where('date', $date)
+            ->where('connection_id', $connectionID)
+            ->where('date', $date->format('Y-m-d'))
             ->first();
     }
 }
