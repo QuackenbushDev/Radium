@@ -10,7 +10,8 @@
         "adamwathan/bootforms": "^0.8.1",
         "barryvdh/laravel-debugbar": "^2.2",
         "doctrine/dbal": "^2.5",
-        "fedeisas/laravel-mail-css-inliner": "^1.5"
+        "fedeisas/laravel-mail-css-inliner": "^1.5",
+        "nesbot/carbon": "^1.21"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

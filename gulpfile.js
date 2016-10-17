@@ -1,4 +1,5 @@
 var elixir = require('laravel-elixir');
+var path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +13,6 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.sass('app.scss')
+        .phpUnit(["./App/**/*.php", "./Tests/*Test.php"], path.normalize('vendor/bin/phpunit') + ' --verbose');
 });

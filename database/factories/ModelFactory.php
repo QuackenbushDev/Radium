@@ -28,3 +28,42 @@ $factory->define(App\RadiusCheck::class, function(Faker\Generator $faker) {
         'value'     => $faker->password(8,20)
     ];
 });
+
+$factory->define(App\RadiusAccount::class, function(Faker\Generator $faker) {
+    $download = $faker->numberBetween(10000000, 100000000);
+    $upload = $faker->numberBetween(1000000, 5000000);
+
+    return [
+        'acctsessionid' => $faker->uuid,
+        'acctuniqueid' => $faker->uuid,
+        'username' => $faker->userName,
+        'groupname' => '',
+        'realm' => '',
+        'nasipaddress' => '10.114.4.1',
+        'nasportid' => $faker->numberBetween(1000,1500),
+        'nasporttype' => 'Virtual',
+        'acctstarttime' => $faker->dateTimeBetween('-15 days', '-1 days'),
+        'acctupdatetime' => $faker->dateTimeBetween('-14 days', '-1 days'),
+        'acctstoptime' => $faker->dateTime('now'),
+        'acctinterval' => 1000,
+        'acctsessiontime' => 10000,
+        'acctauthentic' => '',
+        'connectinfo_start' => '',
+        'connectinfo_stop' => '',
+        'acctinputoctets' => $download,
+        'acctoutputoctets' => $upload,
+        'calledstationid' => '',
+        'callingstationid' => '',
+        'acctterminatecause' => '',
+        'servicetype' => '',
+        'framedprotocol' => '',
+        'framedipaddress' => '',
+        'processed' => 0
+    ];
+});
+
+$factory->state(App\RadiusAccount::class, 'open', function($faker) {
+    return [
+        'acctstoptime' => null
+    ];
+});
