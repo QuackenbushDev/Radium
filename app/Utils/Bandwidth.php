@@ -59,7 +59,7 @@ class Bandwidth
     }
 
     /**
-     * Prccesses closed connection to create bandwidthsummary records
+     * Prccesses closed connection to create bandwidth summary records
      */
     public static function processClosedConnections() {
         $connections = RadiusAccount::getUnprocessed();
@@ -69,7 +69,30 @@ class Bandwidth
             $date = Carbon::createFromFormat("Y-m-d H:i:s", $connection->acctstoptime);
 
             if (count($summarizedConnections) > 0) {
-                
+                foreach($summarizedConnections as $summarizedConnection) {
+                    $summaryDate = Carbon::createFromFormat("Y-m-d", $summarizedConnection->date);
+                    $summary = BandwidthSummary::getConnectionForDate(
+                        $summarizedConnection->username,
+                        $summarizedConnection->nas_id,
+                        $summaryDate
+                    );
+
+                    if ($summary !== null) {
+                        $summary->download += $summarizedConnection->download;
+                        $summary->upload += $summarizedConnection->upload;
+                        $summary->total += $summarizedConnection->total;
+                        $summary->save();
+                    } else {
+                        $summary = BandwidthSummary::create([
+                            'username' => $summarizedConnection->username,
+                            'nas_id' => $summarizedConnection->nas_id,
+                            'date' => $summaryDate->toDateString(),
+                            'download' => $summarizedConnection->download,
+                            'upload' => $summarizedConnection->upload,
+                            'total' => $summarizedConnection->total,
+                        ]);
+                    }
+                }
             }
 
             $download = $connection->download;

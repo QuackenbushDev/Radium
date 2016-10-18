@@ -23,4 +23,19 @@ class BandwidthSummary extends Model {
             ->where('date', $date->toDateString())
             ->first();
     }
+
+    public static function getUsageForDateRange($username, $nasID, $startDate, $stopDate) {
+        $columns = "username"
+            . ",nas_id"
+            . ",SUM(download) as download"
+            . ",SUM(upload) as upload"
+            . ",SUM(total) as total";
+
+        return self::selectRaw($columns)
+            ->where('username', $username)
+            ->where('nas_id', $nasID)
+            ->where('date', '>=', $startDate)
+            ->where('date', '<=', $stopDate)
+            ->first();
+    }
 }

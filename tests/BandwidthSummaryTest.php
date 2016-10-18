@@ -23,67 +23,67 @@ class BandwidthSummaryTest extends TestCase
         Carbon::setTestNow($this->startDate);
     }
 
-//    public function testOpenConnectionProcessing() {
-//        $openConnections = factory(App\RadiusAccount::class, 2)
-//            ->states('open')
-//            ->create();
-//
-//        for ($i=0; $i <= 4; $i++) {
-//            $this->increaseUsage($openConnections);
-//            $this->startDate->addHours(12);
-//            Carbon::setTestNow($this->startDate);
-//
-//            Bandwidth::processOpenConnections();
-//        }
-//
-//        foreach($openConnections as $connection) {
-//            $usage = ActiveConnectionSummary::getConnectionUsage($connection->radacctid);
-//
-//            $this->assertEquals(
-//                $connection->acctoutputoctets,
-//                $usage->download
-//            );
-//
-//            $this->assertEquals(
-//                $connection->acctinputoctets,
-//                $usage->upload
-//            );
-//
-//            $total = $connection->acctoutputoctets + $connection->acctinputoctets;
-//            $this->assertEquals(
-//                $total,
-//                $usage->total
-//            );
-//        }
-//    }
-//
-//    public function testClosedConnectionProcessing() {
-//        $closedConnections = factory(App\RadiusAccount::class, 2)
-//            ->create();
-//
-//        Bandwidth::processClosedConnections();
-//
-//        foreach ($closedConnections as $connection) {
-//            $nas = Nas::where('nasname', $connection->nasipaddress)->first();
-//            $total = $connection->acctinputoctets + $connection->acctoutputoctets;
-//            $usage = BandwidthSummary::getConnectionForDate(
-//                $connection->username,
-//                $nas->id,
-//                $connection->acctstoptime
-//            );
-//
-//            $this->assertEquals($connection->acctoutputoctets, $usage->download);
-//            $this->assertEquals($connection->acctinputoctets, $usage->upload);
-//            $this->assertEquals($total, $usage->total);
-//        }
-//    }
-
-    public function testClosedConnectionProcessingWithActiveConnectionSummaries() {
-        $connections = factory(App\RadiusAccount::class, 2)
+    public function testOpenConnectionProcessing() {
+        $openConnections = factory(App\RadiusAccount::class, 5)
             ->states('open')
             ->create();
 
         for ($i=0; $i <= 8; $i++) {
+            $this->increaseUsage($openConnections);
+            $this->startDate->addHours(12);
+            Carbon::setTestNow($this->startDate);
+
+            Bandwidth::processOpenConnections();
+        }
+
+        foreach($openConnections as $connection) {
+            $usage = ActiveConnectionSummary::getConnectionUsage($connection->radacctid);
+
+            $this->assertEquals(
+                $connection->acctoutputoctets,
+                $usage->download
+            );
+
+            $this->assertEquals(
+                $connection->acctinputoctets,
+                $usage->upload
+            );
+
+            $total = $connection->acctoutputoctets + $connection->acctinputoctets;
+            $this->assertEquals(
+                $total,
+                $usage->total
+            );
+        }
+    }
+
+    public function testClosedConnectionProcessing() {
+        $closedConnections = factory(App\RadiusAccount::class, 5)
+            ->create();
+
+        Bandwidth::processClosedConnections();
+
+        foreach ($closedConnections as $connection) {
+            $nas = Nas::where('nasname', $connection->nasipaddress)->first();
+            $total = $connection->acctinputoctets + $connection->acctoutputoctets;
+            $usage = BandwidthSummary::getConnectionForDate(
+                $connection->username,
+                $nas->id,
+                $connection->acctstoptime
+            );
+
+            $this->assertEquals($connection->acctoutputoctets, $usage->download);
+            $this->assertEquals($connection->acctinputoctets, $usage->upload);
+            $this->assertEquals($total, $usage->total);
+        }
+    }
+
+    public function testClosedConnectionProcessingWithActiveConnectionSummaries() {
+        $connections = factory(App\RadiusAccount::class, 5)
+            ->states('open')
+            ->create();
+
+        for ($i=0; $i <= 30; $i++) {
             $this->increaseUsage($connections);
             $this->startDate->addHours(12);
             Carbon::setTestNow($this->startDate);
@@ -97,6 +97,22 @@ class BandwidthSummaryTest extends TestCase
         }
 
         Bandwidth::processClosedConnections();
+
+        foreach ($connections as $connection) {
+            $startDate = Carbon::instance($connection->acctstarttime);
+            $nas = Nas::where('nasname', $connection->nasipaddress)->first();
+            $usage = BandwidthSummary::getUsageForDateRange(
+                $connection->username,
+                $nas->id,
+                $startDate->toDateString(),
+                $connection->acctstoptime
+            );
+
+            $total = $connection->acctinputoctets + $connection->acctoutputoctets;
+            $this->assertEquals($connection->acctoutputoctets, $usage->download);
+            $this->assertEquals($connection->acctinputoctets, $usage->upload);
+            $this->assertEquals($total, $usage->total);
+        }
     }
 
     private function increaseUsage(&$connections) {
