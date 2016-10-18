@@ -1,7 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use DateTime;
+use Carbon\Carbon;
 
 class ActiveConnectionSummary extends Model {
     protected $table = 'radium_active_connection_summary';
@@ -39,12 +39,24 @@ class ActiveConnectionSummary extends Model {
      * Retrieves the current connection to update the daily usage
      *
      * @param int $connectionID
-     * @param DateTime $date
+     * @param Carbon $date
      */
-    public static function getCurrentConnection($connectionID, DateTime $date) {
+    public static function getCurrentConnection($connectionID, Carbon $date) {
         return self::select("*")
             ->where('connection_id', $connectionID)
-            ->where('date', $date->format('Y-m-d'))
+            ->where('date', $date->toDateString())
             ->first();
+    }
+
+    /**
+     * Retrieves a list of connections for a specified connection ID.
+     *
+     * @param $connectionID
+     * @return mixed
+     */
+    public static function getConnections($connectionID) {
+        return self::select("*")
+            ->where('connection_id', $connectionID)
+            ->get();
     }
 }

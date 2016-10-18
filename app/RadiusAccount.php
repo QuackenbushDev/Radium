@@ -51,23 +51,18 @@ class RadiusAccount extends Model {
     protected $hidden = [];
 
     /**
-     * Returns today's accounting records for processing
+     * Returns a list of unprocessed closed connections for processing.
      *
      * @return mixed
      */
     public static function getUnprocessed() {
         $columns = 'radacctid'
             . ',username'
-            . ',nasipaddress'
             . ',acctstarttime'
-            . ',DAY(acctstarttime) as day'
-            . ',MONTH(acctstarttime) as month'
-            . ',YEAR(acctstarttime) as year'
             . ',acctstoptime'
-            . ',count(acctsessionid) as connection_count'
-            . ',SUM(acctoutputoctets) as download'
-            . ',SUM(acctinputoctets) as upload'
-            . ',SUM(acctinputoctets + acctoutputoctets) as total'
+            . ',acctoutputoctets as download'
+            . ',acctinputoctets as upload'
+            . ',(acctinputoctets + acctoutputoctets) as total'
             . ',nas.id as nas_id';
 
         return self::selectRaw($columns)
@@ -77,25 +72,24 @@ class RadiusAccount extends Model {
             ->get();
     }
 
+    /**
+     * Retrieve a list of connections that are still open. An open connection cannot
+     * be processed therefore is not checked for the processed flag.
+     *
+     * @return mixed
+     */
     public static function getOpenConnections() {
         $columns = 'radacctid'
             . ',username'
-            . ',nasipaddress'
             . ',acctstarttime'
-            . ',DAY(acctstarttime) as day'
-            . ',MONTH(acctstarttime) as month'
-            . ',YEAR(acctstarttime) as year'
-            . ',acctstoptime'
-            . ',count(acctsessionid) as connection_count'
-            . ',SUM(acctoutputoctets) as download'
-            . ',SUM(acctinputoctets) as upload'
-            . ',SUM(acctinputoctets + acctoutputoctets) as total'
+            . ',acctoutputoctets as download'
+            . ',acctinputoctets as upload'
+            . ',(acctinputoctets + acctoutputoctets) as total'
             . ',nas.id as nas_id';
 
         return self::selectRaw($columns)
             ->leftJoin('nas', 'nasname', '=', 'nasipaddress')
             ->whereRaw('acctstoptime IS NULL')
-            ->groupBy('radacctid', 'username', 'nas_id')
             ->get();
     }
 }

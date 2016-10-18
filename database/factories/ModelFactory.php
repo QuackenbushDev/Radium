@@ -44,7 +44,7 @@ $factory->define(App\RadiusAccount::class, function(Faker\Generator $faker) {
         'nasporttype' => 'Virtual',
         'acctstarttime' => $faker->dateTimeBetween('-15 days', '-1 days'),
         'acctupdatetime' => $faker->dateTimeBetween('-14 days', '-1 days'),
-        'acctstoptime' => $faker->dateTime('now'),
+        'acctstoptime' => Carbon\Carbon::now(),
         'acctinterval' => 1000,
         'acctsessiontime' => 10000,
         'acctauthentic' => '',
