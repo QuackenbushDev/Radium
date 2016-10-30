@@ -92,4 +92,33 @@ class RadiusAccount extends Model {
             ->whereRaw('acctstoptime IS NULL')
             ->get();
     }
+
+    /**
+     * Returns a boolean with the users online status
+     *
+     * @param $username
+     * @return bool
+     */
+    public static function onlineStatus($username) {
+        $query = self::select('username')
+            ->where('AcctStopTime', 'IS', 'NULL')
+            ->where('Username', $username)
+            ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
+            ->where('username', $username);
+        return ($query->count() > 0) ? true : false;
+    }
+
+    /**
+     * returns a list of online users.
+     *
+     * @return mixed
+     */
+    public static function onlineUsers() {
+        $sql = 'radacctid, username, framedipaddress, nasipaddress, sum(acctsessiontime), count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total';
+        $query = self::selectRaw($sql)
+            ->whereRaw('AcctStopTime IS NULL')
+            ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
+            ->groupBy('username', 'acctstarttime');
+        return $query;
+    }
 }

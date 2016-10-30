@@ -3,7 +3,6 @@
 use App\RadiusAccount;
 use App\BandwidthSummary;
 use App\ActiveConnectionSummary;
-use App\Utils\DataHelper;
 use Carbon\Carbon;
 
 class Bandwidth
@@ -11,6 +10,7 @@ class Bandwidth
     public static function process() {
         self::processOpenConnections();
         self::processClosedConnections();
+        //self::cleanupClosedConnections();
     }
 
     /**
@@ -129,12 +129,19 @@ class Bandwidth
 
             $connection->processed = 1;
             $connection->save();
+
+            foreach ($summarizedConnections as $summarizedConnection) {
+                $summarizedConnection->delete();
+            }
         }
 
     }
 
     public static function cleanupClosedConnections() {
-        // implement....
+        if (config('radium.clean_accounting_records')) {
+            $connections = RadiusAccount::where('processed', 1)
+                ->delete();
+        }
     }
 
     /**

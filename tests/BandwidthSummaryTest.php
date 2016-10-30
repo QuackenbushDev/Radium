@@ -24,11 +24,11 @@ class BandwidthSummaryTest extends TestCase
     }
 
     public function testOpenConnectionProcessing() {
-        $openConnections = factory(App\RadiusAccount::class, 5)
+        $openConnections = factory(App\RadiusAccount::class, 2)
             ->states('open')
             ->create();
 
-        for ($i=0; $i <= 8; $i++) {
+        for ($i=0; $i <= 3; $i++) {
             $this->increaseUsage($openConnections);
             $this->startDate->addHours(12);
             Carbon::setTestNow($this->startDate);
@@ -58,7 +58,7 @@ class BandwidthSummaryTest extends TestCase
     }
 
     public function testClosedConnectionProcessing() {
-        $closedConnections = factory(App\RadiusAccount::class, 5)
+        $closedConnections = factory(App\RadiusAccount::class, 2)
             ->create();
 
         Bandwidth::processClosedConnections();
@@ -79,11 +79,11 @@ class BandwidthSummaryTest extends TestCase
     }
 
     public function testClosedConnectionProcessingWithActiveConnectionSummaries() {
-        $connections = factory(App\RadiusAccount::class, 5)
+        $connections = factory(App\RadiusAccount::class, 2)
             ->states('open')
             ->create();
 
-        for ($i=0; $i <= 30; $i++) {
+        for ($i=0; $i <= 3; $i++) {
             $this->increaseUsage($connections);
             $this->startDate->addHours(12);
             Carbon::setTestNow($this->startDate);

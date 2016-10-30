@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Dictionary;
+use App\BandwidthSummary;
 use App\RadiusAccount;
 use App\RadiusCheck;
 use App\RadiusGroupCheck;
@@ -21,14 +22,14 @@ class APIController extends Controller {
         $timeSpan = $request->input('timeSpan', 'month');
         $timeValue = $request->input('timeValue', '');
         $username = $request->input('username', null);
-        $nasIP = $request->input('nasIP', null);
+        $nasID = $request->input('nasID', null);
         $headers = Graph::generateHeaders($timeSpan, $timeValue);
 
         if (session()->has('portal_username', '')) {
             $username = session()->get('portal_username');
         }
 
-        $bandwidthUsage = RadiusAccount::bandwidthUsage($timeSpan, $timeValue, $username, $nasIP);
+        $bandwidthUsage = BandwidthSummary::bandwidthUsage($timeSpan, $timeValue, $username, $nasID);
 
         return response()->json([
             'headers' => $headers,

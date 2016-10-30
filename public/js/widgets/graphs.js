@@ -1,12 +1,12 @@
-function makeBandwidthChart(id, timeSpan, timeValue, username, nasIP) {
+function makeBandwidthChart(id, timeSpan, timeValue, username, nasID) {
     var url = '/api/bandwidthUsage?timeSpan=' + timeSpan + "&timeValue=" + timeValue;
 
     if (username != '') {
         url = url + '&username=' + username
     }
 
-    if (nasIP != '') {
-        url = url + '&nasIP=' + nasIP
+    if (nasID != '') {
+        url = url + '&nasID=' + nasID
     }
 
     $.ajax({
@@ -16,15 +16,15 @@ function makeBandwidthChart(id, timeSpan, timeValue, username, nasIP) {
     });
 }
 
-function makeConnectionChart(id, timeSpan, timeValue, username, nasIP) {
+function makeConnectionChart(id, timeSpan, timeValue, username, nasID) {
     var url = '/api/connectionCount?timeSpan=' + timeSpan + "&timeValue=" + timeValue;
 
     if (username != '') {
         url = url + '&username=' + username
     }
 
-    if (nasIP != '') {
-        url = url + '&nasIP=' + nasIP
+    if (nasID != '') {
+        url = url + '&nasID=' + nasID
     }
 
     $.ajax({

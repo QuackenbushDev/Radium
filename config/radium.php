@@ -64,8 +64,7 @@ return [
     'proxy_file' => env('RADIUM_PROXY_FILE', ''),
 
     /**
-     * The path to the r executable on your system. This is used for graphing capabilities
-     * for sending e-mail summaries.
+     * Configuration flag for automatically clearing accounting records after cron is finished.
      */
-    'r_path' => env('RADIUM_R_PATH', ''),
+    'clean_accounting_records' => env('RADIUM_CLEAN_ACCOUNTING_RECORDS', false)
 ];

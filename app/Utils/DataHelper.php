@@ -1,7 +1,9 @@
 <?php namespace App\Utils;
 
+use App\BandwidthSummary;
 use App\RadiusAccount;
 use DateTime;
+use Carbon\Carbon;
 
 class DataHelper {
     /**
@@ -42,45 +44,58 @@ class DataHelper {
      * with the daily, monthly, yearly stats
      *
      * @param string $username
+     * @param int $nasID
      * @return array
      */
-    static function calculateUserBandwidth($username) {
-        $dailyUsage = RadiusAccount::getConnections('day', date('d'), true, $username)->first();
-        $monthlyUsage = RadiusAccount::getConnections('month', date('m'), true, $username)->first();
-        $yearlyUsage = RadiusAccount::getConnections('year', date('Y'), true, $username)->first();
+    static function calculateUserBandwidth($username, $nasID = null) {
+        $dailyUsage = BandwidthSummary::getUsageForDateRange(
+            $username,
+            $nasID,
+            Carbon::today()->toDateString(),
+            Carbon::today()->toDateString()
+        );
+        $monthlyUsage = BandwidthSummary::getUsageForDateRange(
+            $username,
+            $nasID,
+            Carbon::now()->startOfMonth()->toDateString(),
+            Carbon::now()->endOfMonth()->toDateString()
+        );
+        $yearlyUsage = BandwidthSummary::getUsageForDateRange(
+            $username,
+            $nasID,
+            Carbon::now()->startOfYear()->toDateString(),
+            Carbon::now()->endOfYear()->toDateString()
+        );
 
         $bandwidth = [];
         if ($dailyUsage !== null) {
             $bandwidth['day'] = [
-                'connections' => $dailyUsage->connections,
-                'in'          => self::convertToHumanReadableSize($dailyUsage->acctinputoctets),
-                'out'         => self::convertToHumanReadableSize($dailyUsage->acctoutputoctets),
-                'total'       => self::convertToHumanReadableSize($dailyUsage->total)
+                'download' => self::convertToHumanReadableSize($dailyUsage->download),
+                'upload'   => self::convertToHumanReadableSize($dailyUsage->upload),
+                'total'    => self::convertToHumanReadableSize($dailyUsage->total)
             ];
         } else {
-            $bandwidth['day'] = ['connections' => 0, 'in' => 0, 'out' => 0, 'total' => 0];
+            $bandwidth['day'] = ['download' => 0, 'upload' => 0, 'total' => 0];
         }
 
         if ($monthlyUsage !== null) {
             $bandwidth['month'] = [
-                'connections' => $monthlyUsage->connections,
-                'in'          => self::convertToHumanReadableSize($monthlyUsage->acctinputoctets),
-                'out'         => self::convertToHumanReadableSize($monthlyUsage->acctoutputoctets),
-                'total'       => self::convertToHumanReadableSize($monthlyUsage->total)
+                'download' => self::convertToHumanReadableSize($monthlyUsage->download),
+                'upload'   => self::convertToHumanReadableSize($monthlyUsage->upload),
+                'total'    => self::convertToHumanReadableSize($monthlyUsage->total)
             ];
         } else {
-            $bandwidth['month'] = ['connections' => 0, 'in' => 0, 'out' => 0, 'total' => 0];
+            $bandwidth['month'] = ['download' => 0, 'upload' => 0, 'total' => 0];
         }
 
         if ($yearlyUsage !== null) {
             $bandwidth['year'] = [
-                'connections' => $yearlyUsage->connections,
-                'in'          => self::convertToHumanReadableSize($yearlyUsage->acctinputoctets),
-                'out'         => self::convertToHumanReadableSize($yearlyUsage->acctoutputoctets),
-                'total'       => self::convertToHumanReadableSize($yearlyUsage->total)
+                'download' => self::convertToHumanReadableSize($yearlyUsage->download),
+                'upload'   => self::convertToHumanReadableSize($yearlyUsage->upload),
+                'total'    => self::convertToHumanReadableSize($yearlyUsage->total)
             ];
         } else {
-            $bandwidth['year'] = ['connections' => 0, 'in' => 0, 'out' => 0, 'total' => 0];
+            $bandwidth['year'] = ['download' => 0, 'upload' => 0, 'total' => 0];
         }
 
         return $bandwidth;

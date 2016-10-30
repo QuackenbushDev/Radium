@@ -19,5 +19,5 @@
 </div>
 
 @push('documentReady')
-    makeBandwidthChart('{{ $id }}', '{{ $timeSpan }}', '{{ $timeValue }}', '{{ $username }}', '{{ $nasIP }}');
+    makeBandwidthChart('{{ $id }}', '{{ $timeSpan }}', '{{ $timeValue }}', '{{ $username }}', '{{ $nasID }}');
 @endpush

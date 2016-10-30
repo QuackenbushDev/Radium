@@ -6,16 +6,12 @@
         <table class="table table-responsive table-striped table-bordered">
             <tbody>
                 <tr>
-                    <td>Connections</td>
-                    <td>{{ $data['connections'] }}</td>
+                    <td>Download</td>
+                    <td>{{ $data['download'] }}</td>
                 </tr>
                 <tr>
-                    <td>Up</td>
-                    <td>{{ $data['in'] }}</td>
-                </tr>
-                <tr>
-                    <td>Down</td>
-                    <td>{{ $data['out'] }}</td>
+                    <td>Upload</td>
+                    <td>{{ $data['upload'] }}</td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>

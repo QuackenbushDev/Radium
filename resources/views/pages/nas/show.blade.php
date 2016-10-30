@@ -65,7 +65,7 @@
             'timeSpan'  => 'month',
             'timeValue' => 2016,
             'username'  => "",
-            'nasIP'     => $nas->nasname,
+            'nasID'     => $nas->id,
             'height'    => '300px',
         ]
     )
@@ -78,33 +78,7 @@
             'timeSpan'  => 'day',
             'timeValue' => date('m'),
             'username'  => "",
-            'nasIP'     => $nas->nasname,
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'nasConnectionSummary',
-            'title'     => date('Y') . ' Connection Summary',
-            'timeSpan'  => 'month',
-            'timeValue' => '',
-            'username'  => "",
-            'nasIP'     => $nas->nasname,
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'nasDailyConnectionSummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
-            'timeSpan'  => 'day',
-            'timeValue' => date('m'),
-            'username'  => "",
-            'nasIP'     => $nas->nasname,
+            'nasID'     => $nas->id,
             'height'    => '300px',
         ]
     )
@@ -114,7 +88,7 @@
             'widgets.table',
             [
                 'title'    => 'Recent Activity',
-                'headers'  => ['Username', 'Port', 'Type', 'Start Time', 'Stop Time', 'Session Time', 'Download', 'Upload'],
+                'headers'  => ['Username', 'Date', 'Download', 'Upload', 'Total'],
                 'dataSet'  => $latestActivity,
                 'partial'  => 'pages.nas.partials.show-latest-activity-table-data',
                 'colWidth' => 12

@@ -1,9 +1,9 @@
 <?php namespace App\Utils;
 
-use App\RadiusAccount;
+use App\BandwidthSummary;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use DateTime;
+use Carbon\Carbon;
 
 class Graph {
     /**
@@ -16,7 +16,7 @@ class Graph {
      * @return string
      */
     public static function createBandwidthGraphPNG($timeSpan = 'month', $timeValue = null, $username = null, $nasIP = null) {
-        $data = RadiusAccount::bandwidthUsage($timeSpan, $timeValue, $username, $nasIP);
+        $data = BandwidthSummary::bandwidthUsage($timeSpan, $timeValue, $username, $nasIP);
         $headers = self::generateHeaders($timeSpan, $timeValue);
 
         if ($nasIP === null) {
@@ -75,7 +75,7 @@ class Graph {
         switch ($timeSpan) {
             case "year":
                 return array_flatten(
-                    RadiusAccount::selectRaw('YEAR(acctstarttime) as year')
+                    BandwidthSummary::selectRaw('YEAR(date) as year')
                         ->groupBy('year')
                         ->get()
                         ->toArray()
@@ -86,11 +86,11 @@ class Graph {
 
             case "week":
                 $headers = [];
-                $date = new DateTime($timeValue);
+                $date = Carbon::createFromFormat("Y-m-d", $timeSpan);
 
                 for ($i=0; $i <= 6; $i++) {
                     if ($i > 0) {
-                        $date->modify('+1 days');
+                        $date->addDay();
                     }
                     $headers[] = $date->format('d');
                 }

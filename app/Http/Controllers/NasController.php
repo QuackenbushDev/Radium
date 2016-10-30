@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\BandwidthSummary;
 use App\Nas;
 use App\RadiusAccount;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class NasController extends Controller {
      */
     public function show($id) {
         $nas = Nas::find($id);
-        $latestActivity = RadiusAccount::getLatestNasActivity($nas->nasname, 15)->get();
+        $latestActivity = BandwidthSummary::getLatestNasActivity($nas->id, 15)->get();
 
         return view()->make(
             'pages.nas.show',

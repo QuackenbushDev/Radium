@@ -8,49 +8,7 @@
 
 @section("content")
     <div class="row">
-        @include(
-            'widgets.3colpanel',
-            [
-                'widget_value'       => ($dailyStats !== null) ? $dailyStats['connections'] : 0,
-                'widget_description' => 'Total connections on ' . date("m-d-Y"),
-                'widget_link'        => '#',
-                'widget_icon'        => 'fa-area-chart',
-                'widget_class'       => 'bg-aqua'
-            ]
-        )
 
-        @include(
-            'widgets.3colpanel',
-            [
-                'widget_value'       => ($monthlyStats !== null) ? $monthlyStats['connections'] : 0,
-                'widget_description' => 'Total connections for ' . date('M Y'),
-                'widget_link'        => '#',
-                'widget_icon'        => 'fa-area-chart',
-                'widget_class'       => 'bg-maroon'
-            ]
-        )
-
-        @include(
-            'widgets.3colpanel',
-            [
-                'widget_value'       => $dailyTop['upload'] . "GB / " . $dailyTop['download'] . 'GB',
-                'widget_description' => 'Top daily user: ' . $dailyTop['username'],
-                'widget_link'        => '#',
-                'widget_icon'        => 'fa-area-chart',
-                'widget_class'       => 'bg-green'
-            ]
-        )
-
-        @include(
-            'widgets.3colpanel',
-            [
-                'widget_value'       => $monthlyTop['upload'] . "GB / " . $monthlyTop['download'] . 'GB',
-                'widget_description' => 'Top monthly user: ' . $monthlyTop['username'],
-                'widget_link'        => '#',
-                'widget_icon'        => 'fa-area-chart',
-                'widget_class'       => 'bg-olive'
-            ]
-        )
     </div>
 
     @include(
@@ -61,7 +19,7 @@
             'timeSpan'  => 'month',
             'timeValue' => date('Y'),
             'username'  => "",
-            'nasIP'     => "",
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
@@ -74,37 +32,10 @@
             'timeSpan'  => 'day',
             'timeValue' => date('m'),
             'username'  => "",
-            'nasIP'     => "",
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'dashboardConnectionMonthlySummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
-            'timeSpan'  => 'month',
-            'timeValue' => date('Y'),
-            'username'  => "",
-            'nasIP'     => "",
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'dashboardConnectionDailySummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
-            'timeSpan'  => 'day',
-            'timeValue' => date('m'),
-            'username'  => "",
-            'nasIP'     => "",
-            'height'    => '300px',
-        ]
-    )
-
 
     <div class="row">
         @include(

@@ -104,7 +104,7 @@
             'timeSpan'  => 'month',
             'timeValue' => 2016,
             'username'  => $user->username,
-            'nasIP'     => "",
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
@@ -117,33 +117,7 @@
             'timeSpan'  => 'day',
             'timeValue' => date('m'),
             'username'  => $user->username,
-            'nasIP'     => "",
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'userConnectionSummary',
-            'title'     => date('Y') . ' Connection Summary',
-            'timeSpan'  => 'month',
-            'timeValue' => '',
-            'username'  => $user->username,
-            'nasIP'     => '',
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'userDailyConnectionSummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
-            'timeSpan'  => 'day',
-            'timeValue' => date('m'),
-            'username'  => $user->username,
-            'nasIP'     => '',
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
