@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Utils\DataHelper;
+use DB;
 
 class BandwidthSummary extends Model {
     protected $table = 'radium_bandwidth_summary';
@@ -150,8 +151,6 @@ class BandwidthSummary extends Model {
 
         $results = $query->union($activeConnections)
             ->get();
-//            ->getQuery()
-//            ->toSQL();
 
         $usage = [
             'download' => array_pad([], $count, 0),
@@ -187,10 +186,58 @@ class BandwidthSummary extends Model {
             'date',
             'download',
             'upload',
-            'total'
+            'total',
+            'nas_id'
         ])
             ->orderBy('date', 'desc')
             ->where('nas_id', $nasID)
             ->limit($limit);
+    }
+
+    /**
+     * Generates a list of top users based on their bandwidth usage
+     *
+     * @param $start
+     * @param $stop
+     * @param $nasName
+     * @return mixed
+     */
+    public static function topUsers($start, $stop, $nasName) {
+        $columns = "username"
+            . ",date"
+            . ",download"
+            . ",upload"
+            . ",total"
+            . ",nas_id";
+
+        $summary = self::selectRaw($columns)
+            ->groupBy('username');
+        $dailySummary = ActiveConnectionSummary::selectRaw($columns)
+            ->groupBy('username');
+
+        if (!empty($start)) {
+            $summary->where('date', '>=', $start);
+            $dailySummary->where('date', '>=', $start);
+        }
+
+        if (!empty($stop)) {
+            $summary->where('date', '<=', $stop);
+            $dailySummary->where('date', '<=', $stop);
+        }
+
+        $subquery = $summary->union($dailySummary);
+
+        $q = self::selectRaw($columns . ",nas.nasname", $subquery->getBindings())
+            ->from(DB::raw('(' . $subquery->getQuery()->toSQL() . ') t'))
+            ->leftJoin('nas', 't.nas_id', '=', 'nas.id')
+            ->limit(50)
+            ->orderBy('total', 'DESC')
+            ->groupBy('username');
+
+        if (!empty($nasName)) {
+            $q->where('nas.nasname', 'LIKE', '%' . $nasName . '%');
+        }
+
+        return $q->get();
     }
 }

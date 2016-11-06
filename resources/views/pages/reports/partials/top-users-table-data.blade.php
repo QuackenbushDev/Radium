@@ -1,13 +1,11 @@
 @foreach($dataSet as $data)
+    <?php if (1 === 2) dd($data); ?>
     <tr>
         <td>{{ $data->username }}</td>
-        <td>{{ $data->acctstarttime }}</td>
-        <td>{{ $data->acctstoptime }}</td>
-        <td>{{ DataHelper::secondsToHumanReadableTime($data->acctsessiontime) }}</td>
-        <td>{{ $data->connections }}</td>
+        <td>{{ $data->date }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->download) }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->upload) }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->total) }}</td>
-        <td>{{ $data->nasipaddress }}</td>
+        <td>{{ $data->nasname }}</td>
     </tr>
 @endforeach

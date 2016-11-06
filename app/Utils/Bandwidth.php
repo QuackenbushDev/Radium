@@ -32,7 +32,6 @@ class Bandwidth
                 $total -= $usage->total;
             }
 
-
             if ($total <= 0) {
                 continue;
             }

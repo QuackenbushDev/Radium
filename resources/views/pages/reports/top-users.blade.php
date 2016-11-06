@@ -15,9 +15,9 @@
         </div>
         <div class="box-body filter">
             {!! BootForm::open()->action(route('report::topUsers'))->get()->addClass('form-inline') !!}
-            {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
-            {!! BootForm::text('Date Start', 'acctstarttime')->value($filter['acctstarttime']) !!}
-            {!! BootForm::text('Date Stop', 'acctstoptime')->value($filter['acctstoptime']) !!}
+            {!! BootForm::text('NAS IP', 'nasName')->value($filter['nasName']) !!}
+            {!! BootForm::text('Date Start', 'start')->value($filter['start']) !!}
+            {!! BootForm::text('Date Stop', 'stop')->value($filter['stop']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
             {!! BootForm::close() !!}
         </div>
@@ -28,7 +28,8 @@
         [
             'title'             => '',
             'disableFilter'     => true,
-            'headers'           => ['Username', 'Start Time', 'Stop Time', 'Session Time', 'Connections', 'Download', 'Upload', 'Total', 'NAS IP Address'],
+            'disablePagination' => true,
+            'headers'           => ['Username', 'Date', 'Download', 'Upload', 'Total', 'NAS IP Address'],
             'dataSet'           => $userList,
             'dataPartial'       => 'pages.reports.partials.top-users-table-data',
         ]

@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use App\BandwidthSummary;
 use Illuminate\Http\Request;
 use App\RadiusAccount;
 use App\RadiusPostAuth;
+use App\Nas;
 use DateTime;
 
 class ReportController extends Controller {
@@ -150,16 +152,15 @@ class ReportController extends Controller {
      */
     public function topUsers(Request $request) {
         $filter = [
-            'nasipaddress'  => $request->input('nasipaddress', ''),
-            'acctstarttime' => $request->input('acctstarttime', ''),
-            'acctstoptime'  => $request->input('acctstoptime', ''),
+            'nasName' => $request->input('nasName', ''),
+            'start' => $request->input('start', ''),
+            'stop'  => $request->input('stop', '')
         ];
-        $userList = RadiusAccount::topUsers(
-            $filter['nasipaddress'],
-            $filter['acctstarttime'],
-            $filter['acctstoptime'],
-            25
-        )->paginate();
+        $userList = BandwidthSummary::topUsers(
+            $filter['start'],
+            $filter['stop'],
+            $filter['nasName']
+        );
 
         return view()->make(
             'pages.reports.top-users',
