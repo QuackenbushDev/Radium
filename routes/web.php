@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['prefix' => 'report', 'as' => 'report::'], function() {
         Route::get('/accounting', ['as' => 'accounting', 'uses' => 'ReportController@accounting']);
+        Route::get('/bandwidthAccounting', ['as' => 'bandwidthAccounting', 'uses' => 'ReportController@bandwidthAccounting']);
         Route::get('/bandwidth', ['as' => 'bandwidth', 'uses' => 'ReportController@bandwidth']);
         Route::get('/onlineUsers', ['as' => 'onlineUsers', 'uses' => 'ReportController@onlineUsers']);
         Route::get('/connectionAttempts', ['as' => 'connectionAttempts', 'uses' => 'ReportController@connectionAttempts']);

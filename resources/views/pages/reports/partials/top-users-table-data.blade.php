@@ -2,7 +2,6 @@
     <?php if (1 === 2) dd($data); ?>
     <tr>
         <td>{{ $data->username }}</td>
-        <td>{{ $data->date }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->download) }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->upload) }}</td>
         <td>{{ DataHelper::convertToHumanReadableSize($data->total) }}</td>

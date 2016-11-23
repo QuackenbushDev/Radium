@@ -203,17 +203,10 @@ class BandwidthSummary extends Model {
      * @return mixed
      */
     public static function topUsers($start, $stop, $nasName) {
-        $columns = "username"
-            . ",date"
-            . ",download"
-            . ",upload"
-            . ",total"
-            . ",nas_id";
-
-        $summary = self::selectRaw($columns)
-            ->groupBy('username');
-        $dailySummary = ActiveConnectionSummary::selectRaw($columns)
-            ->groupBy('username');
+        $columns = "username, SUM(download) as download, SUM(upload) as upload"
+            . ", SUM(total) as total, nas_id";
+        $summary = self::selectRaw($columns)->groupBy('username', 'nas_id');
+        $dailySummary = ActiveConnectionSummary::selectRaw($columns)->groupBy('username', 'nas_id');
 
         if (!empty($start)) {
             $summary->where('date', '>=', $start);
@@ -226,8 +219,7 @@ class BandwidthSummary extends Model {
         }
 
         $subquery = $summary->union($dailySummary);
-
-        $q = self::selectRaw($columns . ",nas.nasname", $subquery->getBindings())
+        $query = self::selectRaw($columns . ", nasname", $subquery->getBindings())
             ->from(DB::raw('(' . $subquery->getQuery()->toSQL() . ') t'))
             ->leftJoin('nas', 't.nas_id', '=', 'nas.id')
             ->limit(50)
@@ -235,9 +227,54 @@ class BandwidthSummary extends Model {
             ->groupBy('username');
 
         if (!empty($nasName)) {
-            $q->where('nas.nasname', 'LIKE', '%' . $nasName . '%');
+            $query->where('nas.nasname', 'LIKE', '%' . $nasName . '%');
         }
 
-        return $q->get();
+        return $query->get();
+    }
+
+    /**
+     * Generates the bandwidth accounting report using radium_bandwidth_summary and
+     * radium_active_connection_summary
+     *
+     * @param $start
+     * @param $stop
+     * @param $username
+     * @param $nasID
+     * @return mixed
+     */
+    public static function bandwidthAccountingReport($start, $stop, $username, $nasID) {
+        $columns = "username, date, download, upload, total, nas_id";
+        $summary = self::selectRaw($columns);
+        $dailySummary = ActiveConnectionSummary::selectRaw($columns);
+
+        if (!empty($start)) {
+            $summary->where('date', '>=', $start);
+            $dailySummary->where('date', '>=', $start);
+        }
+
+        if (!empty($stop)) {
+            $summary->where('date', '<=', $stop);
+            $dailySummary->where('date', '<=', $stop);
+        }
+
+        if (!empty($username)) {
+            $summary->where('username', 'LIKE', '%' . $username . '%');
+            $dailySummary->where('username', 'LIKE', '%' . $username . '%');
+        }
+
+        if (!empty($nasID)) {
+            $summary->where('nas_id', $nasID);
+            $dailySummary->where('nas_id', $nasID);
+        }
+
+        $subquery = $summary->union($dailySummary);
+        $query = self::selectRaw($columns . ", nasname", $subquery->getBindings())
+            ->from(DB::raw('(' . $subquery->getQuery()->toSQL() . ') t'))
+            ->leftJoin('nas', 't.nas_id', '=', 'nas.id')
+            ->groupBy("username", "nasname", "date")
+            ->orderBy('t.date', 'DESC');
+
+        return $query;
     }
 }

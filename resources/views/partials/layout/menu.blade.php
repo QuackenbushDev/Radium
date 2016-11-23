@@ -68,6 +68,11 @@
                         <i class="fa fa-table"></i> <span>Accounting</span>
                     </a>
                 </li>
+                <li class="treeview">
+                    <a href="{{ route('report::bandwidthAccounting') }}">
+                        <i class="fa fa-table"></i> <span>Bandwidth Accounting</span>
+                    </a>
+                </li>
                 <li class="header">Admin</li>
                 <li class="treeview">
                     <a href="{{ route('operator::index') }}">

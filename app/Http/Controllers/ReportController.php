@@ -145,6 +145,38 @@ class ReportController extends Controller {
     }
 
     /**
+     * Generates the bandwidth accounting report for a more detailed bandwidth summary based on
+     * radium_bandwidth_summary and radium_active_connection_summary.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function bandwidthAccounting(Request $request) {
+        $filter = [
+            'username' => $request->input('username'),
+            'nasID'    => $request->input('nasID'),
+            'start'    => $request->input('start'),
+            'stop'     => $request->input('stop')
+        ];
+
+        $dataSet = BandwidthSummary::bandwidthAccountingReport(
+            $filter['start'],
+            $filter['stop'],
+            $filter['username'],
+            $filter['nasID']
+        )->limit(150)
+         ->get();
+
+        return view()->make(
+            'pages.reports.bandwidth-accounting',
+            [
+                'bandwidthAccountingList' => $dataSet,
+                'filter' => $filter
+            ]
+        );
+    }
+
+    /**
      * Displays the top users by bandwidth usage
      *
      * @param Request $request

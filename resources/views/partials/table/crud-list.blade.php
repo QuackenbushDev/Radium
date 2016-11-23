@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    @if(isset($disablePagination) && !$disablePagination)
+                    @if(!isset($disablePagination))
                         @include('partials.pagination-nav', ['data' => $dataSet])
                     @endif
                 </div>
