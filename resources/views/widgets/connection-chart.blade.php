@@ -19,5 +19,5 @@
 </div>
 
 @push('documentReady')
-    makeConnectionChart('{{ $id }}', '{{ $timeSpan }}', '{{ $timeValue }}', '{{ $username }}', '{{ $nasIP }}');
+    makeConnectionChart('{{ $id }}', '{{ $timeSpan }}', '{{ $timeValue }}', '{{ $username }}', '{{ $nasID }}');
 @endpush

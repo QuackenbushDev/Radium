@@ -238,7 +238,7 @@ class PortalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profile(Request $request, $username) {
-        $user = RadiusAccount::where('username', $username)->first();
+        $user = RadiusCheck::where('username', $username)->first();
         $userInfo = RadiusAccountInfo::where('username', $username)->first();
         $onlineStatus = RadiusAccount::onlineStatus($user->username);
         $groups = RadiusUserGroup::getUserGroups($user->username);
@@ -261,7 +261,7 @@ class PortalController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function editProfile($username) {
-        $user = RadiusAccount::where('username', $username)->first();
+        $user = RadiusCheck::where('username', $username)->first();
         $userInfo = RadiusAccountInfo::where('username', $username)->first();
 
         return view(
@@ -284,12 +284,12 @@ class PortalController extends Controller {
         $userRecord = RadiusCheck::where('username', session()->get('portal_username'))->first();
 
         $password = $request->input('user_password', null);
-        if ($password !== null) {
+        if ($password !== null && !empty($password)) {
             $userRecord->value = $request->input('user_password', '');
             $userRecord->save();
         }
 
-        $enableDailySummary = ($request->input('userinfo_enable_daily_summary', '0') === '1') ? true : false;
+        $enableWeeklySummary = ($request->input('userinfo_enable_weekly_summary', '0') === '1') ? true : false;
         $enableMonthlySummary = ($request->input('userinfo_enable_monthly_summary', '0') === '1') ? true : false;
         RadiusAccountInfo::where('username', '=', $userRecord->username)
             ->update([
@@ -301,7 +301,7 @@ class PortalController extends Controller {
                 'office_phone'           => $request->input('userinfo_office_phone', ''),
                 'mobile_phone'           => $request->input('userinfo_mobile_phone', ''),
                 'address'                => $request->input('userinfo_address'),
-                'enable_daily_summary'   => $enableDailySummary,
+                'enable_weekly_summary'  => $enableWeeklySummary,
                 'enable_monthly_summary' => $enableMonthlySummary,
             ]);
 

@@ -47,7 +47,7 @@
             'timeSpan'  => 'month',
             'timeValue' => 2016,
             'username'  => session()->get('portal_username'),
-            'nasIP'     => "",
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
@@ -60,20 +60,7 @@
             'timeSpan'  => 'day',
             'timeValue' => date('m'),
             'username'  => session()->get('portal_username'),
-            'nasIP'     => "",
-            'height'    => '300px',
-        ]
-    )
-
-    @include(
-        'widgets.connection-chart',
-        [
-            'id'        => 'dashboardConnectionSummary',
-            'title'     => date('M') . ' ' . date('Y') . ' Connection Summary',
-            'timeSpan'  => 'month',
-            'timeValue' => date('m'),
-            'username'  => session()->get('portal_username'),
-            'nasIP'     => "",
+            'nasID'     => "",
             'height'    => '300px',
         ]
     )
