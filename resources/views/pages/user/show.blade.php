@@ -102,7 +102,7 @@
             'id'        => 'dashboardBandwidthMonthlySummary',
             'title'     => date('Y') . ' Bandwidth Summary',
             'timeSpan'  => 'month',
-            'timeValue' => 2016,
+            'timeValue' => date('Y'),
             'username'  => $user->username,
             'nasID'     => "",
             'height'    => '300px',

@@ -15,7 +15,7 @@
         <div class="box-body filter">
             {!! BootForm::open()->action(route('report::bandwidth'))->get()->addClass('form-inline') !!}
             {!! BootForm::text('Username', 'username')->value($filter['username']) !!}
-            {!! BootForm::text('NAS IP', 'nasipaddress')->value($filter['nasipaddress']) !!}
+            {!! BootForm::select('Nas', 'nasID')->options($nasList)->select($filter['nasID']) !!}
             {!! BootForm::submit('Search')->addClass('btn-success') !!}
             {!! BootForm::close() !!}
         </div>
@@ -29,7 +29,7 @@
             'timeSpan'  => 'month',
             'timeValue' => date('Y'),
             'username'  => $filter['username'],
-            'nasIP'     => $filter['nasipaddress'],
+            'nasID'     => $filter['nasID'],
             'height'    => '300px',
         ]
     )
@@ -42,7 +42,7 @@
             'timeSpan'  => 'day',
             'timeValue' => date('m'),
             'username'  => $filter['username'],
-            'nasIP'     => $filter['nasipaddress'],
+            'nasID'     => $filter['nasID'],
             'height'    => '300px',
         ]
     )

@@ -79,15 +79,22 @@ class ReportController extends Controller {
     public function bandwidth(Request $request) {
         $filter = [
             'username'        => $request->input('username', ''),
-            'nasipaddress'    => $request->input('nasipaddress', ''),
+            'nasID'           => $request->input('nasID', ''),
             'acctstarttime'   => $request->input('acctstarttime', ''),
             'acctstoptime'    => $request->input('acctstoptime', '')
         ];
+        $nasList = Nas::select('id', 'nasname', 'shortname')->get();
+        $nasArray = ['' => ''];
+
+        foreach ($nasList as $nas) {
+            $nasArray[$nas->id] = $nas->nasname;
+        }
 
         return view()->make(
             'pages.reports.bandwidth',
             [
                 'filter' => $filter,
+                'nasList' => $nasArray
             ]
         );
     }
