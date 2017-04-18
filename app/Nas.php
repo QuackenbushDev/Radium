@@ -20,7 +20,8 @@ class Nas extends Model
         'secret',
         'server',
         'community',
-        'description'
+        'description',
+        'nas_port'
     ];
 
     /**
@@ -29,4 +30,8 @@ class Nas extends Model
      * @var array
      */
     protected $hidden = [];
+
+    public static function findByNasIp($ipaddress = '') {
+        return self::where('nasipaddress', $ipaddress)->firstOrFail();
+    }
 }

@@ -37,6 +37,10 @@
                         <td>{{ $nas->ports }}</td>
                     </tr>
                     <tr>
+                        <td>Radius Communication Port</td>
+                        <td>{{ $nas->nas_port }}</td>
+                    </tr>
+                    <tr>
                         <td>Secret</td>
                         <td>{{ $nas->secret }}</td>
                     </tr>

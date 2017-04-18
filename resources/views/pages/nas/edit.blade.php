@@ -26,6 +26,7 @@
                     {!! BootForm::text('Short Name', 'short_name')->value($nas->shortname) !!}
                     {!! BootForm::select('Type', 'type')->options($types)->select($nas->type) !!}
                     {!! BootForm::text('Ports', 'ports')->value($nas->ports) !!}
+                    {!! BootForm::text('Radius Communication Port', 'nas_port')->value($nas->nas_port) !!}
                     {!! BootForm::text('Secret', 'secret')->value($nas->secret) !!}
                     {!! BootForm::text('Server', 'server')->value($nas->server) !!}
                     {!! BootForm::text('Community', 'community')->value($nas->community) !!}
