@@ -31,7 +31,13 @@ class Nas extends Model
      */
     protected $hidden = [];
 
-    public static function findByNasIp($ipaddress = '') {
-        return self::where('nasipaddress', $ipaddress)->firstOrFail();
+    /**
+     * Retrieves a nas record by IP address.
+     *
+     * @param string $ip
+     * @return mixed
+     */
+    public static function findByNasIp($ip = '') {
+        return self::where('nasname', $ip)->firstOrFail();
     }
 }
