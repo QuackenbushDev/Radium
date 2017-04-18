@@ -431,7 +431,9 @@ class UserController extends Controller {
     public function enableUser(Request $request, $id) {
         $user = RadiusCheck::find($id);
         $disabledGroupName = config('radium.disabled_group');
-        RadiusUserGroup::where('groupname', $disabledGroupName)->delete();
+        RadiusUserGroup::where('username', $user->username)
+            ->where('groupname', $disabledGroupName)
+            ->delete();
 
         $request->session()->flash('message', 'Successfully enabled ' . $user->username);
         $request->session()->flash('alert-class', 'alert-success');
