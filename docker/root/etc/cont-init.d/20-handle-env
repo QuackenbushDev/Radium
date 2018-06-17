@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bash
+
+# Handle DB_HOST, DB_DATABASE, DB_USERNAME and DB_PASSWORD variables
+cp /etc/freeradius/sql.conf.tpl /tmp/sql.conf.1
+cp /var/www/radium/.env.tpl /tmp/.env.tpl.1
+for var in DB_HOST DB_DATABASE DB_USERNAME DB_PASSWORD ; do
+	sed -e "s/\$$var/${!var}/g" /tmp/sql.conf.1 > /tmp/sql.conf.2
+	cp /tmp/sql.conf.2 /tmp/sql.conf.1
+
+	sed -e "s/\$$var/${!var}/g" /tmp/.env.tpl.1 > /tmp/.env.tpl.2
+	cp /tmp/.env.tpl.2 /tmp/.env.tpl.1
+done
+cp /tmp/sql.conf.1 /etc/freeradius/sql.conf
+cp /tmp/.env.tpl.1 /var/www/radium/.env

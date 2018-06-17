@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  radium:
+    build: .
+    image: radium:latest
+    environment:
+      DB_HOST: "db"
+      DB_DATABASE: "radium"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "password"
+    ports:
+      - "80:80"
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+
+  db:
+    image: mariadb:10.3.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
