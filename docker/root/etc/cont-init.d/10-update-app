@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+export DISABLE_NOTIFIER=true
+export BROADCAST_DRIVER=log
+
+if [ ! -d /var/www/radium/.git ] ; then
+    git clone https://github.com/samburney/Radium.git /var/www/radium && \
+        cd /var/www/radium && \
+        composer install && \
+        npm install gulp -D && \
+        npm install laravel-elixir -D && \
+        gulp && \
+        chown -R www-data:www-data /var/www/radium && \
+        chmod -R g+rw /var/www/radium
+else
+    cd /var/www/radium
+    git pull
+fi
+
+chown -R www-data:www-data /var/www/radium

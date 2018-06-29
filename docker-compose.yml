@@ -1,25 +1,45 @@
-version: '3'
+version: '2.4'
 services:
 
   radium:
     build: .
-    image: radium:latest
+    image: samburney/radium:latest
+    hostname: 'radium.dev'
     environment:
       DB_HOST: "db"
       DB_DATABASE: "radium"
       DB_USERNAME: "root"
       DB_PASSWORD: "password"
+      VIRTUAL_HOST: 'radium-dev.local'
+      HTTPS_METHOD: 'noredirect'
     ports:
-      - "80:80"
+      - "81:80"
       - "1812:1812/udp"
       - "1813:1813/udp"
-
-  db:
-    image: mariadb:10.3.7
-    environment:
-      MYSQL_ROOT_PASSWORD: "password"
     volumes:
-      - db-data:/var/lib/mysql
+      - './radium:/var/www/radium'
+    networks:
+      default:
+      nginx-proxy:
+      mariadb:
+
+#  db:
+#    image: mariadb:10.3.7
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "password"
+#    volumes:
+#      - 'db-data:/var/lib/mysql'
+#    networks:
+#      default:
 
 volumes:
   db-data:
+
+networks:
+  default:
+  nginx-proxy:
+    external:
+      name: 'nginx-proxy_nginx-proxy'
+  mariadb:
+    external:
+      name: 'mariadb_mariadb'
