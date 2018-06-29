@@ -13,9 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Handle reverse proxy correctly
+        if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            \URL::forceSchema($_SERVER['HTTP_X_FORWARDED_PROTO']);
+        }
     }
-
     /**
      * Register any application services.
      *
