@@ -1,0 +1,29 @@
+#!/usr/bin/with-contenv bash
+
+# Generate Radium app key
+cd /var/www/radium
+
+php artisan key:generate
+
+# Sleep for a bit to allow MySQL DB to start...
+sleep 10
+
+# Check that database doesn't already exist
+mysqlshow -h$DB_HOST -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE > /dev/null 2>&1
+DB_NOT_EXISTS=$?
+
+if [ $DB_NOT_EXISTS != 0 ] ; then
+	echo "DB $DB_DATABASE not found, creating and populating..."
+
+	# Create database
+	mysqladmin -h$DB_HOST -u$DB_USERNAME -p$DB_PASSWORD create $DB_DATABASE
+
+	# Populate with FreeRADIUS schema
+	mysql -h$DB_HOST -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < /etc/freeradius/sql/mysql/nas.sql
+	mysql -h$DB_HOST -u$DB_USERNAME -p$DB_PASSWORD $DB_DATABASE < /etc/freeradius/sql/mysql/schema.sql
+
+	# Run Radium DB setup
+	php artisan migrate
+	php artisan db:seed --class=OperatorAccountSeeder
+	php artisan db:seed --class=DictionarySeeder
+fi

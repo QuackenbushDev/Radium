@@ -1,0 +1,48 @@
+authorize {
+	preprocess
+	chap
+	mschap
+	digest
+	suffix
+	sql
+	expiration
+	logintime
+	pap
+}
+authenticate {
+	Auth-Type PAP {
+		pap
+	}
+	Auth-Type CHAP {
+		chap
+	}
+	Auth-Type MS-CHAP {
+		mschap
+	}
+	digest
+}
+preacct {
+	preprocess
+	acct_unique
+	suffix
+}
+accounting {
+	sql
+	exec
+	attr_filter.accounting_response
+}
+session {
+	sql
+}
+post-auth {
+	sql
+	exec
+	Post-Auth-Type REJECT {
+		sql
+		attr_filter.access_reject
+	}
+}
+pre-proxy {
+}
+post-proxy {
+}

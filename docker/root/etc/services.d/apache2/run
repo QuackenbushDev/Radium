@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+echo "Starting Web Server"
+
+exec \
+	/usr/sbin/apachectl -D FOREGROUND

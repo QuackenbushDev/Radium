@@ -114,7 +114,7 @@ class RadiusAccount extends Model {
      * @return mixed
      */
     public static function onlineUsers() {
-        $sql = 'radacctid, username, framedipaddress, nasipaddress, sum(acctsessiontime), count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total';
+        $sql = 'radacctid, username, framedipaddress, nasipaddress, sum(acctsessiontime) AS acctsessiontime, count(acctstarttime) as connections, DAY(acctstarttime) AS day, MONTH(acctstarttime) AS month, YEAR(acctstarttime) AS year, sum(acctinputoctets) AS acctinputoctets, sum(acctoutputoctets) AS acctoutputoctets, sum(acctinputoctets + acctoutputoctets) AS total';
         $query = self::selectRaw($sql)
             ->whereRaw('AcctStopTime IS NULL')
             ->orWhere('AcctStopTime', '0000-00-00 00:00:00')
