@@ -63,7 +63,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 0.1.2 (Rendered in {{ number_format(microtime(true) - LARAVEL_START, 3) }} seconds)
         </div>
-        <strong>Licensed under <a href="https://github.com/samburney/Radium/blob/master/LICENSE.md">GNU Affero General Public License v3.0</a></strong>
+        <strong>Licensed under <a href="https://github.com/quackenbushdev/Radium/blob/master/LICENSE.md">GNU Affero General Public License v3.0</a></strong>
     </footer>
 
     <div class="control-sidebar-bg"></div>
